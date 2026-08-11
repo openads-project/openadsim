@@ -1,0 +1,16 @@
+services:
+
+  robot-state-publisher:
+    extends:
+      file: ../../openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/monitoring:v1.0.0
+    volumes:
+      - ./urdf:/docker-ros/ws/urdf
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 run robot_state_publisher robot_state_publisher \
+          /docker-ros/ws/urdf/${VEHICLE:-karl}.urdf \
+          --ros-args -p use_sim_time:=${USE_SIM_TIME:-true}

@@ -1,0 +1,84 @@
+{
+    "blueprints": [
+        {
+            "id": "camera_rgb_1280x720_fov110_f2",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 1280,
+            "image_size_y": 720,
+            "fov": 110.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_rgb_1280x720_fov110_f4",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 1280,
+            "image_size_y": 720,
+            "fov": 110.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_rgb_2048x768_fov150",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 2048,
+            "image_size_y": 768,
+            "fov": 150.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_rgb_1920x1080_fov90",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 1920,
+            "image_size_y": 1080,
+            "fov": 90.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_rgb_400x300_fov90",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 400,
+            "image_size_y": 300,
+            "fov": 90.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_depth_1280x720",
+            "type": "sensor.camera.depth",
+            "image_size_x": 1280,
+            "image_size_y": 720,
+            "fov": 90.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_semantic_1280x720",
+            "type": "sensor.camera.semantic_segmentation",
+            "image_size_x": 1280,
+            "image_size_y": 720,
+            "fov": 90.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_rgb_view",
+            "type": "sensor.camera.rgb",
+            "spawn_point": {"x": -5.0, "y": 0.0, "z": 3.5, "roll": 0.0, "pitch": 20.0, "yaw": 0.0},
+            "image_size_x": 1280,
+            "image_size_y": 720,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_traffic_light_2048x768_fov150",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 2048,
+            "image_size_y": 768,
+            "fov": 150.0,
+            "post_process_profile": "Town10HD_Opt"
+        },
+        {
+            "id": "camera_traffic_light_1280x720_fov110",
+            "type": "sensor.camera.rgb",
+            "image_size_x": 1280,
+            "image_size_y": 720,
+            "fov": 110.0,
+            "post_process_profile": "Town10HD_Opt"
+        }
+    ]
+}

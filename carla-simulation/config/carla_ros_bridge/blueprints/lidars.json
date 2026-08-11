@@ -1,0 +1,60 @@
+{
+    "blueprints": [
+        {
+            "id": "lidar_ouster_os1_128",
+            "type": "sensor.lidar.ray_cast",
+            "range": 75,
+            "channels": 128,
+            "points_per_second": 2621440,
+            "upper_fov": 22.5,
+            "lower_fov": -22.5,
+            "rotation_frequency": 20,
+            "sensor_tick": 0.1
+        },
+        {
+            "id": "lidar_ouster_os1_64",
+            "type": "sensor.lidar.ray_cast",
+            "range": 75,
+            "channels": 64,
+            "points_per_second": 1310720,
+            "upper_fov": 22.5,
+            "lower_fov": -22.5,
+            "rotation_frequency": 20,
+            "sensor_tick": 0.1
+        },
+        {
+            "id": "lidar_ouster_os1_32",
+            "type": "sensor.lidar.ray_cast",
+            "range": 50,
+            "channels": 32,
+            "points_per_second": 327680,
+            "upper_fov": 15.0,
+            "lower_fov": -25.0,
+            "rotation_frequency": 20,
+            "noise_stddev": 0.0
+        },
+        {
+            "id": "lidar_aeries_ii",
+            "type": "sensor.lidar.ray_cast",
+            "range": 500,
+            "channels": 300,
+            "points_per_second": 2048000,
+            "upper_fov": 15.0,
+            "lower_fov": -15.0,
+            "horizontal_fov": 120.0,
+            "rotation_frequency": 20,
+            "sensor_tick": 0.1
+        },
+        {
+            "id": "lidar_velodyne_vlp16",
+            "type": "sensor.lidar.ray_cast",
+            "range": 100,
+            "channels": 16,
+            "points_per_second": 600000,
+            "upper_fov": 15.0,
+            "lower_fov": -15.0,
+            "rotation_frequency": 20,
+            "sensor_tick": 0.1
+        }
+    ]
+}

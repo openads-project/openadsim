@@ -1,0 +1,17 @@
+# docker compose --profile $COMPOSE_PROFILES config --services | sort
+include:
+
+  # simulation
+  - carla-simulation/docker-compose.core.yml
+  - carla-simulation/docker-compose.scenario.yml
+  - sumo-simulation/docker-compose.core.yml
+
+  # automated driving stack
+  - openadstack/docker-compose.yml
+
+  # control
+  - carla-simulation/docker-compose.control.yml
+  - sumo-simulation/docker-compose.control.yml
+
+  # utils
+  - utils/gui/docker-compose.yml

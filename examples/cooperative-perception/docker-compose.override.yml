@@ -1,0 +1,16 @@
+services:
+
+  monitoring.rviz-carla:
+    environment:
+      SENSORS: ${SENSORS:-}
+    volumes:
+      - ./examples/cooperative-perception/monitoring:/monitoring
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        case "$${SENSORS}" in
+          *rita-all*) VARIANT=all ;;
+          *)          VARIANT=minimal ;;
+        esac
+        rviz2 -d /monitoring/demo-$${VARIANT}.rviz --ros-args -p use_sim_time:=true

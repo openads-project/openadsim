@@ -1,0 +1,19 @@
+services:
+
+  sumo-control-active-bridge:
+    profiles:
+      - sumo
+    depends_on:
+      - sumo-interface
+    restart: unless-stopped # requires incoming topic
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/monitoring:v1.0.0
+    command: >
+      ros2 run topic_tools transform
+        /sumo/manual_control_override
+        /control/active
+        std_msgs/Bool
+        "std_msgs.msg.Bool(data=not m.data)"
+        --import std_msgs

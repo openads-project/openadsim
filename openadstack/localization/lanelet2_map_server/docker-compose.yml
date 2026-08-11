@@ -1,0 +1,34 @@
+services:
+  localization.lanelet2-map-server:
+    extends:
+      file: ../../openadstack/localization/lanelet2_map_server/docker-compose.yml
+      service: localization.lanelet2-map-server
+    environment:
+      MAP_FRAME_ID: map
+      USE_AUTOMATIC_MAP_SELECTION: false
+      MAP_DIRECTORY: /data/maps/default-maps
+      MAP_FILEPATH: /lanelet/lanelet.osm
+      ORIGIN_LAT: ${ORIGIN_LAT}
+      ORIGIN_LON: ${ORIGIN_LON}
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 run lanelet2_map_server lanelet2_map_server --ros-args \
+          -r __ns:=$${NAMESPACE} \
+          -r __node:=$${NAME} \
+          -p use_sim_time:=$${USE_SIM_TIME} \
+          -p map_frame_id:=$${MAP_FRAME_ID} \
+          -p use_automatic_map_selection:=$${USE_AUTOMATIC_MAP_SELECTION} \
+          -p map_directory:=$${MAP_DIRECTORY} \
+          -p map_filepath:=$${MAP_FILEPATH} \
+          $${ORIGIN_LAT:+-p origin_lat:=$${ORIGIN_LAT}} \
+          $${ORIGIN_LON:+-p origin_lon:=$${ORIGIN_LON}} \
+    volumes:
+      - type: image
+        source: ghcr.io/openads-project/lanelet2-maps:v1.0.4
+        image:
+          subpath: data/maps
+        target: /data/maps
+        read_only: true
+      - ${CUSTOM_LANELET:+../../../}${CUSTOM_LANELET:-/dev/null:/dev/null}${CUSTOM_LANELET:+:/lanelet/lanelet.osm}

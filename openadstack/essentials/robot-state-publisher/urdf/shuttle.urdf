@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot name="shuttle">
+
+  <!-- BASE LINK =========================================================== -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="-0.79 0 -0.05" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///mesh/shuttle.obj" />
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="wheel_fl">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file:///mesh/shuttle_wheel.obj" />
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="wheel_fr">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file:///mesh/shuttle_wheel.obj" />
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="wheel_rr">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file:///mesh/shuttle_wheel.obj" />
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="wheel_rl">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file:///mesh/shuttle_wheel.obj" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="wheel_fl_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="wheel_fl"/>
+    <origin xyz="3.4 0.89 0.325" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="wheel_fr_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="wheel_fr"/>
+    <origin xyz="3.4 -0.89 0.325" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="wheel_rr_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="wheel_rr"/>
+    <origin xyz="0 -0.89 0.325" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="wheel_rl_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="wheel_rl"/>
+      <origin xyz="0 0.89 0.325" rpy="0 0 0"/>
+  </joint>
+
+</robot>

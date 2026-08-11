@@ -1,0 +1,88 @@
+services:
+
+  sumo-interface:
+    profiles:
+      - sumo
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-gpu-x11-service
+    image: ghcr.io/openads-project/sumo_interface:v1.1.0
+    ports:
+      - 8813:8813
+    environment:
+      NAMESPACE: /sumo
+      # params
+      MANUAL_CONTROL_ENABLED: true
+      MAP: ${MAP}
+      SPAWN_POINT: ${SPAWN_POINT}
+      # inputs
+      CONTROLS_TOPIC: /control/ackermann_trajectory_control/controls
+      # outputs
+      EGO_DATA_TOPIC: ~/ego_data
+      GLOBAL_OBJECT_LIST_TOPIC: ~/global_object_list
+      MAP_INFO_TOPIC: ~/map_info
+      OBJECT_LIST_TOPIC: ~/object_list
+      GNSS_TOPIC: ~/gnss
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch sumo_interface sumo_interface.launch.py \
+          namespace:=$${NAMESPACE} \
+          manual_control_enabled:=$${MANUAL_CONTROL_ENABLED} \
+          map:=$${MAP} \
+          ego_spawn_pose:=$${SPAWN_POINT} \
+          controls_automated_topic:=$${CONTROLS_TOPIC} \
+          ego_data_topic:=$${EGO_DATA_TOPIC} \
+          global_object_list_topic:=$${GLOBAL_OBJECT_LIST_TOPIC} \
+          object_list_topic:=$${OBJECT_LIST_TOPIC} \
+          map_info_topic:=$${MAP_INFO_TOPIC} \
+          gnss_topic:=$${GNSS_TOPIC}
+    volumes:
+      - ./config/sumo_interface/params.yml:/docker-ros/ws/install/sumo_interface/share/sumo_interface/config/params.yml
+   
+  sumo-simulation-adapter:
+    profiles:
+      - sumo
+    depends_on:
+      - sumo-interface
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/simulation_adapter:v1.4.0
+    environment:
+      NAMESPACE: /sumo
+      NAME: simulation_adapter
+      LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
+      # inputs
+      EGO_DATA_INPUT: /sumo/sumo_interface/ego_data
+      MAP_INFO_INPUT: /sumo/sumo_interface/map_info
+      OBJECT_LIST_INPUT: /sumo/sumo_interface/object_list
+      TRAJECTORY_INPUT: /planning/trajectory_optimization/trajectory
+      # outputs
+      EGO_DATA_OUTPUT: /localization/ego_state_estimation/ego_data
+      IMU_OUTPUT: /simulation/imu
+      ODOMETRY_OUTPUT: /simulation/odometry
+      VEHICLE_STATE_OUTPUT: /simulation/vehicle_state
+      OBJECT_LIST_OUTPUT: /simulation/object_list
+      OBJECT_LIST_FIXED_OUTPUT: /simulation/object_list_fixed
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch simulation_adapter simulation_adapter.launch.py \
+          namespace:=$${NAMESPACE} \
+          name:=$${NAME} \
+          load_lanelet_map:=$${LOAD_LANELET_MAP} \
+          input_map_info_topic:=$${MAP_INFO_INPUT} \
+          input_ego_data_topic:=$${EGO_DATA_INPUT} \
+          input_object_list_topic:=$${OBJECT_LIST_INPUT} \
+          input_trajectory_topic:=$${TRAJECTORY_INPUT} \
+          output_ego_data_topic:=$${EGO_DATA_OUTPUT} \
+          output_ego_imu_topic:=$${IMU_OUTPUT} \
+          output_ego_odometry_topic:=$${ODOMETRY_OUTPUT} \
+          output_ego_vehicle_state_topic:=$${VEHICLE_STATE_OUTPUT} \
+          output_object_list_topic:=$${OBJECT_LIST_OUTPUT} \
+          output_object_list_fixed_topic:=$${OBJECT_LIST_FIXED_OUTPUT} \
+    volumes:
+      - ./config/simulation_adapter/params.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml

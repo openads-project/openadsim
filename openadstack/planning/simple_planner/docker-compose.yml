@@ -1,0 +1,13 @@
+services:
+
+  planning.simple-planner:
+    profiles:
+      - planning
+      - ml-planning
+    extends:
+      file: ../../openadstack/planning/simple_planner/docker-compose.yml
+      service: planning.simple-planner
+    environment:
+      PARAMS: /params.yml
+    volumes:
+      - ./params.yml:/params.yml

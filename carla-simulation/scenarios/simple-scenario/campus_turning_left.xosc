@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='utf-8'?>
+<OpenSCENARIO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OpenScenario.xsd">
+    <FileHeader description="aachen_campus_scenario_3-4_2_1" author="simple_scenario" revMajor="1" revMinor="1" date="2026-02-11T14:30:40.470470"/>
+    <CatalogLocations>
+        <VehicleCatalog>
+            <Directory path="../xosc/Catalogs/Vehicles"/>
+        </VehicleCatalog>
+    </CatalogLocations>
+    <RoadNetwork>
+        <LogicFile filepath="campus"/>
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="ego_vehicle">
+            <Vehicle name="car_white" vehicleCategory="car">
+                <BoundingBox>
+                    <Center x="2.0" y="0.0" z="0.9"/>
+                    <Dimensions width="1.61" length="4.508" height="1.8"/>
+                </BoundingBox>
+                <Performance maxSpeed="50.8" maxDeceleration="11.5" maxAcceleration="11.5"/>
+                <Axles>
+                    <FrontAxle maxSteering="0.523598775598" wheelDiameter="0.8" trackWidth="1.68" positionX="2.98" positionZ="0.4"/>
+                    <RearAxle maxSteering="0.523598775598" wheelDiameter="0.8" trackWidth="1.68" positionX="0.0" positionZ="0.4"/>
+                </Axles>
+                <Properties>
+                    <Property name="model_id" value="ego"/>
+                    <Property name="type" value="ego_vehicle"/>
+                    <File filepath="../models/car_blue.osgb"/>
+                </Properties>
+            </Vehicle>
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <Private entityRef="ego_vehicle">
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsShape="step" value="1.0" dynamicsDimension="time"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0.0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <WorldPosition x="298.2062780262349" y="-736.3077799393735" z="257.0" h="1.5711965242665942"/>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <ControllerAction>
+                            <OverrideControllerValueAction>
+                                <Throttle active="false" value="0.0"/>
+                                <Brake active="false" value="0.0"/>
+                                <Gear active="false" number="0.0"/>
+                            </OverrideControllerValueAction>
+                            <AssignControllerAction activateLateral="true" activateLongitudinal="true">
+                                <Controller name="CustomController">
+                                    <Properties>
+                                        <Property name="module" value="ros_vehicle_control_route_action.py"/>
+                                        <Property name="initial_speed" value="0"/>
+                                    </Properties>
+                                </Controller>
+                            </AssignControllerAction>
+                        </ControllerAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="Act_scenario_aachen_campus_scenario_3-4_2_1">
+            <Act name="Act_scenario_aachen_campus_scenario_3-4_2_1">
+                <ManeuverGroup name="ManeuverGroup_ego_vehicle" maximumExecutionCount="1">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="ego_vehicle"/>
+                    </Actors>
+                    <Maneuver name="Maneuver_ego_vehicle">
+                        <Event name="Event_ego_vehicle" priority="parallel" maximumExecutionCount="1">
+                            <Action name="AssignRouteAction_ego_vehicle">
+                                <PrivateAction>
+                                    <RoutingAction>
+                                        <AssignRouteAction>
+                                            <Route name="Route_ego_vehicle" closed="false">
+                                                <Waypoint routeStrategy="shortest">
+                                                    <Position>
+                                                        <WorldPosition x="298.2062780262349" y="-736.3077799393735" h="1.5711965242665942"/>
+                                                    </Position>
+                                                </Waypoint>
+                                                <Waypoint routeStrategy="shortest">
+                                                    <Position>
+                                                        <WorldPosition x="186.48232741990003" y="-643.8691659851962"/>
+                                                    </Position>
+                                                </Waypoint>
+                                            </Route>
+                                        </AssignRouteAction>
+                                    </RoutingAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition name="act_start" delay="0.0" conditionEdge="none">
+                            <ByValueCondition>
+                                <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition name="StoptriggerTime" delay="0.0" conditionEdge="rising">
+                            <ByValueCondition>
+                                <SimulationTimeCondition value="60.0" rule="greaterThan"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                    <ConditionGroup>
+                        <Condition name="StoptriggerEgoRoute" delay="0.0" conditionEdge="rising">
+                            <ByValueCondition>
+                                <StoryboardElementStateCondition storyboardElementType="event" storyboardElementRef="Event_ego_vehicle" state="completeState"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+        </Story>
+        <StopTrigger>
+            <ConditionGroup>
+                <Condition name="criteria_RunningStopTest" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <ParameterCondition parameterRef="" value="0" rule="lessThan"/>
+                    </ByValueCondition>
+                </Condition>
+                <Condition name="criteria_RunningRedLightTest" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <ParameterCondition parameterRef="" value="0" rule="lessThan"/>
+                    </ByValueCondition>
+                </Condition>
+                <Condition name="criteria_CollisionTest" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <ParameterCondition parameterRef="" value="0" rule="lessThan"/>
+                    </ByValueCondition>
+                </Condition>
+                <Condition name="criteria_WrongLaneTest" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <ParameterCondition parameterRef="" value="0" rule="lessThan"/>
+                    </ByValueCondition>
+                </Condition>
+                <Condition name="criteria_OnSidewalkTest" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <ParameterCondition parameterRef="" value="0" rule="lessThan"/>
+                    </ByValueCondition>
+                </Condition>
+                <Condition name="criteria_DrivenDistanceTest" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <ParameterCondition parameterRef="distance_success" value="174.15137968772896" rule="greaterThan"/>
+                    </ByValueCondition>
+                </Condition>
+            </ConditionGroup>
+        </StopTrigger>
+    </Storyboard>
+</OpenSCENARIO>

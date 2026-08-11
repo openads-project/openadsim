@@ -1,0 +1,3 @@
+[submodule "openadstack/openadstack"]
+	path = openadstack/openadstack
+	url = https://github.com/openads-project/openadstack.git

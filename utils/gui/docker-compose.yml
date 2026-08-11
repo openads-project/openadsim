@@ -1,0 +1,21 @@
+services:
+  gui:
+    profiles:
+      - gui
+    image: ghcr.io/openads-project/openadsim/gui:latest
+    container_name: openadsim-configuration-gui
+    ports:
+      - 8501:8501
+    volumes:
+      - ${PWD}:${PWD}:ro
+      - ${PWD}/.env:/.env
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - /usr/libexec/docker/cli-plugins:/usr/libexec/docker/cli-plugins:ro
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+      - STREAMLIT_SERVER_FILE_WATCHER_TYPE=none
+      - HOST_REPO_PATH=${PWD}
+      - DISPLAY=${DISPLAY:-}

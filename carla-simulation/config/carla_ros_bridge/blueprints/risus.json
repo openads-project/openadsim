@@ -1,0 +1,107 @@
+{
+    "blueprints": [
+        {
+            "id": "srisu",
+            "type": "group",
+            "physical_object": "static.prop.srisu",
+            "children": [
+                {
+                    "id": "sensor_platform",
+                    "type": "blueprint.srisu_sensor_platform",
+                    "spawn_point": {"x": 0.0, "y": 0.0, "z": 6.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+                },
+                {
+                    "type": "sensor.pseudo.ideal_objects",
+                    "id": "v2x_objectlist",
+                    "spawn_point": {"x": 0.0, "y": 0.0, "z": 6.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0},
+                    "range": 50,
+                    "hit_point_blanking_radius": 2.0
+                }
+            ]
+        },
+        {
+            "id": "srisu_no_sensor_platform",
+            "type": "group",
+            "physical_object": "static.prop.srisu",
+            "children": [
+                {
+                    "type": "sensor.pseudo.ideal_objects",
+                    "id": "v2x_objectlist",
+                    "spawn_point": {"x": 0.0, "y": 0.0, "z": 6.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0},
+                    "range": 50,
+                    "hit_point_blanking_radius": 2.0
+                }
+            ]
+        },
+        {
+            "id": "srisu_sensor_platform",
+            "type": "group",
+            "children": [
+                {
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "id": "camera_left",
+                    "spawn_point": {"x": 0.3, "y": 0.0, "z": -0.7, "roll": 0.0, "pitch": 25.0, "yaw": 35.0}
+                },
+                {
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "id": "camera_right",
+                    "spawn_point": {"x": 0.3, "y": 0.0, "z": -0.7, "roll": 0.0, "pitch": 25.0, "yaw": -35.0}
+                },
+                {
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "id": "lidar_top",
+                    "spawn_point": {"x": 0.41, "y": 0.04, "z": 0.17, "roll": 0.0, "pitch": 27.54, "yaw": 0.0},
+                    "range": 120.0
+                },
+                {
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "id": "lidar_bottom",
+                    "spawn_point": {"x": 0.14, "y": 0.01, "z": -0.14, "roll": 0.0, "pitch": 41.36, "yaw": 0.0},
+                    "range": 120.0
+                }
+            ]
+        },
+        {
+            "id": "mrisu",
+            "type": "group",
+            "physical_object": "static.prop.mrisu",
+            "children":
+            [
+                {
+                    "id": "sensor_platform",
+                    "type": "blueprint.mrisu_sensor_platform",
+                    "spawn_point": {"x": 0.0, "y": 0.0, "z": 1.69, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+                },
+                {
+                    "type": "sensor.pseudo.ideal_objects",
+                    "id": "v2x_objectlist",
+                    "spawn_point": {"x": 0.0, "y": 0.0, "z": 1.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0},
+                    "range": 50,
+                    "hit_point_blanking_radius": 1.0
+                }
+            ]
+        },
+        {
+            "id": "mrisu_sensor_platform",
+            "type": "group",
+            "children": 
+            [
+                {
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f4",
+                    "id": "camera_left",
+                    "spawn_point": {"x": 0.075, "y": 0.098, "z": 0.071, "roll": 0.0, "pitch": 0.0, "yaw": 35.0}
+                },
+                {
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f4",
+                    "id": "camera_right",
+                    "spawn_point": {"x": 0.075, "y": -0.0915, "z": 0.071, "roll": 0.0, "pitch": 0.0, "yaw": -35.0}
+                },
+                {
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "id": "lidar",
+                    "spawn_point": {"x": 0.001, "y": 0.0, "z": 0.161, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+                }
+            ]
+        }
+    ]
+}

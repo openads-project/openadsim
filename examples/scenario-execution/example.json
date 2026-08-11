@@ -1,0 +1,51 @@
+{
+  "env": {
+    "COMPOSE_PROFILES": "carla,no-traffic,automated-testing,no-perception,planning",
+    "VEHICLE": "karl",
+    "SENSORS": "global-sensors.json,karl-basic.json",
+    "SPAWN_POINT": "",
+    "MAP": "",
+    "CUSTOM_OPENDRIVE": "",
+    "CUSTOM_LANELET": "",
+    "OP_OPENDRIVE": "",
+    "ORIGIN_LAT": "",
+    "ORIGIN_LON": "",
+    "USE_SIM_TIME": "true",
+    "ROS_TRACING": "false"
+  },
+  "rules": [
+    {
+      "name": "Campus map for scenario.generator scenarios",
+      "match": "^carla-simulation/scenarios/scenario-generator/",
+      "env": {
+        "MAP": "campus",
+        "CUSTOM_OPENDRIVE": "",
+        "OP_OPENDRIVE": "carla-simulation/scenarios/maps/campus.xodr"
+      }
+    },
+    {
+      "name": "Synthetic curve cut-in",
+      "scenario": "carla-simulation/scenarios/simple-scenario/synthetic_curve_cut_in.xosc",
+      "env": {
+        "MAP": "",
+        "CUSTOM_OPENDRIVE": "carla-simulation/scenarios/simple-scenario/synthetic_curve_cut_in.xodr",
+        "SENSORS": "global-sensors.json,karl-basic.json",
+        "SPAWN_POINT": "100.0,100.0,-100.0,0.0,0.0,0.0"
+      }
+    },
+    {
+      "name": "OpenDRIVE for Aldenhoven Omega-Prime conversion",
+      "scenario": "carla-simulation/scenarios/simple-scenario/atc_turn_left_intersecting_vehicle_from_left_turning_left.xosc",
+      "env": {
+        "OP_OPENDRIVE": "carla-simulation/scenarios/maps/aldenhoven.xodr"
+      }
+    },
+    {
+      "name": "OpenDRIVE for Campus Omega-Prime conversion",
+      "scenario": "carla-simulation/scenarios/simple-scenario/campus_turning_left.xosc",
+      "env": {
+        "OP_OPENDRIVE": "carla-simulation/scenarios/maps/campus.xodr"
+      }
+    }
+  ]
+}
