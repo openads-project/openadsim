@@ -1,0 +1,20 @@
+services:
+
+  perception.point-cloud-object-detection:
+    extends:
+      file: ../../openadstack/perception/point_cloud_object_detection/docker-compose.yml
+      service: perception.point-cloud-object-detection
+    profiles:
+      - perception
+    depends_on: 
+      - triton-server
+    environment:
+      PARAMS: /params.yml
+    volumes:
+      - ./params.yml:/params.yml
+      - type: image
+        source: ghcr.io/openads-project/point_cloud_object_detection/model:v1.0.0
+        image:
+          subpath: models
+        target: /models
+        read_only: true

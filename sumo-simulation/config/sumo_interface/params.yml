@@ -1,0 +1,32 @@
+/**/*:
+  ros__parameters:
+    # Simulation settings
+    headless_mode: false
+    realtime_factor: 1.0
+    sim_step: 0.01
+    enable_traci_server: false
+    traci_server_port: 8813
+    traci_server_num_clients: 0
+    sumo_time_to_teleport: -1.0  # -1 disables automatic jam teleportation
+
+    # ROS Interface settings
+    objects_frequency: 10.0
+
+    # ego_vehicle settings
+    enable_ego_vehicle: true
+    ego_vehicle_id: "ego"
+    ego_vehicle_type: "DEFAULT_VEHTYPE"
+    ego_wheelbase: 2.7
+    ego_vehicle_length: -1.0    # if negative takes sumo default length of 5.0
+    ego_vehicle_width: -1.0     # if negative takes sumo default width of 1.8
+    ego_vehicle_height: -1.0    # if negative takes sumo default height of 1.5
+    ego_radius: 100.0           # if negative, all vehicles are considered
+    ego_collision_margin: 0.25  # safety padding (m) added around ego for collision stop
+
+    # Optional target frame settings
+    target_frame_id: ""
+    target_frame_origin_utm_x: 0.0
+    target_frame_origin_utm_y: 0.0
+    target_frame_origin_yaw: 0.0
+    target_frame_utm_zone: 0
+    target_frame_utm_northp: true

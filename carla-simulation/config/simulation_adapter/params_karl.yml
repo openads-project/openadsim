@@ -1,0 +1,27 @@
+/**:
+  ros__parameters:
+    num_threads: 8                                            # Number of threads
+    map_server_name: /localization/lanelet2_map_server        # Name of map server
+
+    simulation_fixed_frame_id: carla_map                      # Name of the fixed frame id in CARLA
+    fixed_frame_id: map                                       # Name of the fixed frame id over time
+    simulation_vehicle_frame_id: ego_vehicle                  # Name of the vehicle frame id in CARLA
+    vehicle_frame_id: base_link                               # Name of the vehicle frame id.
+    simulation_vehicle_frame_id_to_vehicle_frame_id: -1.4895  # Longitudinal offset from simulation_vehicle_frame_id to vehicle_frame_id
+    
+    publish_vehicle_frame_tf: true  
+    publish_ego_imu: true
+    publish_ego_odometry: true
+    publish_ego_vehicle_state: true
+
+    maps:
+      simulation_maps:
+        - aldenhoven
+        - campus
+        - Town10HD_Opt
+        - OpenDriveMap
+      lanelet_files:
+        - /data/maps/aldenhoven.osm
+        - /data/maps/aachen_campus.osm
+        - /data/maps/Town10.osm
+        - /lanelet/lanelet.osm

@@ -1,0 +1,4 @@
+simple-scenario/**/*.xosc
+simple-scenario/**/*.xodr
+simple-scenario/**/*.osm
+simple-scenario/**/*.png

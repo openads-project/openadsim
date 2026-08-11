@@ -1,0 +1,28 @@
+services:
+
+  template.lanelet2-object-list-prediction:
+    profiles:
+      - donotuse
+    extends:
+      file: ../../openadstack/understanding/lanelet2_object_list_prediction/docker-compose.yml
+      service: understanding.lanelet2-object-list-prediction
+    environment:
+      PARAMS: /params.yml
+    volumes:
+      - ./params.yml:/params.yml
+
+  understanding.lanelet2-object-list-prediction-no-perception:
+    profiles:
+      - no-perception
+    extends:
+      service: template.lanelet2-object-list-prediction
+    environment:
+      TRACKED_OBJECT_LIST_TOPIC: /simulation/object_list
+
+  understanding.lanelet2-object-list-prediction-perception:
+    profiles:
+      - perception
+    extends:
+      service: template.lanelet2-object-list-prediction
+    environment:
+      TRACKED_OBJECT_LIST_TOPIC: /understanding/autoware_multi_object_tracker/object_list

@@ -1,0 +1,12 @@
+services:
+
+  perception.point-cloud-fusion:
+    profiles:
+      - perception
+    extends:
+      file: ../../openadstack/perception/point_cloud_fusion/docker-compose.yml
+      service: perception.point-cloud-fusion
+    environment:
+      PARAMS: /params.yml
+    volumes:
+      - ./params_${VEHICLE:-karl}.yml:/params.yml

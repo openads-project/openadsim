@@ -1,0 +1,55 @@
+services:
+
+  carla-environment:
+    profiles:
+      - traffic
+    extends:
+      file: ./carla-services.yml
+      service: carla-client
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        exec python3 /set_environment.py
+    stop_grace_period: 30s
+    volumes:
+      - ./config/carla-environment/set_environment.py:/set_environment.py:ro
+  carla-scenario-runner-ros-manual-testing:
+    profiles:
+      - manual-testing
+    extends:
+      file: ./carla-services.yml
+      service: carla-scenario-runner-ros
+    environment:
+      SCENARIO_MAP: ${CUSTOM_OPENDRIVE:-${MAP:-}}
+    command: 
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch carla_ros_scenario_runner carla_ros_scenario_runner_with_selection.launch.py \
+          scenario_runner_path:=$${SCENARIO_RUNNER_ROOT}
+    volumes:
+      - ./scenarios:/scenarios
+
+  carla-scenario-runner-ros-automated-testing:
+    profiles:
+      - automated-testing
+    extends:
+      file: ./carla-services.yml
+      service: carla-scenario-runner-ros
+    depends_on:
+      - carla-ros-bridge
+    environment:
+      SCENARIO_FILE: ${SCENARIO_FILE}
+    command: 
+      - /bin/bash
+      - -ic
+      - |
+        python3 -u ../additional-files/scenario_runner.py \
+          --host carla-server \
+          --openscenario /$${SCENARIO_FILE} \
+          --output \
+          --rtFactor 1.0 \
+          --waitForEgo
+    volumes:
+      - ./scenarios:/carla-simulation/scenarios

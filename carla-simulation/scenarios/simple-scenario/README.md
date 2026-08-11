@@ -1,0 +1,1 @@
+The scenarios and map data within this folder were directly exported from the [`simple-scenario`](https://github.com/ika-rwth-aachen/simple-scenario) scenario generation tool.

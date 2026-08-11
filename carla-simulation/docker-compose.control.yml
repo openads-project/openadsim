@@ -1,0 +1,43 @@
+x-carla-services: &carla-services ./carla-services.yml
+
+# ==============================================================================
+
+services:
+
+  carla-ackermann-control:
+    profiles:
+      - carla
+    extends:
+      file: *carla-services
+      service: carla-ros-bridge
+    command: ros2 launch /carla_ackermann_control.launch.py
+    volumes:
+      - ./config/carla_ackermann_control/carla_ackermann_control.launch.py:/carla_ackermann_control.launch.py
+      - ./config/carla_ackermann_control/params.yml:/docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml
+
+  carla-manual-control:
+    profiles:
+      - carla
+    extends:
+      file: *carla-services
+      service: carla-ros-bridge
+    privileged: true
+    command: ros2 launch carla_manual_control carla_manual_control.launch.py window_width:=1280 window_height:=720
+
+  carla-control-active-bridge:
+    profiles:
+      - carla
+    depends_on:
+      - carla-manual-control
+    restart: unless-stopped # requires incoming topic
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/monitoring:v1.0.0
+    command: >
+      ros2 run topic_tools transform
+        /carla/ego_vehicle/vehicle_control_manual_override
+        /control/active
+        std_msgs/Bool
+        "std_msgs.msg.Bool(data=not m.data)"
+        --import std_msgs

@@ -1,0 +1,76 @@
+{
+    "blueprints": [
+        {
+            "id": "shuttle_lidars",
+            "type": "group",
+            "children": [
+                {
+                    "id": "lidar_front_left",
+                    "type": "blueprint.lidar_ouster_os1_32",
+                    "spawn_point": {"x": 2.235, "y": 0.980, "z": 1.739, "roll": 0.0, "pitch": 0.0, "yaw": 28.499}
+                },
+                {
+                    "id": "lidar_front_right",
+                    "type": "blueprint.lidar_ouster_os1_32",
+                    "spawn_point": {"x": 2.235, "y": -0.980, "z": 1.739, "roll": 0.0, "pitch": 0.0, "yaw": -28.499}
+                },
+                {
+                    "id": "lidar_rear_left",
+                    "type": "blueprint.lidar_ouster_os1_32",
+                    "spawn_point": {"x": -2.235, "y": 0.980, "z": 1.739, "roll": 0.0, "pitch": 0.0, "yaw": 151.501}
+                },
+                {
+                    "id": "lidar_rear_right",
+                    "type": "blueprint.lidar_ouster_os1_32",
+                    "spawn_point": {"x": -2.235, "y": -0.980, "z": 1.739, "roll": 0.0, "pitch": 0.0, "yaw": -151.501}
+                }
+            ]
+        },
+        {
+            "id": "shuttle_cameras",
+            "type": "group",
+            "children": [
+                {
+                    "id": "camera_front_left_1",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": 2.333, "y": 0.905, "z": 0.910, "roll": 0.0, "pitch": 0.0, "yaw": -15.000}
+                },
+                {
+                    "id": "camera_front_right_1",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": 2.333, "y": -0.905, "z": 0.910, "roll": 0.0, "pitch": 0.0, "yaw": 15.000}
+                },
+                {
+                    "id": "camera_rear_left_1",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": -2.333, "y": 0.905, "z": 0.910, "roll": 0.0, "pitch": 0.0, "yaw": -165.000}
+                },
+                {
+                    "id": "camera_rear_right_1",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": -2.333, "y": -0.905, "z": 0.910, "roll": 0.0, "pitch": 0.0, "yaw": 165.000}
+                },
+                {
+                    "id": "camera_front_left_2",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": 2.260, "y": 0.978, "z": 0.855, "roll": 0.0, "pitch": 0.0, "yaw": 105.000}
+                },
+                {
+                    "id": "camera_front_right_2",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": 2.260, "y": -0.978, "z": 0.855, "roll": 0.0, "pitch": 0.0, "yaw": -105.000}
+                },
+                {
+                    "id": "camera_rear_left_2",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": -2.260, "y": 0.978, "z": 0.855, "roll": 0.0, "pitch": 0.0, "yaw": 75.000}
+                },
+                {
+                    "id": "camera_rear_right_2",
+                    "type": "blueprint.camera_rgb_2048x768_fov150",
+                    "spawn_point": {"x": -2.260, "y": -0.978, "z": 0.855, "roll": 0.0, "pitch": 0.0, "yaw": -75.000}
+                }
+            ]
+        }
+    ]
+}

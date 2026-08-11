@@ -1,0 +1,22 @@
+{
+    "blueprints": [
+        {
+            "id": "beacon",
+            "type": "group",
+            "physical_object": "static.prop.beacon",
+            "children": []
+        },
+        {
+            "id": "beaconwithlight",
+            "type": "group",
+            "physical_object": "static.prop.beaconwithlight",
+            "children": []
+        },
+        {
+            "id": "roadworkbarrier",
+            "type": "group",
+            "physical_object": "static.prop.roadworkbarrier",
+            "children": []
+        }
+    ]
+}

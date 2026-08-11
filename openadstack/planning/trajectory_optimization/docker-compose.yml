@@ -1,0 +1,13 @@
+services:
+
+  planning.trajectory-optimization:
+    profiles:
+      - planning
+      - ml-planning
+    extends:
+      file: ../../openadstack/planning/trajectory_optimization/docker-compose.yml
+      service: planning.trajectory-optimization
+    environment:
+      PARAMS: /params.yml
+    volumes:
+      - ./params.yml:/params.yml

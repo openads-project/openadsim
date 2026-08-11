@@ -1,0 +1,8 @@
+services:
+
+  understanding.autoware-multi-object-tracker:
+    profiles:
+      - perception
+    extends:
+      file: ../../openadstack/understanding/autoware_multi_object_tracker/docker-compose.yml
+      service: understanding.autoware-multi-object-tracker

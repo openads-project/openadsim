@@ -1,0 +1,62 @@
+services:
+
+  template.monitoring.rviz:    
+    profiles:
+      - donotuse
+    extends:
+      file: ../openadstack/monitoring/monitoring/docker-compose.yml
+      service: monitoring.monitoring
+    command: bash -ic "rviz2 -d /conf.rviz --ros-args -p use_sim_time:=true"
+    volumes:
+      - ./mesh:/mesh
+      - ./volume:/docker-ros/ws/monitoring-volume
+
+  monitoring.rviz-carla:
+    profiles:
+      - carla
+    extends:
+      service: template.monitoring.rviz
+    volumes:
+      - ./rviz/carla.rviz:/conf.rviz
+
+  monitoring.rviz-sumo:
+    profiles:
+      - sumo
+    extends:
+      service: template.monitoring.rviz
+    volumes:
+      - ./rviz/sumo.rviz:/conf.rviz
+
+  monitoring.bag-recorder:
+    profiles:
+      - bag-recording
+    extends:
+      file: ../openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/monitoring:v1.0.0
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        set -e
+        ros2 topic echo --once /planning/lanelet2_route_planning/route > /dev/null
+        exec ros2 bag record \
+          --storage mcap \
+          --output /tmp/rosbags/bag \
+          --topics \
+          /rosout \
+          /tf \
+          /tf_static \
+          /simulation/ego_data \
+          /simulation/imu \
+          /simulation/odometry \
+          /simulation/vehicle_state \
+          /simulation/object_list \
+          /localization/ego_state_estimation/ego_data \
+          /planning/lanelet2_route_planning/route \
+          /planning/simple_planner/trajectory \
+          /planning/trajectory_optimization/trajectory \
+          /understanding/autoware_multi_object_tracker/object_list \
+          /understanding/lanelet2_object_list_prediction/object_list
+    volumes:
+      - ../../${BAG_DIRECTORY:-openadstack/monitoring/volume}:/tmp/rosbags

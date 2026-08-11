@@ -1,0 +1,80 @@
+services:
+
+  carla-server:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: gpu-x11-service
+    image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.0
+    command: bash -ic './Linux/CarlaUnreal.sh -nosound --ros2'
+    expose:
+      - "2000"
+      - "2001"
+      - "2002"
+    healthcheck:
+      test: ["CMD","bash","-c","</dev/tcp/127.0.0.1/2000"]
+      start_period: 30s
+      start_interval: 1s
+      interval: 2s
+      timeout: 1s
+      retries: 3
+    ipc: service:zenoh-router
+
+  carla-server-offscreen:
+    extends:
+      service: carla-server
+    command: bash -ic './Linux/CarlaUnreal.sh -nosound -RenderOffScreen --ros2'
+
+
+  carla-client:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: gpu-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    image: ghcr.io/openads-project/carla-simulator:client_v0.10.0-1.1.0
+    command: sleep infinity
+
+
+  carla-ros-bridge:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.0
+
+  carla-spawn-objects:
+    extends:
+      service: carla-ros-bridge
+    command: bash -ic "ros2 launch carla_spawn_objects carla_example_ego_vehicle.launch.py"
+
+
+  carla-scenario-runner-ros:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.0
+
+  carla-scenario-runner:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: gpu-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    image: ghcr.io/openads-project/carla-scenario-runner:v0.10.0-1.1.0
+
+  carla-converter:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    image: ghcr.io/openads-project/carla_converter:v1.3.0
+

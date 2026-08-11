@@ -1,0 +1,1687 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Lanelet2MapDisplay1/Visualize Areas1
+        - /Perception1/EgoData1/Planned Trajectory1
+        - /Perception1/EgoData1/Planned Trajectory1/Color Options1
+        - /Perception1/EgoData1/Planned Trajectory1/Parameter Options1
+        - /Perception1/EgoData1/Planned Trajectory1/End Cap1
+        - /Perception1/EgoData1/Planned Trajectory1/Fade Out1
+        - /Planning1
+        - /Planning1/Route1/Suggested Lane1
+        - /Planning1/Route1/Suggested Lane1/Reference Line1/Line1
+        - /Planning1/Route1/Suggested Lane1/Boundaries1/Lines1
+        - /Planning1/Route1/Drivable Space1/Lines1
+        - /Planning1/Reference Trajectory1/Show velocity trajectory1
+        - /Planning1/Drivable Trajectory1/Show velocity trajectory1
+        - /V2X1/MAPEM1/Visualize MAPEMs1/Metadata1
+        - /V2X1/MAPEM1/Visualize SPATEMs1
+        - /V2X1/DENM1/Overlay1
+        - /RITA1
+        - /RITA1/sRISU11/sRISU1_V2X_ObjectList1/Appearance Properties1
+        - /RITA1/sRISU11/sRISU1_V2X_ObjectList1/Appearance Properties1/Hoverboard1
+        - /RITA1/sRISU11/sRISU1_V2X_ObjectList1/Appearance Properties1/Hoverboard1/Glow1
+        - /RITA1/sRISU11/sRISU1_V2X_ObjectList1/Appearance Properties1/Classification coloring1
+        - /RITA1/sRISU41/sRISU4_V2X_ObjectList1/Appearance Properties1
+        - /RITA1/sRISU41/sRISU4_V2X_ObjectList1/Appearance Properties1/Classification coloring1
+      Splitter Ratio: 0.447524756193161
+    Tree Height: 203
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Expanded:
+      - /2D Goal Pose1
+      - /Publish Point1
+      - /Plan Route1
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz_common/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: RR Lidar
+  - Class: rviz_carla_plugin/CarlaControl
+    Name: CarlaControl
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 1
+      Class: rviz_default_plugins/RobotModel
+      Collision Enabled: false
+      Description File: ""
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        aeva/aeries2/sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        aeva/vehicle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        altos_radar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        drivers/aeva_lidar/front_left_screw_bottom:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_fl/lidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_fl/sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_fr/lidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_fr/sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_rl/lidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_rl/sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_rr/lidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/ouster_lidar_rr/sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/smartmicro_radar/front_left:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/smartmicro_radar/front_right:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/smartmicro_radar/rear_left:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        drivers/smartmicro_radar/rear_right:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_center_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_left_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_right_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        mid_center_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        mid_left_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        mid_right_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rack:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_center_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rear_left_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rear_right_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+      Mass Properties:
+        Inertia: false
+        Mass: false
+      Name: karl.
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Class: rviz_default_plugins/TF
+      Enabled: false
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
+    - Alpha: 0.20000000298023224
+      Class: lanelet2_rviz_display/Lanelet2MapDisplay
+      Enabled: true
+      Fill Lanelets (Road):
+        Road Color: 56; 56; 56
+        Value: false
+      Name: Lanelet2MapDisplay
+      Name of lanelet2_map_server: /localization/lanelet2_map_server
+      Show Map in 3D: false
+      Value: true
+      Visualize Areas:
+        Area Color: 72; 72; 72
+        Area Width: 0.30000001192092896
+        Fill Areas: false
+        Value: false
+      Visualize Crosswalks:
+        Crosswalk Color: 255; 255; 255
+        Value: true
+      Visualize Lanelet-IDs:
+        Character Height: 1
+        ID Color: 255; 255; 255
+        Value: false
+      Visualize Lanelet-Linestrings:
+        LL Color Left: 255; 255; 255
+        LL Color Right: 255; 255; 255
+        Linestring Width: 0.10000000149011612
+        Value: true
+      Visualize Lanelet-Separators:
+        Linestring Width: 0.10000000149011612
+        Separators Color: 0; 0; 255
+        Value: false
+      Visualize Parking:
+        Fill Parking: true
+        Parking Color: 0; 179; 76
+        Parking Width: 0.30000001192092896
+        Value: false
+      Visualize Sidewalks:
+        Sidewalk Color: 191; 191; 191
+        Value: true
+      Visualize Stop lines:
+        Stop Line Color: 255; 25; 25
+        Stop Line Width: 0.20000000298023224
+        Value: true
+      Visualize Traffic Lights:
+        Traffic Light Color: 102; 102; 102
+        Traffic Light Height: 3
+        Value: true
+    - Alpha: 1
+      Blocks: 8
+      Class: rviz_satellite/AerialMap
+      Draw Behind: true
+      Enabled: true
+      Name: AerialMap
+      Object URI: https://www.wmts.nrw.de/geobasis/wmts_nw_dop/tiles/nw_dop/EPSG_25832_16/{z}/{x}/{y}
+      TF tolerance: 0.30000001192092896
+      Timeout: 3
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /carla/ego_vehicle/gnss
+      Use Local Map:
+        Meter per Pixel (Zoom 0): 4891.97021484375
+        Origin CRS: EPSG:25832
+        "Origin X ": -46133.171875
+        "Origin Y ": 6301219.5
+        Value: true
+      Value: true
+      Visualize in UTM Frame: false
+      Zoom: 15
+    - Class: rviz_common/Group
+      Displays:
+        - Acceleration arrow:
+            Acceleration Color: 255; 0; 0
+            Acceleration scale: 10
+            Use acceleration color: true
+            Value: false
+          Alpha: 0.6000000238418579
+          Bounding box: false
+          Class: perception_msgs/EgoData
+          Color: 0; 255; 255
+          Enabled: true
+          Name: EgoData
+          Orientation: false
+          Planned Trajectory:
+            Alpha: 1
+            Color Coding: Velocity-dependent Coloring
+            Color Options:
+              Base Color: 255; 0; 0
+              Negative dynamics: 0; 0; 0
+              Positive dynamics: 74; 222; 0
+              Value: " "
+            End Cap:
+              Round Segments: 16
+              Value: Straight
+            Fade Out:
+              Fade Length [m]: 5
+              Value: true
+            Parameter Options:
+              Value: " "
+              max. acceleration [m/s²]: 1
+              max. velocity  [km/h]: 20
+            Value: true
+          Text information:
+            Char height: 4
+            Value: false
+            Velocity: true
+          Timeout:
+            Duration: 1
+            Value: false
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /localization/ego_state_estimation/ego_data
+          Value: true
+          Velocity arrow:
+            Set height with Velocity: true
+            Use velocity color: true
+            Value: false
+            Velocity Color: 255; 0; 255
+            Velocity scale: 1
+          Visualize Z dimension: true
+        - Background Alpha: 0.8999999761581421
+          Background Color: 20; 20; 20
+          Bottom: 10
+          Class: perception_msgs/EgoDataOverlay
+          Enabled: true
+          Height: 80
+          Left: 10
+          Name: EgoDataOverlay
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /localization/ego_state_estimation/ego_data
+          Value: true
+          Width: 350
+        - Acceleration arrow:
+            Acceleration Color: 255; 0; 0
+            Acceleration scale: 10
+            Use acceleration color: true
+            Value: false
+          Alpha: 0.5
+          Appearance Properties:
+            Bounding box:
+              Orientation Indication: false
+              Value: false
+            Classification coloring:
+              ANIMAL: 0; 128; 128
+              BICYCLE: 255; 255; 25
+              BUS: 25; 25; 255
+              CAR: 25; 25; 255
+              MICRO: 25; 255; 255
+              MOTORCYCLE: 255; 255; 25
+              PEDESTRIAN: 25; 255; 255
+              UNKNOWN: 128; 128; 128
+              UTILITY: 25; 25; 255
+              VRU: 25; 255; 255
+              Value: true
+            Hoverboard:
+              Corner Radius [m]: 0.3499999940395355
+              Corner Style:
+                Round Segments: 12
+                Value: Round
+              Glow:
+                Glow Height [m]: 0.699999988079071
+                Glow Intensity [0..1]: 0.6000000238418579
+                Value: true
+              Thickness [m]: 0.11999999731779099
+              Value: true
+            Mesh: false
+            Value: " "
+          Class: perception_msgs/ObjectList
+          Color: 0; 255; 25
+          Enabled: true
+          Name: Predicted ObjectList
+          Predictions:
+            Line Color: 255; 170; 0
+            Line Width: 0.25
+            Prediction Points:
+              Point Color: 255; 170; 0
+              Point Width: 1
+              Value: false
+              Velocity-based height: true
+            Probabilities:
+              Char height: 2
+              Value: false
+            Value: false
+          Text information:
+            Char height: 4
+            Classification: true
+            Classification coloring: true
+            Existence probability: false
+            Object ID: false
+            Value: false
+            Velocity: true
+          Timeout:
+            Duration: 1
+            Value: false
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /understanding/lanelet2_object_list_prediction/object_list
+          Value: true
+          Velocity arrow:
+            Use velocity color: true
+            Value: false
+            Velocity Color: 255; 0; 255
+            Velocity scale: 1
+        - Alpha: 1
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 10
+            Min Value: -10
+            Value: true
+          Axis: Z
+          Channel Name: intensity
+          Class: rviz_default_plugins/PointCloud2
+          Color: 255; 255; 255
+          Color Transformer: Intensity
+          Decay Time: 0
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 0; 0; 0
+          Max Intensity: 0.9879195094108582
+          Min Color: 0; 0; 0
+          Min Intensity: 0.740840494632721
+          Name: FL Lidar
+          Position Transformer: XYZ
+          Selectable: true
+          Size (Pixels): 3
+          Size (m): 0.10000000149011612
+          Style: Flat Squares
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /carla/ego_vehicle/karl_rack_lidars/lidar_fl/point_cloud
+          Use Fixed Frame: true
+          Use rainbow: false
+          Value: true
+        - Alpha: 1
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 10
+            Min Value: -10
+            Value: true
+          Axis: Z
+          Channel Name: intensity
+          Class: rviz_default_plugins/PointCloud2
+          Color: 255; 255; 255
+          Color Transformer: Intensity
+          Decay Time: 0
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 0; 0; 0
+          Max Intensity: 0.9880472421646118
+          Min Color: 0; 0; 0
+          Min Intensity: 0.7408928871154785
+          Name: FR Lidar
+          Position Transformer: XYZ
+          Selectable: true
+          Size (Pixels): 3
+          Size (m): 0.10000000149011612
+          Style: Flat Squares
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /carla/ego_vehicle/karl_rack_lidars/lidar_fr/point_cloud
+          Use Fixed Frame: true
+          Use rainbow: false
+          Value: true
+        - Alpha: 1
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 10
+            Min Value: -10
+            Value: true
+          Axis: Z
+          Channel Name: intensity
+          Class: rviz_default_plugins/PointCloud2
+          Color: 255; 255; 255
+          Color Transformer: Intensity
+          Decay Time: 0
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 0; 0; 0
+          Max Intensity: 0.9875842928886414
+          Min Color: 0; 0; 0
+          Min Intensity: 0.7408209443092346
+          Name: RL Lidar
+          Position Transformer: XYZ
+          Selectable: true
+          Size (Pixels): 3
+          Size (m): 0.10000000149011612
+          Style: Flat Squares
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /carla/ego_vehicle/karl_rack_lidars/lidar_rl/point_cloud
+          Use Fixed Frame: true
+          Use rainbow: false
+          Value: true
+        - Alpha: 1
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 10
+            Min Value: -10
+            Value: true
+          Axis: Z
+          Channel Name: intensity
+          Class: rviz_default_plugins/PointCloud2
+          Color: 255; 255; 255
+          Color Transformer: Intensity
+          Decay Time: 0
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 0; 0; 0
+          Max Intensity: 0.9876893758773804
+          Min Color: 0; 0; 0
+          Min Intensity: 0.7408196926116943
+          Name: RR Lidar
+          Position Transformer: XYZ
+          Selectable: true
+          Size (Pixels): 3
+          Size (m): 0.10000000149011612
+          Style: Flat Squares
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /carla/ego_vehicle/karl_rack_lidars/lidar_rr/point_cloud
+          Use Fixed Frame: true
+          Use rainbow: false
+          Value: true
+        - Class: rviz_default_plugins/Image
+          Enabled: true
+          Max Value: 1
+          Median window: 5
+          Min Value: 0
+          Name: Front Camera
+          Normalize Range: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /carla/ego_vehicle/karl_rack_cameras/camera_front_center/image
+          Value: true
+      Enabled: true
+      Name: Perception
+    - Class: rviz_common/Group
+      Displays:
+        - Adjacent Lanes:
+            Boundaries:
+              Lines:
+                Color: 255; 170; 0
+                Scale: 0.05000000074505806
+                Value: true
+              Points:
+                Color: 255; 170; 0
+                Scale: 0.20000000298023224
+                Value: false
+              Value: true
+            Reference Line:
+              Line:
+                Color: 255; 255; 0
+                Scale: 0.05000000074505806
+                Value: true
+              Poses:
+                Color: 255; 255; 0
+                Scale: 0.5
+                Value: false
+              Value: true
+            Regulatory Elements:
+              Default Color: 200; 200; 200
+              Positions: true
+              Scale: 0.10000000149011612
+              Validity stamp:
+                Color: 255; 255; 255
+                Scale: 0.6000000238418579
+                Value: false
+              Value: true
+            Speed Limit:
+              Color: 255; 255; 255
+              Scale: 0.5
+              Value: false
+            Turn Signals:
+              Color: 255; 255; 0
+              Scale: 1
+              Value: false
+            Value: false
+          Class: route_planning_msgs/Route
+          Destination:
+            Color (final): 255; 0; 255
+            Color (intermediate): 85; 255; 0
+            Scale (final): 1
+            Scale (intermediate): 1
+            Value: false
+          Drivable Space:
+            Lines:
+              Color: 170; 85; 0
+              Scale: 0.10000000149011612
+              Value: true
+            Points:
+              Color: 255; 0; 0
+              Scale: 0.20000000298023224
+              Value: false
+            Value: false
+          Enabled: true
+          Name: Route
+          Suggested Lane:
+            Boundaries:
+              Lines:
+                Color: 0; 170; 0
+                Scale: 0.20000000298023224
+                Value: true
+              Points:
+                Color: 0; 170; 0
+                Scale: 0.25
+                Value: false
+              Value: true
+            Lane Change:
+              Color: 0; 255; 0
+              Scale: 0.20000000298023224
+              Value: true
+            Reference Line:
+              Line:
+                Color: 0; 255; 0
+                Scale: 0.20000000298023224
+                Value: true
+              Poses:
+                Color: 0; 255; 0
+                Scale: 0.5
+                Value: false
+              Value: true
+            Regulatory Elements:
+              Default Color: 200; 200; 200
+              Positions: true
+              Scale: 0.20000000298023224
+              Validity stamp:
+                Color: 255; 255; 255
+                Scale: 0.6000000238418579
+                Value: false
+              Value: true
+            Speed Limit:
+              Color: 255; 255; 255
+              Scale: 0.6000000238418579
+              Value: false
+            Turn Signals:
+              Color: 255; 255; 0
+              Scale: 1
+              Value: false
+            Value: true
+          Timeout:
+            Duration: 1
+            Value: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /planning/lanelet2_route_planning/route
+          Traveled Route:
+            Opacity: 0.30000001192092896
+            Value: true
+          Value: true
+        - Background Alpha: 0.8999999761581421
+          Background Color: 20; 20; 20
+          Class: route_planning_msgs/RouteOverlay
+          Enabled: true
+          Height: 125
+          Name: RouteOverlay
+          Right: 10
+          Top: 10
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /planning/lanelet2_route_planning/route
+          Value: true
+          Width: 135
+        - Alpha: 1
+          Class: trajectory_planning_msgs/Trajectory
+          Enabled: true
+          Name: Reference Trajectory
+          Point-Size: 0.5
+          Show acceleration trajectory:
+            Color acceleration trajectory/samples: 255; 255; 0
+            Show acceleration samples: false
+            Value: false
+          Show distance trajectory:
+            Color distance trajectory/samples: 255; 0; 0
+            Show distance samples: false
+            Value: false
+          Show time trajectory:
+            Color time trajectory/samples: 0; 0; 255
+            Show time samples: false
+            Value: false
+          Show velocity trajectory:
+            Color velocity trajectory/samples: 255; 0; 0
+            Show velocity samples: true
+            Show yaw arrows:
+              Color yaw arrows: 255; 85; 0
+              Scale: 0.5
+              Value: false
+            Value: true
+          Timeout:
+            Duration: 1
+            Value: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /planning/simple_planner/trajectory
+          Value: true
+        - Alpha: 1
+          Class: trajectory_planning_msgs/Trajectory
+          Enabled: true
+          Name: Drivable Trajectory
+          Point-Size: 0.5
+          Show acceleration trajectory:
+            Color acceleration trajectory/samples: 255; 255; 0
+            Show acceleration samples: false
+            Value: false
+          Show distance trajectory:
+            Color distance trajectory/samples: 255; 0; 0
+            Show distance samples: false
+            Value: false
+          Show time trajectory:
+            Color time trajectory/samples: 0; 0; 255
+            Show time samples: false
+            Value: false
+          Show velocity trajectory:
+            Color velocity trajectory/samples: 255; 255; 255
+            Show velocity samples: true
+            Show yaw arrows:
+              Color yaw arrows: 255; 85; 0
+              Scale: 0.5
+              Value: false
+            Value: true
+          Timeout:
+            Duration: 1
+            Value: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /planning/trajectory_optimization/trajectory
+          Value: true
+      Enabled: true
+      Name: Planning
+    - Class: rviz_common/Group
+      Displays:
+        - Class: etsi_its_msgs/CPM
+          Color: 25; 0; 255
+          Enabled: false
+          Metadata:
+            Color: 25; 0; 255
+            ObjectID: true
+            Scale: 0.5
+            Speed: true
+            StationID: true
+            Value: true
+          Name: Received CPMs
+          Scale: 1
+          Timeout: 1
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /communication/receiver/cpm
+          Value: false
+        - Class: etsi_its_msgs/CAM
+          Color: 25; 0; 255
+          Enabled: false
+          Metadata:
+            Color: 25; 0; 255
+            Scale: 4
+            Speed: true
+            StationID: true
+            Value: true
+          Name: Transitted CAM
+          Scale: 1
+          Timeout: 0.30000001192092896
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /communication/sender/cam
+          Value: false
+        - Class: etsi_its_msgs/MAPEM
+          Enabled: true
+          Name: MAPEM
+          SPATEM Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /communication/receiver/spatem
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /communication/receiver/mapem
+          Value: true
+          Visualize MAPEMs:
+            Egress Lane Color: 255; 170; 0
+            Ingress Lane Color: 85; 85; 255
+            MAPEM Lane Width: 0.20000000298023224
+            MAPEM Sphere Scale: 1
+            MAPEM Timeout: 120
+            Metadata:
+              Scale: 4
+              Text Color: 255; 255; 255
+              Value: false
+            Value: false
+          Visualize SPATEMs:
+            Metadata:
+              Confidence: false
+              Likely time: false
+              Max end time: false
+              Min end time: false
+              Next time: false
+              Scale: 1
+              Start time: false
+              Text Color: 255; 255; 255
+              Value: false
+            SPATEM Sphere Scale: 1
+            SPATEM Timeout: 4
+            Value: true
+        - Class: etsi_its_msgs/DENM
+          Color: 255; 0; 25
+          Enabled: true
+          Metadata:
+            CauseCode: true
+            Color: 255; 0; 25
+            Scale: 4
+            StationID: true
+            SubCauseCode: true
+            Value: false
+          Name: DENM
+          Overlay:
+            BG Color:
+              BG Alpha: 0.4000000059604645
+              Value: 255; 125; 11
+            FG Color:
+              FG Alpha: 0.800000011920929
+              Value: 255; 255; 255
+            Font: DejaVu Sans
+            Left Offset: 1030
+            Line Width: 1
+            Text Size: 40
+            Top Offset: 1200
+            Value: true
+          Timeout: 10
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /communication/receiver/denm
+          Value: true
+      Enabled: true
+      Name: V2X
+    - Class: rviz_common/Group
+      Displays:
+        - Class: rviz_common/Group
+          Displays:
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 0; 0; 255
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 0; 0; 255
+              Max Intensity: 0.9995958209037781
+              Min Color: 0; 0; 255
+              Min Intensity: 0.7408384084701538
+              Name: sRISU1_Bottom
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu1/sensor_platform/lidar_bottom/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 0; 0; 255
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 0; 0; 255
+              Max Intensity: 0.9985208511352539
+              Min Color: 0; 0; 255
+              Min Intensity: 0.7409324049949646
+              Name: sRISU1_Top
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu1/sensor_platform/lidar_top/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU1_Left
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu1/sensor_platform/camera_left/image
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU1_Right
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu1/sensor_platform/camera_right/image
+              Value: true
+            - Acceleration arrow:
+                Acceleration Color: 255; 0; 0
+                Acceleration scale: 10
+                Use acceleration color: true
+                Value: false
+              Alpha: 0.5
+              Appearance Properties:
+                Bounding box:
+                  Orientation Indication: false
+                  Value: false
+                Classification coloring:
+                  ANIMAL: 0; 128; 128
+                  BICYCLE: 255; 255; 25
+                  BUS: 25; 25; 255
+                  CAR: 0; 0; 255
+                  MICRO: 25; 255; 255
+                  MOTORCYCLE: 255; 255; 25
+                  PEDESTRIAN: 25; 255; 255
+                  UNKNOWN: 128; 128; 128
+                  UTILITY: 25; 25; 255
+                  VRU: 25; 255; 255
+                  Value: true
+                Hoverboard:
+                  Corner Radius [m]: 0.3499999940395355
+                  Corner Style:
+                    Round Segments: 12
+                    Value: Round
+                  Glow:
+                    Glow Height [m]: 0.20000000298023224
+                    Glow Intensity [0..1]: 0.6000000238418579
+                    Value: true
+                  Thickness [m]: 1.5
+                  Value: true
+                Mesh: false
+                Value: " "
+              Class: perception_msgs/ObjectList
+              Color: 0; 255; 25
+              Enabled: false
+              Name: sRISU1_V2X_ObjectList
+              Predictions:
+                Line Color: 255; 170; 0
+                Line Width: 0.25
+                Prediction Points:
+                  Point Color: 255; 170; 0
+                  Point Width: 1
+                  Value: false
+                  Velocity-based height: true
+                Probabilities:
+                  Char height: 2
+                  Value: false
+                Value: false
+              Text information:
+                Char height: 4
+                Classification: true
+                Classification coloring: true
+                Existence probability: false
+                Object ID: false
+                Value: false
+                Velocity: true
+              Timeout:
+                Duration: 1
+                Value: false
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                Filter size: 10
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/carla_converter/srisu1/v2x_objectlist
+              Value: false
+              Velocity arrow:
+                Use velocity color: true
+                Value: false
+                Velocity Color: 255; 0; 255
+                Velocity scale: 1
+          Enabled: true
+          Name: sRISU1
+        - Class: rviz_common/Group
+          Displays:
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 255; 0; 0
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 255; 0; 0
+              Max Intensity: 0.9995959401130676
+              Min Color: 255; 0; 0
+              Min Intensity: 0.7410053610801697
+              Name: sRISU2_Bottom
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu2/sensor_platform/lidar_bottom/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 255; 255; 255
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 255; 0; 0
+              Max Intensity: 0.9985215663909912
+              Min Color: 255; 0; 0
+              Min Intensity: 0.7408372163772583
+              Name: sRISU2_Top
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu2/sensor_platform/lidar_top/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU2_Left
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu2/sensor_platform/camera_left/image
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU2_Right
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu2/sensor_platform/camera_right/image
+              Value: true
+            - Acceleration arrow:
+                Acceleration Color: 255; 0; 0
+                Acceleration scale: 10
+                Use acceleration color: true
+                Value: false
+              Alpha: 0.5
+              Appearance Properties:
+                Bounding box:
+                  Orientation Indication: false
+                  Value: false
+                Classification coloring:
+                  ANIMAL: 0; 128; 128
+                  BICYCLE: 255; 255; 25
+                  BUS: 25; 25; 255
+                  CAR: 255; 0; 0
+                  MICRO: 25; 255; 255
+                  MOTORCYCLE: 255; 255; 25
+                  PEDESTRIAN: 25; 255; 255
+                  UNKNOWN: 128; 128; 128
+                  UTILITY: 25; 25; 255
+                  VRU: 25; 255; 255
+                  Value: true
+                Hoverboard:
+                  Corner Radius [m]: 0.3499999940395355
+                  Corner Style:
+                    Round Segments: 12
+                    Value: Round
+                  Glow:
+                    Glow Height [m]: 0.20000000298023224
+                    Glow Intensity [0..1]: 0.6000000238418579
+                    Value: true
+                  Thickness [m]: 1.5
+                  Value: true
+                Mesh: false
+                Value: " "
+              Class: perception_msgs/ObjectList
+              Color: 0; 255; 25
+              Enabled: false
+              Name: sRISU2_V2X_ObjectList
+              Predictions:
+                Line Color: 255; 170; 0
+                Line Width: 0.25
+                Prediction Points:
+                  Point Color: 255; 170; 0
+                  Point Width: 1
+                  Value: false
+                  Velocity-based height: true
+                Probabilities:
+                  Char height: 2
+                  Value: false
+                Value: false
+              Text information:
+                Char height: 4
+                Classification: true
+                Classification coloring: true
+                Existence probability: false
+                Object ID: false
+                Value: false
+                Velocity: true
+              Timeout:
+                Duration: 1
+                Value: false
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                Filter size: 10
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/carla_converter/srisu2/v2x_objectlist
+              Value: false
+              Velocity arrow:
+                Use velocity color: true
+                Value: false
+                Velocity Color: 255; 0; 255
+                Velocity scale: 1
+          Enabled: true
+          Name: sRISU2
+        - Class: rviz_common/Group
+          Displays:
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 0; 255; 0
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 0; 255; 0
+              Max Intensity: 0.9995959401130676
+              Min Color: 0; 255; 0
+              Min Intensity: 0.7408541440963745
+              Name: sRISU3_Bottom
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu3/sensor_platform/lidar_bottom/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 255; 255; 255
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 0; 255; 0
+              Max Intensity: 0.9985211491584778
+              Min Color: 0; 255; 0
+              Min Intensity: 0.7408208847045898
+              Name: sRISU3_Top
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu3/sensor_platform/lidar_top/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU3_Left
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu3/sensor_platform/camera_left/image
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU3_Right
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu3/sensor_platform/camera_right/image
+              Value: true
+            - Acceleration arrow:
+                Acceleration Color: 255; 0; 0
+                Acceleration scale: 10
+                Use acceleration color: true
+                Value: false
+              Alpha: 0.5
+              Appearance Properties:
+                Bounding box:
+                  Orientation Indication: false
+                  Value: false
+                Classification coloring:
+                  ANIMAL: 0; 128; 128
+                  BICYCLE: 255; 255; 25
+                  BUS: 25; 25; 255
+                  CAR: 0; 255; 0
+                  MICRO: 25; 255; 255
+                  MOTORCYCLE: 255; 255; 25
+                  PEDESTRIAN: 25; 255; 255
+                  UNKNOWN: 128; 128; 128
+                  UTILITY: 25; 25; 255
+                  VRU: 25; 255; 255
+                  Value: true
+                Hoverboard:
+                  Corner Radius [m]: 0.3499999940395355
+                  Corner Style:
+                    Round Segments: 12
+                    Value: Round
+                  Glow:
+                    Glow Height [m]: 0.20000000298023224
+                    Glow Intensity [0..1]: 0.6000000238418579
+                    Value: true
+                  Thickness [m]: 1.5
+                  Value: true
+                Mesh: false
+                Value: " "
+              Class: perception_msgs/ObjectList
+              Color: 0; 255; 25
+              Enabled: false
+              Name: sRISU3_V2X_ObjectList
+              Predictions:
+                Line Color: 255; 170; 0
+                Line Width: 0.25
+                Prediction Points:
+                  Point Color: 255; 170; 0
+                  Point Width: 1
+                  Value: false
+                  Velocity-based height: true
+                Probabilities:
+                  Char height: 2
+                  Value: false
+                Value: false
+              Text information:
+                Char height: 4
+                Classification: true
+                Classification coloring: true
+                Existence probability: false
+                Object ID: false
+                Value: false
+                Velocity: true
+              Timeout:
+                Duration: 1
+                Value: false
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                Filter size: 10
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/carla_converter/srisu3/v2x_objectlist
+              Value: false
+              Velocity arrow:
+                Use velocity color: true
+                Value: false
+                Velocity Color: 255; 0; 255
+                Velocity scale: 1
+          Enabled: true
+          Name: sRISU3
+        - Class: rviz_common/Group
+          Displays:
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 170; 0; 255
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 170; 0; 255
+              Max Intensity: 0.9995961785316467
+              Min Color: 170; 0; 255
+              Min Intensity: 0.7410588264465332
+              Name: sRISU4_Bottom
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu4/sensor_platform/lidar_bottom/point_cloud
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 10
+                Min Value: -10
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz_default_plugins/PointCloud2
+              Color: 255; 255; 255
+              Color Transformer: Intensity
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 170; 0; 255
+              Max Intensity: 0.9985212683677673
+              Min Color: 170; 0; 255
+              Min Intensity: 0.7409372329711914
+              Name: sRISU4_Top
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu4/sensor_platform/lidar_to4
+              Use Fixed Frame: true
+              Use rainbow: false
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU4_Left
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu4/sensor_platform/camera_left/image
+              Value: true
+            - Class: rviz_default_plugins/Image
+              Enabled: true
+              Max Value: 1
+              Median window: 5
+              Min Value: 0
+              Name: sRISU4_Right
+              Normalize Range: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/srisu4/sensor_platform/camera_right/image
+              Value: true
+            - Acceleration arrow:
+                Acceleration Color: 255; 0; 0
+                Acceleration scale: 10
+                Use acceleration color: true
+                Value: false
+              Alpha: 0.5
+              Appearance Properties:
+                Bounding box:
+                  Orientation Indication: false
+                  Value: false
+                Classification coloring:
+                  ANIMAL: 0; 128; 128
+                  BICYCLE: 255; 255; 25
+                  BUS: 25; 25; 255
+                  CAR: 170; 0; 255
+                  MICRO: 25; 255; 255
+                  MOTORCYCLE: 255; 255; 25
+                  PEDESTRIAN: 25; 255; 255
+                  UNKNOWN: 128; 128; 128
+                  UTILITY: 25; 25; 255
+                  VRU: 25; 255; 255
+                  Value: true
+                Hoverboard:
+                  Corner Radius [m]: 0.3499999940395355
+                  Corner Style:
+                    Round Segments: 12
+                    Value: Round
+                  Glow:
+                    Glow Height [m]: 0.20000000298023224
+                    Glow Intensity [0..1]: 0.6000000238418579
+                    Value: true
+                  Thickness [m]: 1.5
+                  Value: true
+                Mesh: false
+                Value: " "
+              Class: perception_msgs/ObjectList
+              Color: 0; 255; 25
+              Enabled: false
+              Name: sRISU4_V2X_ObjectList
+              Predictions:
+                Line Color: 255; 170; 0
+                Line Width: 0.25
+                Prediction Points:
+                  Point Color: 255; 170; 0
+                  Point Width: 1
+                  Value: false
+                  Velocity-based height: true
+                Probabilities:
+                  Char height: 2
+                  Value: false
+                Value: false
+              Text information:
+                Char height: 4
+                Classification: true
+                Classification coloring: true
+                Existence probability: false
+                Object ID: false
+                Value: false
+                Velocity: true
+              Timeout:
+                Duration: 1
+                Value: false
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                Filter size: 10
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /carla/carla_converter/srisu4/v2x_objectlist
+              Value: false
+              Velocity arrow:
+                Use velocity color: true
+                Value: false
+                Velocity Color: 255; 0; 255
+                Velocity scale: 1
+          Enabled: true
+          Name: sRISU4
+      Enabled: true
+      Name: RITA
+  Enabled: true
+  Global Options:
+    Background Color: 0; 0; 0
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Single click: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /clicked_point
+    - Action server:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /planning/lanelet2_route_planning/plan_route
+      Class: route_planning_msgs/PlanRoute
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/ThirdPersonFollower
+      Distance: 33.68833923339844
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: -2.4254322052001953
+        Y: -5.88389778137207
+        Z: -3.975038254111496e-08
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.5447975993156433
+      Target Frame: base_link
+      Value: ThirdPersonFollower (rviz_default_plugins)
+      Yaw: 3.811910629272461
+    Saved: ~
+Window Geometry:
+  CarlaControl:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Front Camera:
+    collapsed: false
+  Height: 1011
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001fb000002fafc020000000ffb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730200000780000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c00610079007301000000de00000106000000c700fffffffb0000001e004f0076006500720076006900650077002000430061006d00650072006101000001620000012c0000000000000000fb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000002a005400720061006a006500630074006f00720079002000530075006700670065007300740069006f006e010000028a0000012a0000000000000000fb0000002000500072006500640069006300740069006f006e00200049006d00610067006500000002d6000000c30000000000000000fb00000018004300610072006c00610043006f006e00740072006f006c01000001ea000000b4000000b400fffffffb0000002e00540072006100660066006900630020004c006900670068007400200044006500740065006300740069006f006e00000003460000004e0000000000000000fb0000002a0054007200610066006600690063004c00690067006800740044006500740065006300740069006f006e01000002c8000001100000000000000000fb0000001800460072006f006e0074002000430061006d00650072006101000002a4000001340000001600ffffff0000000100000100000002fafc0200000004fb0000000a0056006900650077007300000000de000002fa000000a000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001c004f007600650072007600690065007700200049006d006100670065010000003b000003790000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000073e0000009dfc0100000011fb00000016007300520049005300550031005f004c0065006600740100000000000000e80000007b00fffffffb00000018007300520049005300550031005f0052006900670068007401000000ee000000e90000008400fffffffb00000016007300520049005300550032005f004c00650066007401000001dd000000e50000007b00fffffffb00000018007300520049005300550032005f0052006900670068007401000002c8000000e20000008400fffffffb00000016007300520049005300550033005f004c00650066007401000003b0000000df0000007b00fffffffb00000018007300520049005300550033005f005200690067006800740100000495000000e20000008400fffffffb00000016007300520049005300550034005f004c006500660074010000057d000000df0000007b00fffffffb00000018007300520049005300550034005f005200690067006800740100000662000000dc0000008400fffffffb0000001400660072006f006e0074002d006c00650066007400000000000000025f0000000000000000fb0000001800660072006f006e0074002d00630065006e0074006500720000000265000003240000000000000000fb0000001600660072006f006e0074002d00720069006700680074000000058f0000042f0000000000000000fb00000010006d00690064002d006c0065006600740000000641000000fd0000000000000000fb00000012006d00690064002d00720069006700680074000000063b000001030000000000000000fb000000140072006500610072002d00720069006700680074000000052d000002110000000000000000fb000000160072006500610072002d00630065006e007400650072000000067d000000c10000000000000000fb000000120072006500610072002d006c0065006600740000000687000000b70000000000000000fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073e0000003efc0100000002fb0000000800540069006d006500000000000000073e0000025300fffffffb0000000800540069006d006501000000000000045000000000000000000000053d000002fa00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1854
+  X: 66
+  Y: 32
+  sRISU1_Left:
+    collapsed: false
+  sRISU1_Right:
+    collapsed: false
+  sRISU2_Left:
+    collapsed: false
+  sRISU2_Right:
+    collapsed: false
+  sRISU3_Left:
+    collapsed: false
+  sRISU3_Right:
+    collapsed: false
+  sRISU4_Left:
+    collapsed: false
+  sRISU4_Right:
+    collapsed: false

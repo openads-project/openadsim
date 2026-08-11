@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use OpenADSim in your research, please cite it using the following metadata."
+
+title: OpenADSim
+type: software
+authors:
+  - name: "OpenADSim Development Team"
+  - name: "Institute for Automotive Engineering (ika), RWTH Aachen University"
+repository-code: "https://github.com/openads-project/openadsim"
+url: "https://github.com/openads-project/openadsim"
+version: 1.0.0
+date-released: 2026-08-07
+license: Apache-2.0

@@ -1,0 +1,16 @@
+services:
+
+  control.ackermann-trajectory-control:
+    profiles:
+      - planning
+      - ml-planning
+    extends:
+      file: ../../openadstack/control/ackermann_trajectory_control/docker-compose.yml
+      service: control.ackermann-trajectory-control
+    environment:
+      LAT_CONTROL_ACTIVE_TOPIC: /control/active
+      LON_CONTROL_ACTIVE_TOPIC: /control/active
+      PARAMS: /params.yml
+    volumes:
+      - ./params_karl.yml:/params.yml
+      - ./karl-lateral-limits-v1p3.csv:/docker-ros/ws/install/ackermann_trajectory_control/share/ackermann_trajectory_control/config/karl-lateral-limits-v1p3.csv

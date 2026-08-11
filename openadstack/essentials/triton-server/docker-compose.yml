@@ -1,0 +1,15 @@
+services:
+  triton-server:
+    profiles:
+      - perception
+      - ml-planning
+    extends:
+      file: ../../openadstack/utils/compose/docker-compose.template.yml
+      service: triton-server
+    volumes:
+      - type: image
+        source: ghcr.io/openads-project/point_cloud_object_detection/model:v1.0.0
+        image:
+          subpath: models
+        target: /models
+        read_only: true

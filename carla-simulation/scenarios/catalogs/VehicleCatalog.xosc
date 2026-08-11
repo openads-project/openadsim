@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<OpenSCENARIO>
+  <FileHeader revMajor="0" revMinor="9" date="2023-02-26T10:38:22" description="CARLA:VehicleCatalog" author="Christian Geller"/>
+  <Catalog name="VehicleCatalog">
+
+    <Vehicle name="vehicle.ika.karl" vehicleCategory="car">
+      <BoundingBox>
+        <Center x="1.4895" y="0.0" z="0.955"/>
+          <Dimensions  length="5.17" width="2.25" height="1.91"/>
+      </BoundingBox>
+      <Performance maxAcceleration="3" maxDeceleration="9" maxSpeed="220"/>
+      <Axles>
+        <FrontAxle maxSteering="0.5" positionX="3.1" positionZ="0.3" trackWidth="1.8" wheelDiameter="0.6" />
+        <RearAxle maxSteering="0.0" positionX="0.0" positionZ="0.3" trackWidth="1.8" wheelDiameter="0.6" />
+      </Axles>
+      <Properties>
+        <Property name="type" value="ego_vehicle"/>
+      </Properties>
+    </Vehicle>
+
+    <Vehicle name="vehicle.ika.autoshuttle" vehicleCategory="car">
+        <BoundingBox>
+          <Center x="2.490" y="0.0" z="1.316"/>
+          <Dimensions  length="4.980" width="2.070" height="2.632"/>
+        </BoundingBox>
+        <Performance maxAcceleration="3" maxDeceleration="9" maxSpeed="70"/>
+        <Axles>
+          <FrontAxle maxSteering="1.57 " positionX="4.0" positionZ="0.3515" trackWidth="2.0" wheelDiameter="0.703"/>
+          <RearAxle maxSteering="1.57 " positionX="0.0" positionZ="0.3515" trackWidth="2.0" wheelDiameter="0.703"/>
+        </Axles>
+        <Properties>
+          <Property name="type" value="ego_vehicle"/>
+        </Properties>
+    </Vehicle>
+
+  </Catalog>
+</OpenSCENARIO>
