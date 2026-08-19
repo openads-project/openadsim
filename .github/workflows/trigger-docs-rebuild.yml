@@ -28,7 +28,7 @@ jobs:
           # openadsim submodule and builds the docs from exactly these changes.
           OPENADSIM_REF: ${{ github.ref_name }}
           DOWNSTREAM_REPO: openads-project/openads-project.github.io
-          DOWNSTREAM_REF: main
+          DOWNSTREAM_REF: checkout-main  # TODO: revert to main
         run: |
           set -eo pipefail
 
