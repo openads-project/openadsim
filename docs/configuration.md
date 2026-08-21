@@ -30,7 +30,7 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `ORIGIN_LAT` | GPS origin latitude for a custom lanelet map frame. Set together with `ORIGIN_LON` or leave both empty. | `50.782329` |
 | `ORIGIN_LON` | GPS origin longitude for a custom lanelet map frame. Set together with `ORIGIN_LAT` or leave both empty. | `6.070377` |
 | `LANELET_RELOAD` | `true` derives the Lanelet2 map from the simulation map; `false` uses `CUSTOM_LANELET`. Set automatically by the Configuration GUI. | `true`, `false` |
-| `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `carla-simulation/scenarios/scenario-generator/campus_following.xosc` |
+| `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map and can validate/import custom scenario bundles. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `carla-simulation/scenarios/scenario-generator/campus_following.xosc` |
 | `USE_SIM_TIME` | Enables ROS simulated time across the stack. Must stay `true` in this setup. | `true` |
 | `ROS_TRACING` | Enables ROS 2 tracing for supported services. | `false`, `true` |
 

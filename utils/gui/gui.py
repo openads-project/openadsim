@@ -2,7 +2,11 @@
 
 from pathlib import Path
 import html
+import json
 import os
+import subprocess
+import sys
+import tempfile
 from typing import Any, Optional
 
 import streamlit as st
@@ -540,7 +544,11 @@ def render_field(
 
     if field.control == "select":
         options = list(force_options if force_options is not None else field.options)
-        if current_widget_value not in options and current_widget_value not in (None, ""):
+        if (
+            not field.strict_options
+            and current_widget_value not in options
+            and current_widget_value not in (None, "")
+        ):
             options.insert(0, str(current_widget_value))
         if not options:
             return False
@@ -563,7 +571,11 @@ def render_field(
 
     elif field.control == "select_or_text":
         options = list(force_options if force_options is not None else field.options)
-        if current_widget_value not in options and current_widget_value not in (None, ""):
+        if (
+            not field.strict_options
+            and current_widget_value not in options
+            and current_widget_value not in (None, "")
+        ):
             options.insert(0, str(current_widget_value))
         if not options:
             options = [""]
@@ -587,7 +599,7 @@ def render_field(
 
         new_value = st.selectbox(
             **selectbox_kwargs,
-            accept_new_options=True,
+            accept_new_options=not field.strict_options,
         )
 
     elif field.control == "multiselect":
@@ -640,7 +652,7 @@ def render_field(
     if field.control == "multiselect":
         if list(current_widget_value) != list(new_value):
             try:
-                config.set_value(field.path, new_value)
+                config.set_value(field.path, new_value, repo_root=REPO_ROOT)
                 _commit_config_change(config, field.path)
                 return True
             except ValueError as exc:
@@ -649,7 +661,7 @@ def render_field(
 
     if new_value != current_widget_value:
         try:
-            config.set_value(field.path, new_value)
+            config.set_value(field.path, new_value, repo_root=REPO_ROOT)
             _commit_config_change(config, field.path)
             return True
         except ValueError as exc:
@@ -806,6 +818,165 @@ def _render_profile_field(config: SimulationConfig, field: UiField) -> bool:
     return render_field(config, field, label_icon=_profile_icon_svg(field.path))
 
 
+def _render_scenario_import(config: SimulationConfig):
+    import_result = st.session_state.pop("scenario_import_result", None)
+    if import_result:
+        st.success(f"Imported `{import_result['scenario_file']}`")
+        with st.expander("Applied scenario adjustments"):
+            for action in import_result.get("actions", []):
+                st.caption(f"- {action}")
+            for warning in import_result.get("warnings", []):
+                st.warning(warning)
+
+    with st.expander("Import scenario"):
+        st.caption(
+            "Upload an OpenSCENARIO file and optionally override its map with an "
+            "OpenDRIVE/Lanelet2 pair. If LogicFile references an .xodr, both map "
+            "files must be uploaded. Existing import names receive an index suffix."
+        )
+        revision = st.session_state.get("scenario_import_revision", 0)
+        with st.form(f"scenario_import_form::{revision}"):
+            import_name = st.text_input(
+                "Import name (optional)",
+                help="When empty, a UTC timestamp is used.",
+            )
+            scenario_upload = st.file_uploader(
+                "OpenSCENARIO (.xosc)",
+                type=["xosc"],
+            )
+            opendrive_upload = st.file_uploader(
+                "OpenDRIVE override (.xodr, optional)",
+                type=["xodr"],
+            )
+            lanelet_upload = st.file_uploader(
+                "Lanelet2 map (.osm, required for custom OpenDRIVE)",
+                type=["osm"],
+            )
+            stop_on_route = st.checkbox(
+                "Stop when ego route completes",
+                value=True,
+            )
+            timeout = st.number_input(
+                "Maximum duration [s]",
+                min_value=0.1,
+                value=60.0,
+                step=1.0,
+            )
+            driven_distance = st.number_input(
+                "Driven-distance criterion [m]",
+                min_value=0.1,
+                value=30.0,
+                step=1.0,
+            )
+            submitted = st.form_submit_button(
+                "Validate and import",
+                use_container_width=True,
+            )
+
+        if not submitted:
+            return
+        if scenario_upload is None:
+            st.error("Please upload an OpenSCENARIO (.xosc) file.")
+            return
+
+        checker = REPO_ROOT / "utils/scenario-checker/scenario_checker.py"
+        output_root = REPO_ROOT / "carla-simulation/scenarios/custom-imports"
+        if not checker.is_file():
+            st.error(f"Scenario checker not found: {checker}")
+            return
+
+        try:
+            with tempfile.TemporaryDirectory(prefix="openadsim-scenario-import-") as temporary:
+                temporary_root = Path(temporary)
+
+                def save_upload(upload) -> Optional[Path]:
+                    if upload is None:
+                        return None
+                    destination = temporary_root / Path(upload.name).name
+                    destination.write_bytes(upload.getvalue())
+                    return destination
+
+                scenario_path = save_upload(scenario_upload)
+                opendrive_path = save_upload(opendrive_upload)
+                lanelet_path = save_upload(lanelet_upload)
+                assert scenario_path is not None
+
+                command = [
+                    sys.executable,
+                    str(checker),
+                    "import",
+                    str(scenario_path),
+                    "--output-root",
+                    str(output_root),
+                    "--repo-root",
+                    str(REPO_ROOT),
+                    "--name",
+                    import_name,
+                    "--timeout",
+                    str(timeout),
+                    "--driven-distance",
+                    str(driven_distance),
+                    "--json",
+                ]
+                if opendrive_path:
+                    command.extend(["--opendrive", str(opendrive_path)])
+                if lanelet_path:
+                    command.extend(["--lanelet", str(lanelet_path)])
+                if not stop_on_route:
+                    command.append("--no-ego-route-stop")
+
+                completed = subprocess.run(
+                    command,
+                    cwd=REPO_ROOT,
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                payload = json.loads(completed.stdout or "{}")
+        except (OSError, json.JSONDecodeError) as error:
+            st.error(f"Scenario import failed: {error}")
+            return
+
+        if completed.returncode or not payload.get("valid"):
+            errors = payload.get("errors", [])
+            st.error("Scenario import failed")
+            for error in errors or [completed.stderr.strip() or "Unknown error"]:
+                st.caption(f"- {error}")
+            return
+
+        map_data = payload["map"]
+        if map_data["type"] == "prebuilt":
+            config.set_value("map.prebuilt_map", map_data["map_name"])
+        else:
+            scenario_directory = Path(payload["scenario_file"]).parent
+
+            def imported_map_path(value: str) -> str:
+                path = Path(value)
+                if not path.is_absolute() and path.parent == Path("."):
+                    path = scenario_directory / path
+                return path.as_posix()
+
+            config.set_value("map.prebuilt_map", "")
+            config.set_value(
+                "map.custom_opendrive",
+                imported_map_path(map_data["opendrive"]),
+            )
+            config.set_value(
+                "map.custom_lanelet",
+                imported_map_path(map_data["lanelet"]),
+            )
+        config.set_value("scenario.scenario_file", payload["scenario_file"])
+
+        st.session_state.config = config
+        st.session_state.editable_config = config.normalized_copy()
+        st.session_state.force_current_configuration = True
+        st.session_state.scenario_import_result = payload
+        st.session_state.scenario_import_revision = revision + 1
+        _clear_field_widget_state()
+        _next_field_revision()
+        st.rerun()
+
+
 def _render_configuration_tab(config: SimulationConfig):
     config_changed = False
     sections = {section.title: section for section in config.get_ui_sections(REPO_ROOT)}
@@ -862,6 +1033,9 @@ def _render_configuration_tab(config: SimulationConfig):
             for field in scenario_section.fields:
                 changed = render_field(config, field) or changed
             config_changed = config_changed or changed
+
+            if scenario_enabled:
+                _render_scenario_import(config)
 
             if not scenario_enabled:
                 st.caption("Scenario file is only configurable for manual or automated testing.")

@@ -8,6 +8,7 @@ services:
       - 8501:8501
     volumes:
       - ${PWD}:${PWD}:ro
+      - ${PWD}/carla-simulation/scenarios/custom-imports:${PWD}/carla-simulation/scenarios/custom-imports:rw
       - ${PWD}/.env:/.env
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker:ro
