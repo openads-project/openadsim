@@ -1,3 +1,0 @@
-openadstack/monitoring/mesh/** filter=lfs diff=lfs merge=lfs -text
-*.xodr -filter -diff -merge text
-*.xosc -filter -diff -merge text
