@@ -114,7 +114,7 @@ We hope that OpenADSim can help your research. If this is the case, please cite 
 
 <summary><strong>Scalable Distributed Simulation-Based Testing for Automated Driving Systems, 2026</strong></summary>
 
-> *([arXiv](https://arxiv.org/abs/TODO), [ResearchGate](https://www.researchgate.net/publication/413167104_Scalable_Distributed_Simulation-Based_Testing_for_Automated_Driving_Systems))*  
+> *([arXiv](https://arxiv.org/abs/2608.20904), [ResearchGate](https://www.researchgate.net/publication/413167104_Scalable_Distributed_Simulation-Based_Testing_for_Automated_Driving_Systems))*  
 >
 > Christian Geller, Benedikt Haas, Lutz Eckstein
 > [Institute for Automotive Engineering (ika), RWTH Aachen University](https://www.ika.rwth-aachen.de/en/)

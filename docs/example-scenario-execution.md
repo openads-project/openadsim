@@ -124,7 +124,7 @@ The [Omega-Prime](https://github.com/ika-rwth-aachen/omega-prime) output generat
 
 ## Scaling with OpenADScale
 
-OpenADScale enables scalable, scenario-based testing of large scenario catalogs on multi-node Kubernetes clusters. Simulation runs can be distributed across multiple machines and executed in parallel, moving beyond the local, sequential Docker Compose workflow.
+OpenADScale enables scalable, scenario-based testing of large scenario catalogs on multi-node Kubernetes clusters, as described in [*Scalable Distributed Simulation-Based Testing for Automated Driving Systems*](https://arxiv.org/abs/2608.20904). Simulation runs can be distributed across multiple machines and executed in parallel, moving beyond the local, sequential Docker Compose workflow.
 
 > [!NOTE]
 > OpenADScale is not yet publicly available. If you are interested, please contact us through [OpenADS support](https://openads-project.github.io/support/support.html).
