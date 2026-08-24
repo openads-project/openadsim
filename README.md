@@ -110,6 +110,19 @@ We hope that OpenADSim can help your research. If this is the case, please cite 
 
 </details>
 
+<details>
+
+<summary><strong>Scalable Distributed Simulation-Based Testing for Automated Driving Systems, 2026</strong></summary>
+
+> *([arXiv](https://arxiv.org/abs/2608.20904), [ResearchGate](https://www.researchgate.net/publication/413167104_Scalable_Distributed_Simulation-Based_Testing_for_Automated_Driving_Systems))*  
+>
+> Christian Geller, Benedikt Haas, Lutz Eckstein
+> [Institute for Automotive Engineering (ika), RWTH Aachen University](https://www.ika.rwth-aachen.de/en/)
+>
+> <sup>*Abstract* – Virtual scenario-based testing is a key enabler for validating automated driving systems (ADS) and intelligent transport systems (ITS). However, executing large-scale test suites involving possibly thousands of scenarios remains labor-intensive and difficult to scale. This paper presents an end-to-end, DevOps-driven framework that automates build, deployment, and distributed execution of CARLA-based scenario tests of an ADS on a lightweight Kubernetes cluster. ROS 2 applications are packaged as standardized Kubernetes *Helm* charts generated from repository specifications, while entire simulation environments are composed declaratively via dynamic *Helmfile* manifests. The paper describes how a distributed testing workflow can be implemented in Argo Workflows to provision environments, aggregate and batch *OpenSCENARIO* test cases from configurable sources, execute scenarios in parallel across cluster nodes, and collect logs and resource metrics. In an evaluation on a multi-node K3s cluster running 200 scenarios, the best configuration speeds up end-to-end workflow time by more than a factor of eight compared to a sequential baseline. The results demonstrate significant gains in end-to-end execution time and quantify trade-offs between parallelism, orchestration overhead, and cluster stability. The framework is further demonstrated in a real-world ADS test application with connections to scenario sources and downstream evaluation modules. This demonstrates that the approach provides a strong foundation not only for scalable simulation testing, but also for generating traceable evidence that can support safety arguments. </sup>
+
+</details>
+
 ### Licensing
 
 The source code in this repository is licensed under Apache-2.0, see [LICENSE](https://github.com/openads-project/openadsim/blob/main/LICENSE). Container images provided by this repository may contain third-party software shipped with their own license terms.
