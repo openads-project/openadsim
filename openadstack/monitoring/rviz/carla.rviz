@@ -671,6 +671,7 @@ Visualization Manager:
             Value: false
           Enabled: true
           Name: Route
+          Start: true
           Suggested Lane:
             Boundaries:
               Lines:
@@ -724,6 +725,122 @@ Visualization Manager:
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /planning/lanelet2_route_planning/route
+          Traveled Route:
+            Opacity: 0.30000001192092896
+            Value: true
+          Value: true
+        - Adjacent Lanes:
+            Boundaries:
+              Lines:
+                Color: 255; 170; 0
+                Scale: 0.05000000074505806
+                Value: true
+              Points:
+                Color: 255; 170; 0
+                Scale: 0.20000000298023224
+                Value: false
+              Value: true
+            Reference Line:
+              Line:
+                Color: 255; 255; 0
+                Scale: 0.05000000074505806
+                Value: true
+              Poses:
+                Color: 255; 255; 0
+                Scale: 0.5
+                Value: false
+              Value: true
+            Regulatory Elements:
+              Default Color: 200; 200; 200
+              Positions: true
+              Scale: 0.10000000149011612
+              Validity stamp:
+                Color: 255; 255; 255
+                Scale: 0.6000000238418579
+                Value: false
+              Value: true
+            Speed Limit:
+              Color: 255; 255; 255
+              Scale: 0.5
+              Value: false
+            Turn Signals:
+              Color: 255; 255; 0
+              Scale: 1
+              Value: false
+            Value: false
+          Class: route_planning_msgs/Route
+          Destination:
+            Color (final): 255; 0; 255
+            Color (intermediate): 85; 255; 0
+            Scale (final): 1
+            Scale (intermediate): 1
+            Value: false
+          Drivable Space:
+            Lines:
+              Color: 170; 85; 0
+              Scale: 0.10000000149011612
+              Value: true
+            Points:
+              Color: 255; 0; 0
+              Scale: 0.20000000298023224
+              Value: false
+            Value: false
+          Enabled: true
+          Name: Global Route
+          Start: false
+          Suggested Lane:
+            Boundaries:
+              Lines:
+                Color: 0; 170; 0
+                Scale: 0.20000000298023224
+                Value: true
+              Points:
+                Color: 0; 170; 0
+                Scale: 0.25
+                Value: false
+              Value: false
+            Lane Change:
+              Color: 0; 255; 0
+              Scale: 0.20000000298023224
+              Value: false
+            Reference Line:
+              Line:
+                Color: 0; 255; 0
+                Scale: 0.10000000149011612
+                Value: true
+              Poses:
+                Color: 0; 255; 0
+                Scale: 0.5
+                Value: false
+              Value: true
+            Regulatory Elements:
+              Default Color: 200; 200; 200
+              Positions: true
+              Scale: 0.20000000298023224
+              Validity stamp:
+                Color: 255; 255; 255
+                Scale: 0.6000000238418579
+                Value: false
+              Value: false
+            Speed Limit:
+              Color: 255; 255; 255
+              Scale: 0.6000000238418579
+              Value: false
+            Turn Signals:
+              Color: 255; 255; 0
+              Scale: 1
+              Value: false
+            Value: true
+          Timeout:
+            Duration: 1
+            Value: false
+          Topic:
+            Depth: 5
+            Durability Policy: Transient Local
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /planning/lanelet2_route_planning/global_route
           Traveled Route:
             Opacity: 0.30000001192092896
             Value: true
