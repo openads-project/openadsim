@@ -8,8 +8,13 @@ services:
       service: monitoring.monitoring
     command: bash -ic "rviz2 -d /conf.rviz --ros-args -p use_sim_time:=true"
     volumes:
-      - ./mesh:/mesh
       - ./volume:/docker-ros/ws/monitoring-volume
+      - type: image
+        source: ghcr.io/openads-project/openads-assets:init
+        image:
+          subpath: mesh
+        target: /mesh
+        read_only: true
 
   monitoring.rviz-carla:
     profiles:
