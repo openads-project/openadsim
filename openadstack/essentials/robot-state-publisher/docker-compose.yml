@@ -5,6 +5,15 @@ services:
       file: ../../openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
     image: ghcr.io/openads-project/monitoring:v1.0.0
+    environment:
+      VEHICLE: ${VEHICLE:-karl}
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 run robot_state_publisher robot_state_publisher \
+          /urdf/${VEHICLE}/${VEHICLE}.urdf \
+          --ros-args -p use_sim_time:=${USE_SIM_TIME:-true}
     volumes:
       - type: image
         source: ghcr.io/openads-project/openads-assets:v1.0.0
@@ -12,10 +21,3 @@ services:
           subpath: urdf
         target: /urdf
         read_only: true
-    command:
-      - /bin/bash
-      - -ic
-      - |
-        ros2 run robot_state_publisher robot_state_publisher \
-          /urdf/${VEHICLE:-karl}/${VEHICLE:-karl}.urdf \
-          --ros-args -p use_sim_time:=${USE_SIM_TIME:-true}
