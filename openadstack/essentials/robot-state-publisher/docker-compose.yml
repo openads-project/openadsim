@@ -17,5 +17,5 @@ services:
       - -ic
       - |
         ros2 run robot_state_publisher robot_state_publisher \
-          /urdf/${VEHICLE:-karl}.urdf \
+          /urdf/${VEHICLE:-karl}/${VEHICLE:-karl}.urdf \
           --ros-args -p use_sim_time:=${USE_SIM_TIME:-true}
