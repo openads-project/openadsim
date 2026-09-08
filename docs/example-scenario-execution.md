@@ -42,6 +42,10 @@ The scenarios can be used as templates or replaced with compatible OpenSCENARIO 
 >
 > While the scenario generation tools above focus on individual scenarios, scenario.center covers the preceding steps of a scenario-based evaluation workflow. It derives scenario concepts from real-world traffic observations and supports scenario identification, analysis, comparison, and structured storage in a searchable database. Coverage, occurrence likelihood, and risk information help select relevant cases and build representative test catalogs. Compatible concrete OpenSCENARIO and OpenDRIVE files can then be incorporated into OpenADSim workflows.
 
+## Import and Validate Custom Scenarios
+
+Use **Import scenario** in the Configuration GUI to upload an `.xosc` file, plus `.xodr` and Lanelet2 `.osm` files for custom maps. **Validate and import** checks compatibility, adapts a copy for OpenADSim, and selects the imported scenario and map. In addition, all scenarios are also checked automatically before execution. For CLI usage and details, see the [scenario-checker documentation](../utils/scenario-checker/README.md).
+
 ## Manual Scenario Execution Using RViz
 
 Manual mode lets you select, start, and repeat scenarios through RViz. OpenADStack controls the `ego_vehicle`, while the CARLA scenario runner controls the other scenario participants.
