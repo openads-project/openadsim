@@ -187,6 +187,75 @@ class ScenarioCheckerTests(unittest.TestCase):
             )
         )
 
+    def test_import_replaces_controllers_across_ego_blocks_and_story(self):
+        imported = import_scenario(self.scenario, output_root=self.output)
+        tree = ET.parse(imported.scenario_file)
+        root = tree.getroot()
+        actions = root.find("./Storyboard/Init/Actions")
+        controller_xml = (
+            '<PrivateAction><ControllerAction><AssignControllerAction>'
+            '<Controller name="OldController"><Properties>'
+            '<Property name="module" value="old.py"/>'
+            '</Properties></Controller></AssignControllerAction>'
+            '</ControllerAction></PrivateAction>'
+        )
+        extra = ET.SubElement(actions, "Private", entityRef="ego_vehicle")
+        extra.append(ET.fromstring(controller_xml))
+        other = ET.SubElement(actions, "Private", entityRef="car_2")
+        other.append(ET.fromstring(controller_xml))
+        event = root.find(".//ManeuverGroup[@name='ego']//Event")
+        story_action = ET.SubElement(event, "Action", name="switch_controller")
+        story_action.append(ET.fromstring(controller_xml))
+        maneuver = root.find(".//ManeuverGroup[@name='ego']/Maneuver")
+        controller_event = ET.SubElement(maneuver, "Event", name="controller_only")
+        ET.SubElement(controller_event, "Action", name="switch").append(
+            ET.fromstring(controller_xml)
+        )
+        tree.write(imported.scenario_file)
+        source = imported.scenario_file.read_bytes()
+        report = validate_scenario(imported.scenario_file)
+        self.assertFalse(report.is_valid)
+        self.assertTrue(any("controller setup" in error for error in report.errors))
+
+        result = import_scenario(imported.scenario_file, output_root=self.output)
+        output = ET.parse(result.scenario_file).getroot()
+        ego_controllers = output.findall(
+            "./Storyboard/Init/Actions/Private[@entityRef='ego_vehicle']//Controller"
+        )
+        self.assertEqual([c.get("name") for c in ego_controllers], ["RosRouteController"])
+        self.assertEqual(
+            ego_controllers[0].find("./Properties/Property[@name='module']").get("value"),
+            "ros_vehicle_control_route_action.py",
+        )
+        self.assertFalse(output.findall(".//ManeuverGroup[@name='ego']//ControllerAction"))
+        self.assertIsNone(output.find(".//Event[@name='controller_only']"))
+        self.assertIsNotNone(output.find(".//Event[@name='ego_route']/Action"))
+        self.assertEqual(len(output.findall(
+            "./Storyboard/Init/Actions/Private[@entityRef='car_2']//Controller"
+        )), 1)
+        self.assertTrue(validate_scenario(result.scenario_file).is_valid)
+        self.assertEqual(imported.scenario_file.read_bytes(), source)
+
+        # A shared action must not silently change the other actor's controller.
+        actors = root.find(".//ManeuverGroup[@name='ego']/Actors")
+        ET.SubElement(actors, "EntityRef", entityRef="car_2")
+        tree.write(imported.scenario_file)
+        with self.assertRaisesRegex(ScenarioCheckerError, "shared with other actors"):
+            import_scenario(imported.scenario_file, output_root=self.output)
+
+    def test_validation_accepts_single_ros_controller_in_later_init_block(self):
+        imported = import_scenario(self.scenario, output_root=self.output)
+        tree = ET.parse(imported.scenario_file)
+        actions = tree.getroot().find("./Storyboard/Init/Actions")
+        ego = actions.find("Private[@entityRef='ego_vehicle']")
+        later = ET.SubElement(actions, "Private", entityRef="ego_vehicle")
+        for action in list(ego):
+            if action.find("ControllerAction") is not None:
+                ego.remove(action)
+                later.append(action)
+        tree.write(imported.scenario_file)
+        self.assertTrue(validate_scenario(imported.scenario_file).is_valid)
+
     def test_import_removes_actor_object_controller_catalog_dependency(self):
         catalog_scenario = self.root / "catalog-controller.xosc"
         source = SCENARIO.replace(

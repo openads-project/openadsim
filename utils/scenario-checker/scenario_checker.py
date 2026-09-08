@@ -395,17 +395,31 @@ def _ego_private(root: ET.Element, ego_name: str) -> Optional[ET.Element]:
 
 
 def _ego_controller_actions(root: ET.Element, ego_name: str) -> list[ET.Element]:
-    private = _ego_private(root, ego_name)
-    return [
+    actions = _path(root, "Storyboard", "Init", "Actions")
+    result = [
         action
+        for private in _children(actions, "Private")
+        if private.get("entityRef") == ego_name
         for action in _children(private, "PrivateAction")
         if _child(action, "ControllerAction") is not None
     ]
+    for group in _iter(root, "ManeuverGroup"):
+        actors = _child(group, "Actors")
+        refs = {ref.get("entityRef") for ref in _children(actors, "EntityRef")}
+        if ego_name in refs:
+            result.extend(
+                action for action in _iter(group, "PrivateAction")
+                if _child(action, "ControllerAction") is not None
+            )
+    return result
 
 
 def _has_normalized_ego_controller(root: ET.Element, ego_name: str) -> bool:
     controller_actions = _ego_controller_actions(root, ego_name)
     if len(controller_actions) != 1:
+        return False
+    init = _path(root, "Storyboard", "Init", "Actions")
+    if controller_actions[0] not in list(_iter(init, "PrivateAction")):
         return False
     assign_actions = list(_iter(controller_actions[0], "AssignControllerAction"))
     if len(assign_actions) != 1:
@@ -870,11 +884,34 @@ def _replace_ros_controller(root: ET.Element) -> int:
     if ego_private is None:
         ego_private = _subelement(actions, "Private", {"entityRef": "ego_vehicle"})
 
-    removed = 0
-    for private_action in list(_children(ego_private, "PrivateAction")):
-        if _child(private_action, "ControllerAction") is not None:
-            ego_private.remove(private_action)
-            removed += 1
+    # Shared maneuver actions cannot be removed without changing other actors.
+    for group in _iter(root, "ManeuverGroup"):
+        refs = {
+            ref.get("entityRef")
+            for ref in _children(_child(group, "Actors"), "EntityRef")
+        }
+        if "ego_vehicle" in refs and len(refs) > 1 and list(_iter(group, "ControllerAction")):
+            raise ScenarioCheckerError(
+                "Ego ControllerAction is shared with other actors; split the "
+                "ManeuverGroup by actor before importing"
+            )
+    existing = _ego_controller_actions(root, "ego_vehicle")
+    parents = {child: parent for parent in root.iter() for child in parent}
+    required_children = {
+        "Action": "PrivateAction", "Event": "Action",
+        "Maneuver": "Event", "ManeuverGroup": "Maneuver",
+    }
+    for action in existing:
+        parent = parents[action]
+        parent.remove(action)
+        # Remove storyboard containers left without their required action children.
+        while (required := required_children.get(_local_name(parent.tag))):
+            if _children(parent, required):
+                break
+            owner = parents[parent]
+            owner.remove(parent)
+            parent = owner
+    removed = len(existing)
 
     private_action = _subelement(ego_private, "PrivateAction")
     controller_action = _subelement(private_action, "ControllerAction")

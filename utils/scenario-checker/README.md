@@ -73,3 +73,8 @@ and all existing ego `ControllerAction` elements are replaced by exactly one ROS
 controller action; unused catalog locations are cleared. Other external
 `CatalogReference` elements are rejected because catalog files are not part of
 the self-contained three-file bundle. Unsupported major versions are rejected.
+
+`import` replaces all existing ego controllers with exactly one
+`RosRouteController` (`ros_vehicle_control_route_action.py`) in `Storyboard/Init`.
+Controller actions shared with other actors must be split before import.
+Validation only checks this setup; it does not modify controllers.
