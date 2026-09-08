@@ -742,7 +742,7 @@ class ScenarioExecutor:
             compose_log = ROOT_DIR / environment["DATA_DIRECTORY"] / "compose.log"
 
             LOGGER.info("%s Map: %s", scenario_label, map_selection.description)
-            LOGGER.info("%s Lanelet: %s", scenario_label, lanelet_description)
+            LOGGER.info("%s Lanelet2: %s", scenario_label, lanelet_description)
             LOGGER.info(
                 "%s Bag recording: %s",
                 scenario_label,
@@ -878,7 +878,7 @@ Configuration:
   MAP selects a prebuilt CARLA map. CUSTOM_OPENDRIVE selects an .xodr file.
   They override RoadNetwork/LogicFile and must not both be non-empty.
   CUSTOM_LANELET overrides automatic .osm detection. LANELET_RELOAD is
-  derived from the resolved Lanelet source. Use -b to record a ROS bag. The -o
+  derived from the resolved Lanelet2 source. Use -b to record a ROS bag. The -o
   option also enables bag recording and requires OP_OPENDRIVE for prebuilt
   CARLA maps.
 

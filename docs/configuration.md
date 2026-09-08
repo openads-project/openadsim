@@ -27,8 +27,8 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `SPAWN_POINT` | Ego spawn point, given as `x,y,z,heading` in simulation map coordinates, or as `lat,lon,altitude,heading` when suffixed with `wgs84`. Required for prebuilt maps. | `50.787510,6.045938,260.0,90.0,wgs84`, `-1.0,-154.0,1.0,238.0` |
 | `CUSTOM_OPENDRIVE` | Custom *OpenDRIVE* (`.xodr`) map for CARLA standalone map mode. Not supported for SUMO. | `custom.xodr` |
 | `CUSTOM_LANELET` | Matching Lanelet2 `.osm` map for route planning and map server. Required with custom OpenDRIVE. | `custom.osm` |
-| `ORIGIN_LAT` | GPS origin latitude for a custom lanelet map frame. Set together with `ORIGIN_LON` or leave both empty. | `50.782329` |
-| `ORIGIN_LON` | GPS origin longitude for a custom lanelet map frame. Set together with `ORIGIN_LAT` or leave both empty. | `6.070377` |
+| `ORIGIN_LAT` | GPS origin latitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LON` or leave both empty. | `50.782329` |
+| `ORIGIN_LON` | GPS origin longitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LAT` or leave both empty. | `6.070377` |
 | `LANELET_RELOAD` | `true` derives the Lanelet2 map from the simulation map; `false` uses `CUSTOM_LANELET`. Set automatically by the Configuration GUI. | `true`, `false` |
 | `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map and can validate/import custom scenario bundles. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `carla-simulation/scenarios/scenario-generator/campus_following.xosc` |
 | `USE_SIM_TIME` | Enables ROS simulated time across the stack. Must stay `true` in this setup. | `true` |

@@ -1117,7 +1117,7 @@ class SimulationConfig(BaseModel):
                 UiField(
                     path="map.custom_lanelet",
                     env_name="CUSTOM_LANELET",
-                    label="Custom Lanelet File",
+                    label="Custom Lanelet2 File",
                     description=(
                         "Optional for prebuilt maps; required for 'Custom OpenDRIVE' "
                         "and must share its scenario directory."
@@ -1145,8 +1145,8 @@ class SimulationConfig(BaseModel):
                 UiField(
                     path="map.effective_lanelet_reload",
                     env_name="LANELET_RELOAD",
-                    label="Lanelet Reload (derived)",
-                    description="Disabled when custom lanelet map is used.",
+                    label="Lanelet2 Reload (derived)",
+                    description="Disabled when custom Lanelet2 map is used.",
                     control="bool",
                     disabled=True,
                 ),

@@ -160,7 +160,7 @@ Custom OpenDRIVE maps are supported when using the CARLA simulation backend.
 MAP=
 CUSTOM_OPENDRIVE=<path-to-custom-opendrive-map>.xodr
 SPAWN_POINT=
-CUSTOM_LANELET=<path-to-custom-lanelet-map>.osm
+CUSTOM_LANELET=<path-to-custom-lanelet2-map>.osm
 LANELET_RELOAD=false
 ```
 
@@ -174,7 +174,7 @@ For OpenADStack route planning on a custom map, also provide a matching Lanelet2
 docker compose up -d
 ```
 
-5. If the map or ego vehicle does not load, inspect the CARLA ROS bridge and lanelet map server logs:
+5. If the map or ego vehicle does not load, inspect the CARLA ROS bridge and Lanelet2 map server logs:
 
 ```bash
 docker compose logs -f carla-ros-bridge carla-spawn-objects localization.lanelet2-map-server
