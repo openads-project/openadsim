@@ -41,7 +41,6 @@ services:
       - -ic
       - |
         set -e
-        # Reads MAP/CUSTOM_* and validates selectable scenarios before startup.
         python3 /scenario_checker.py validate-runtime /carla-simulation/scenarios
         SCENARIOS_DIR=/carla-simulation/scenarios
         if [ -n "$${CUSTOM_OPENDRIVE}" ]; then
@@ -65,7 +64,6 @@ services:
       - -ic
       - |
         set -e
-        # Reads SCENARIO_FILE/MAP/CUSTOM_* and validates before startup.
         python3 /scenario_checker.py validate-runtime "/$${SCENARIO_FILE}"
         exec python3 -u ../additional-files/scenario_runner.py \
           --host carla-server \
