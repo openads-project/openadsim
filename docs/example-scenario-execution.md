@@ -44,7 +44,7 @@ The scenarios can be used as templates or replaced with compatible OpenSCENARIO 
 
 ## Import and Validate Custom Scenarios
 
-Use **Import scenario** in the Configuration GUI to upload an `.xosc` file, plus `.xodr` and Lanelet2 `.osm` files for custom maps. **Validate and import** checks compatibility, adapts a copy for OpenADSim, and selects the imported scenario and map. In addition, all scenarios are also checked automatically before execution. For CLI usage and details, see the [scenario-checker documentation](../utils/scenario-checker/README.md).
+Use **Import scenario** in the Configuration GUI to upload an `.xosc` file, plus `.xodr` and Lanelet2 `.osm` files for custom maps. **Validate and import** checks compatibility, adapts a copy for OpenADSim, and selects the imported scenario and map. In addition, all scenarios are also checked automatically before execution. For CLI usage and details, see the [scenario-checker documentation](https://github.com/openads-project/openadsim/blob/main/utils/scenario-checker/README.md).
 
 ## Manual Scenario Execution Using RViz
 
