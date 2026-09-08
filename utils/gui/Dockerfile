@@ -8,6 +8,9 @@ RUN apt-get update \
     && useradd --create-home --shell /bin/sh openadsim \
     && rm -rf /var/lib/apt/lists/*
 
+# Suppress Chromium's placeholder EULA dialog (Debian bug #1145071).
+RUN python -c 'import json; from pathlib import Path; p = Path("/etc/chromium/master_preferences"); prefs = json.loads(p.read_text()) if p.exists() else {}; prefs.setdefault("distribution", {})["require_eula"] = False; p.write_text(json.dumps(prefs))'
+
 # Install Python dependencies. Streamlit 1.61.0 is incompatible with the
 # breaking GZipResponder signature introduced in Starlette 1.4.0.
 RUN pip install --no-cache-dir \
