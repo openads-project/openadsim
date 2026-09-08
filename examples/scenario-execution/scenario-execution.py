@@ -822,6 +822,7 @@ class ScenarioExecutor:
             return 1
         LOGGER.info("Discovered %s scenarios", len(scenarios))
 
+        failures: list[tuple[Path, str]] = []
         xhost_enabled = False
         try:
             run_command(
@@ -832,7 +833,15 @@ class ScenarioExecutor:
             )
             xhost_enabled = True
             for index, scenario_file in enumerate(scenarios, start=1):
-                self.run_scenario(scenario_file, index, len(scenarios))
+                try:
+                    self.run_scenario(scenario_file, index, len(scenarios))
+                except (subprocess.CalledProcessError, ScenarioExecutionError, OSError) as error:
+                    reason = str(error)
+                    failures.append((scenario_file, reason))
+                    LOGGER.error(
+                        "[%s/%s] %s Failed | %s",
+                        index, len(scenarios), repo_relative(scenario_file), reason,
+                    )
                 if index < len(scenarios) and self.args.wait_seconds != "0":
                     LOGGER.info(
                         "Waiting %s seconds before the next scenario",
@@ -848,7 +857,13 @@ class ScenarioExecutor:
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
-        return 0
+        LOGGER.info(
+            "Execution summary | total=%s | succeeded=%s | failed=%s",
+            len(scenarios), len(scenarios) - len(failures), len(failures),
+        )
+        for scenario_file, reason in failures:
+            LOGGER.error("Failed scenario: %s | %s", repo_relative(scenario_file), reason)
+        return 1 if failures else 0
 
 
 def parse_delay(value: str) -> str:
