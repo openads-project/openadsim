@@ -49,8 +49,6 @@
               </Position>
             </TeleportAction>
           </PrivateAction>
-        </Private>
-        <Private entityRef="ego_vehicle">
           <PrivateAction>
             <LongitudinalAction>
               <SpeedAction>
@@ -61,8 +59,6 @@
               </SpeedAction>
             </LongitudinalAction>
           </PrivateAction>
-        </Private>
-        <Private entityRef="ego_vehicle">
           <PrivateAction>
             <ControllerAction>
               <OverrideControllerValueAction>
