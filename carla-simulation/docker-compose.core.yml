@@ -73,12 +73,12 @@ services:
     profiles:
       - carla
     extends:
-      file: ../simulation-components/simulation_adapter/docker-compose.yml
-      service: simulation-adapter
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/simulation_adapter:v1.4.1
     environment:
       NAMESPACE: /carla
       NAME: simulation_adapter
-      LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
       # inputs
       INPUT_EGO_DATA_TOPIC: /carla/carla_converter/ego_vehicle/ego_data
       INPUT_MAP_INFO_TOPIC: /carla/carla_converter/map_info
@@ -91,6 +91,31 @@ services:
       OUTPUT_EGO_VEHICLE_STATE_TOPIC: /simulation/vehicle_state
       OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
       OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
+      # other
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+      PARAMS: ${PARAMS:-/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml}
+      LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch simulation_adapter simulation_adapter.launch.py \
+          namespace:=$${NAMESPACE} \
+          name:=$${NAME} \
+          log_level:=$${LOG_LEVEL} \
+          use_sim_time:=$${USE_SIM_TIME} \
+          params:=$${PARAMS} \
+          load_lanelet_map:=$${LOAD_LANELET_MAP} \
+          input_map_info_topic:=$${INPUT_MAP_INFO_TOPIC} \
+          input_ego_data_topic:=$${INPUT_EGO_DATA_TOPIC} \
+          input_object_list_topic:=$${INPUT_OBJECT_LIST_TOPIC} \
+          input_trajectory_topic:=$${INPUT_TRAJECTORY_TOPIC} \
+          output_ego_data_topic:=$${OUTPUT_EGO_DATA_TOPIC} \
+          output_object_list_topic:=$${OUTPUT_OBJECT_LIST_TOPIC} \
+          output_object_list_fixed_topic:=$${OUTPUT_OBJECT_LIST_FIXED_TOPIC} \
+          output_ego_imu_topic:=$${OUTPUT_EGO_IMU_TOPIC} \
+          output_ego_odometry_topic:=$${OUTPUT_EGO_ODOMETRY_TOPIC} \
+          output_ego_vehicle_state_topic:=$${OUTPUT_EGO_VEHICLE_STATE_TOPIC}
     volumes:
       - ./config/simulation_adapter/params_${VEHICLE:-karl}.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
-
