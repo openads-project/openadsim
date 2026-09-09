@@ -64,7 +64,7 @@ services:
     environment:
       NAMESPACE: /carla
       # outputs
-      TRAFFIC_LIGHTS_TOPIC: ~/traffic_light
+      TRAFFIC_LIGHTS_TOPIC: ~/traffic_lights
     volumes:
       - ./config/carla_converter/params.yml:/docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
 
