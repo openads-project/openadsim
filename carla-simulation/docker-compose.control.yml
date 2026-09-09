@@ -5,7 +5,7 @@ services:
       - carla
     extends:
       file: ./carla-services.yml
-      service: carla-ros-bridge
+      service: carla-ackermann-control
     environment:
       PARAMS: /docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml
       ACKERMANN_COMMAND_TOPIC: /control/ackermann_trajectory_control/controls
@@ -18,7 +18,7 @@ services:
       - carla
     extends:
       file: ./carla-services.yml
-      service: carla-ros-bridge
+      service: carla-manual-control
     privileged: true
 
   carla-control-active-bridge:
