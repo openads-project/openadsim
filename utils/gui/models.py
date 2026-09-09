@@ -581,6 +581,8 @@ class SimulationConfig(BaseModel):
                 options = filter_files_by_directory(
                     repo_root, discover_files_with_suffix(repo_root, suffix), opendrive,
                 ) if opendrive else []
+                if suffix == ".xosc" and opendrive:
+                    options = filter_xosc_files_by_map(repo_root, options, opendrive)
                 current = str(getattr(model, attribute)).strip()
                 if current not in options:
                     setattr(model, attribute, options[0] if len(options) == 1 else "")
@@ -892,7 +894,7 @@ class SimulationConfig(BaseModel):
         lanelet_options = discover_files_with_suffix(repo_root, ".osm")
         opendrive_options = discover_files_with_suffix(repo_root, ".xodr")
         if current_opendrive:
-            scenario_options = filter_files_by_directory(
+            scenario_options = filter_xosc_files_by_map(
                 repo_root, scenario_options, current_opendrive,
             )
             lanelet_options = filter_files_by_directory(
