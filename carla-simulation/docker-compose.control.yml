@@ -10,6 +10,7 @@ services:
       PARAMS: /docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml
       ACKERMANN_COMMAND_TOPIC: /control/ackermann_trajectory_control/controls
       VEHICLE_CONTROL_COMMAND_TOPIC: /carla/ego_vehicle/vehicle_control_cmd_automated
+    image: ghcr.io/openads-project/carla-ros-bridge:latest_update-deployment_ci # TODO remove
     volumes:
       - ./config/carla_ackermann_control/params.yml:/docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml
 
