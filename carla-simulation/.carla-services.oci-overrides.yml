@@ -1,0 +1,88 @@
+# Remote compose files with overrides defined here can be rendered by
+# `../openadstack/openadstack/utils/scripts/render_compose_sources.py`
+
+include:
+  - oci://ghcr.io/openads-project/carla-simulator/compose:helm-server
+  - oci://ghcr.io/openads-project/carla-simulator/compose:helm-client
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_spawn_objects
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_ros_bridge
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_ackermann_control
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_manual_control
+  - oci://ghcr.io/openads-project/carla-scenario-runner/compose:v0.10.0-1.1.0
+  - oci://ghcr.io/openads-project/carla_converter/compose:v1.3.1
+  - oci://ghcr.io/openads-project/ros_middleware_bridge/compose:v1.2.1
+
+services:
+
+  carla-server:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: gpu-x11-service
+    ipc: service:zenoh-router
+
+  carla-server-offscreen:
+    ipc: service:zenoh-router
+
+  carla-client:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: gpu-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  carla-ros-bridge:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  carla-spawn-objects:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  carla-ackermann-control:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  carla-manual-control:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  carla-scenario-runner-ros:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  carla-converter:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  ros-middleware-bridge:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
