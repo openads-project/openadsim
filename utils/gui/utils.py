@@ -7,6 +7,16 @@ import xml.etree.ElementTree as ET
 IMPORT_ROOT_PARTS = ("carla-simulation", "scenarios", "custom-imports")
 
 
+def filter_files_by_directory(
+    repo_root: Path, files: list[str], reference: str,
+) -> list[str]:
+    directory = (repo_root / reference.replace("\\", "/")).resolve().parent
+    return [
+        path for path in files
+        if (repo_root / path.replace("\\", "/")).resolve().parent == directory
+    ]
+
+
 def discover_files_with_suffix(
     repo_root: Path,
     suffixes: str | tuple[str, ...] | list[str],

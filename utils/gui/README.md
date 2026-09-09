@@ -8,7 +8,7 @@ It can:
 - apply presets such as `scenario-execution` and `cooperative-perception`
 - configure profiles, vehicle, sensors, map, scenario and additional options
 - validate and import OpenSCENARIO bundles with optional OpenDRIVE/Lanelet2 maps
-- keep scenario, OpenDRIVE and Lanelet2 dropdowns locked to one selected import bundle
+- show scenarios and Lanelet2 files from the selected OpenDRIVE file's directory, while keeping OpenDRIVE maps freely selectable
 - validate configuration dependencies and show warnings/errors
 - automatically sync valid drafts back to `.env`
 - run `docker compose up -d` and stop/remove running containers

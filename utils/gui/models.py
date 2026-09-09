@@ -12,10 +12,8 @@ from typing import Any, Callable, ClassVar, Optional
 from pydantic import BaseModel, Field
 from utils import (
     discover_files_with_suffix,
-    filter_files_by_import_bundle,
+    filter_files_by_directory,
     filter_xosc_files_by_map,
-    first_import_bundle,
-    import_bundle_directory,
 )
 
 
@@ -499,34 +497,6 @@ class SimulationConfig(BaseModel):
         if trigger_path in {"map.prebuilt_map", "map.custom_opendrive"}:
             self.map.apply_ui_constraints(trigger_path)
 
-        bundle_fields = {
-            "map.custom_opendrive": (self.map, "custom_opendrive"),
-            "map.custom_lanelet": (self.map, "custom_lanelet"),
-            "scenario.scenario_file": (self.scenario, "scenario_file"),
-        }
-        if trigger_path not in bundle_fields:
-            return
-        selected_model, selected_attribute = bundle_fields[trigger_path]
-        selected_value = str(getattr(selected_model, selected_attribute)).strip()
-        if not selected_value:
-            return
-        selected_bundle = import_bundle_directory(selected_value)
-        for path, (model, attribute) in bundle_fields.items():
-            if path == trigger_path:
-                continue
-            value = str(getattr(model, attribute)).strip()
-            if not value:
-                continue
-            value_bundle = import_bundle_directory(value)
-            if (
-                selected_bundle is not None
-                and value_bundle != selected_bundle
-            ) or (
-                selected_bundle is None
-                and value_bundle is not None
-            ):
-                setattr(model, attribute, "")
-
     def normalized_copy(self) -> "SimulationConfig":
         config = SimulationConfig(**self.model_dump())
         config.apply_defaults()
@@ -602,40 +572,23 @@ class SimulationConfig(BaseModel):
         self.apply_defaults()
         self.apply_ui_constraints(path)
 
-        bundle_fields = {
-            "map.custom_opendrive": (self.map, "custom_opendrive", ".xodr"),
-            "map.custom_lanelet": (self.map, "custom_lanelet", ".osm"),
-            "scenario.scenario_file": (self.scenario, "scenario_file", ".xosc"),
-        }
-        selected_bundle = (
-            import_bundle_directory(str(self.get_value(path)))
-            if path in bundle_fields
-            else None
-        )
-        if repo_root is not None and selected_bundle is not None:
-            bundle_directory = repo_root / selected_bundle
-            for model, attribute, suffix in bundle_fields.values():
-                matches = sorted(bundle_directory.glob(f"*{suffix}"))
-                selected_file = (
-                    matches[0].relative_to(repo_root).as_posix()
-                    if len(matches) == 1
-                    else ""
-                )
-                setattr(model, attribute, selected_file)
-            self.apply_defaults()
+        if repo_root is not None and path == "map.custom_opendrive":
+            opendrive = self.map.custom_opendrive.strip()
+            for model, attribute, suffix in (
+                (self.map, "custom_lanelet", ".osm"),
+                (self.scenario, "scenario_file", ".xosc"),
+            ):
+                options = filter_files_by_directory(
+                    repo_root, discover_files_with_suffix(repo_root, suffix), opendrive,
+                ) if opendrive else []
+                current = str(getattr(model, attribute)).strip()
+                if current not in options:
+                    setattr(model, attribute, options[0] if len(options) == 1 else "")
 
-        if (
-            repo_root is not None
-            and path in {"map.prebuilt_map", "map.custom_opendrive"}
-            and self.scenario.scenario_file.strip()
-        ):
-            scenario_map = self.map.custom_opendrive.strip() or self.map.export_map()
-            matching_scenarios = filter_xosc_files_by_map(
-                repo_root,
-                [self.scenario.scenario_file.strip()],
-                scenario_map,
-            )
-            if not matching_scenarios:
+        if repo_root is not None and path == "map.prebuilt_map":
+            if not filter_xosc_files_by_map(
+                repo_root, [self.scenario.scenario_file], self.map.export_map(),
+            ):
                 self.scenario.scenario_file = ""
 
     @staticmethod
@@ -935,70 +888,36 @@ class SimulationConfig(BaseModel):
         current_scenario = self.scenario.scenario_file.strip()
         current_lanelet = self.map.custom_lanelet.strip()
         current_opendrive = self.map.custom_opendrive.strip()
-        active_import_bundle = first_import_bundle(
-            current_opendrive,
-            current_lanelet,
-            current_scenario,
-        )
-        scenario_map = self.map.custom_opendrive.strip() or self.map.export_map()
         scenario_options = discover_files_with_suffix(repo_root, ".xosc")
         lanelet_options = discover_files_with_suffix(repo_root, ".osm")
         opendrive_options = discover_files_with_suffix(repo_root, ".xodr")
-        if active_import_bundle:
-            scenario_options = filter_files_by_import_bundle(
-                scenario_options,
-                active_import_bundle,
+        if current_opendrive:
+            scenario_options = filter_files_by_directory(
+                repo_root, scenario_options, current_opendrive,
             )
-            lanelet_options = filter_files_by_import_bundle(
-                lanelet_options,
-                active_import_bundle,
+            lanelet_options = filter_files_by_directory(
+                repo_root, lanelet_options, current_opendrive,
             )
-            opendrive_options = filter_files_by_import_bundle(
-                opendrive_options,
-                active_import_bundle,
-            )
-            if import_bundle_directory(current_opendrive) == active_import_bundle:
-                scenario_options = filter_xosc_files_by_map(
-                    repo_root,
-                    scenario_options,
-                    current_opendrive,
-                )
         else:
             scenario_options = filter_xosc_files_by_map(
-                repo_root,
-                scenario_options,
-                scenario_map,
+                repo_root, scenario_options, self.map.export_map(),
             )
+            if current_lanelet and current_lanelet not in lanelet_options:
+                lanelet_options = [current_lanelet] + lanelet_options
+            if (
+                current_scenario and current_scenario not in scenario_options
+                and not self.map.export_map()
+            ):
+                scenario_options = [current_scenario] + scenario_options
         sumo_selected = self.additional.simulation == SimulationProfile.SUMO
         scenario_enabled = (
             not sumo_selected
             and self.additional.testing_profile != TestingProfile.DISABLED
         )
-        if (
-            current_scenario
-            and current_scenario not in scenario_options
-            and not scenario_map.strip()
-            and not active_import_bundle
-        ):
-            scenario_options = [current_scenario] + scenario_options
-
-        if (
-            current_lanelet
-            and current_lanelet not in lanelet_options
-            and (
-                not active_import_bundle
-                or import_bundle_directory(current_lanelet) == active_import_bundle
-            )
-        ):
-            lanelet_options = [current_lanelet] + lanelet_options
 
         if (
             current_opendrive
             and current_opendrive not in opendrive_options
-            and (
-                not active_import_bundle
-                or import_bundle_directory(current_opendrive) == active_import_bundle
-            )
         ):
             opendrive_options = [current_opendrive] + opendrive_options
 
@@ -1014,13 +933,13 @@ class SimulationConfig(BaseModel):
             if sumo_selected
             else "Definition of a prebuilt or custom map."
         )
-        bundle_lock_description = (
-            f" Import bundle locked to {active_import_bundle}; scenario and map "
-            "dropdowns only show files from this directory."
-            if active_import_bundle
+        directory_filter_description = (
+            " Scenarios and Lanelet2 files are shown only from the OpenDRIVE file’s directory."
+            " You can select a different OpenDRIVE map at any time."
+            if current_opendrive
             else ""
         )
-        map_section_description += bundle_lock_description
+        map_section_description += directory_filter_description
         map_source_description = (
             "Choose a SUMO map. Available maps: campus."
             "CUSTOM_LANELET can still be used optionally."
@@ -1032,7 +951,7 @@ class SimulationConfig(BaseModel):
         )
         scenario_control = (
             "select_or_text"
-            if scenario_options or active_import_bundle
+            if scenario_options or current_opendrive
             else "text"
         )
         vehicle_options = (
@@ -1112,7 +1031,6 @@ class SimulationConfig(BaseModel):
                     control="select_or_text",
                     options=tuple(opendrive_select_options),
                     disabled=sumo_selected or self.map.prebuilt_map is not None,
-                    strict_options=bool(active_import_bundle),
                 ),
                 UiField(
                     path="map.custom_lanelet",
@@ -1124,7 +1042,7 @@ class SimulationConfig(BaseModel):
                     ),
                     control="select_or_text",
                     options=tuple(lanelet_select_options),
-                    strict_options=bool(active_import_bundle),
+                    strict_options=bool(current_opendrive),
                 ),
                 UiField(
                     path="map.origin_lat",
@@ -1157,7 +1075,7 @@ class SimulationConfig(BaseModel):
             title="Scenario",
             description=(
                 "Scenario file used for manual or automated testing."
-                + bundle_lock_description
+                + directory_filter_description
             ),
             fields=(
                 UiField(
@@ -1180,7 +1098,7 @@ class SimulationConfig(BaseModel):
                     options=tuple(scenario_select_options),
                     empty_option_label="No scenario selected",
                     disabled=not scenario_enabled,
-                    strict_options=bool(active_import_bundle),
+                    strict_options=bool(current_opendrive),
                 ),
             ),
         )
