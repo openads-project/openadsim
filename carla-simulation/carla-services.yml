@@ -58,6 +58,9 @@ services:
     command: sleep infinity
 
   carla-spawn-objects:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
@@ -90,6 +93,9 @@ services:
           control_id:=$${CONTROL_ID}
 
   carla-ros-bridge:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
@@ -101,8 +107,7 @@ services:
       # --- other -----
       LOG_LEVEL: ${LOG_LEVEL:-info}
       USE_SIM_TIME: ${USE_SIM_TIME:-True}
-      # HOST: ${HOST:-carla-server}
-      HOST: carla-server
+      HOST: ${HOST:-carla-server}
       PORT: ${PORT:-2000}
       TIMEOUT: ${TIMEOUT:-5000}
       PASSIVE: ${PASSIVE:-False}
@@ -163,6 +168,9 @@ services:
           lane_waypoints_count:=$${LANE_WAYPOINTS_COUNT}
 
   carla-ackermann-control:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
@@ -195,6 +203,9 @@ services:
     #   - ./settings.yaml:/docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/settings.yaml
 
   carla-manual-control:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
@@ -221,14 +232,16 @@ services:
           window_height:=$${WINDOW_HEIGHT}
 
   carla-scenario-runner-ros:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
     image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.0
     environment:
       # --- name ------
-      # CARLA_HOST: carla-simulator
-      CARLA_HOST: carla-server
+      CARLA_HOST: carla-simulator
       CARLA_PORT: 2000
       SCENARIO_DIRECTORY: /scenarios
     command:
@@ -242,6 +255,9 @@ services:
           scenario_runner_path:=$$SCENARIO_RUNNER_ROOT
 
   carla-converter:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
@@ -275,6 +291,9 @@ services:
     #   - ./params.yml:/docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
 
   ros-middleware-bridge:
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
