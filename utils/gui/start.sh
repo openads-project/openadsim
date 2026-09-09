@@ -54,8 +54,14 @@ else
     --app=http://127.0.0.1:8501 >/tmp/openadsim-browser.log 2>&1 &
   browser_pid="$!"
   sleep 2
-  if ! kill -0 "$browser_pid" >/dev/null 2>&1 && ! pgrep -x chromium >/dev/null 2>&1; then
+  if ! kill -0 "$browser_pid" >/dev/null 2>&1; then
     warn_no_x11 "chromium exited immediately. See /tmp/openadsim-browser.log in the container."
+  else
+    wait "$browser_pid" || true
+    echo "Chromium closed; stopping the GUI container."
+    kill "$streamlit_pid" 2>/dev/null || true
+    wait "$streamlit_pid" 2>/dev/null || true
+    exit 0
   fi
 fi
 

@@ -12,6 +12,7 @@ from typing import Any, Callable, ClassVar, Optional
 from pydantic import BaseModel, Field
 from utils import (
     discover_files_with_suffix,
+    filter_files_by_directory,
     filter_xosc_files_by_map,
 )
 
@@ -140,6 +141,7 @@ class UiField:
     disabled: bool = False
     none_as_empty: bool = False
     empty_option_label: str = ""
+    strict_options: bool = False
 
 
 @dataclass(frozen=True)
@@ -547,7 +549,13 @@ class SimulationConfig(BaseModel):
 
         return value
 
-    def set_value(self, path: str, value: Any):
+    def set_value(
+        self,
+        path: str,
+        value: Any,
+        *,
+        repo_root: Optional[Path] = None,
+    ):
         parts = path.split(".")
         target: Any = self
         for part in parts[:-1]:
@@ -563,6 +571,27 @@ class SimulationConfig(BaseModel):
 
         self.apply_defaults()
         self.apply_ui_constraints(path)
+
+        if repo_root is not None and path == "map.custom_opendrive":
+            opendrive = self.map.custom_opendrive.strip()
+            for model, attribute, suffix in (
+                (self.map, "custom_lanelet", ".osm"),
+                (self.scenario, "scenario_file", ".xosc"),
+            ):
+                options = filter_files_by_directory(
+                    repo_root, discover_files_with_suffix(repo_root, suffix), opendrive,
+                ) if opendrive else []
+                if suffix == ".xosc" and opendrive:
+                    options = filter_xosc_files_by_map(repo_root, options, opendrive)
+                current = str(getattr(model, attribute)).strip()
+                if current not in options:
+                    setattr(model, attribute, options[0] if len(options) == 1 else "")
+
+        if repo_root is not None and path == "map.prebuilt_map":
+            if not filter_xosc_files_by_map(
+                repo_root, [self.scenario.scenario_file], self.map.export_map(),
+            ):
+                self.scenario.scenario_file = ""
 
     @staticmethod
     def _parse_bool(value: str, default: bool = False) -> bool:
@@ -858,30 +887,40 @@ class SimulationConfig(BaseModel):
             file.writelines(self.to_env_lines())
 
     def get_ui_sections(self, repo_root: Path) -> list[UiSection]:
-        scenario_map = self.map.custom_opendrive.strip() or self.map.export_map()
+        current_scenario = self.scenario.scenario_file.strip()
+        current_lanelet = self.map.custom_lanelet.strip()
+        current_opendrive = self.map.custom_opendrive.strip()
         scenario_options = discover_files_with_suffix(repo_root, ".xosc")
-        scenario_options = filter_xosc_files_by_map(
-            repo_root,
-            scenario_options,
-            scenario_map,
-        )
         lanelet_options = discover_files_with_suffix(repo_root, ".osm")
         opendrive_options = discover_files_with_suffix(repo_root, ".xodr")
+        if current_opendrive:
+            scenario_options = filter_xosc_files_by_map(
+                repo_root, scenario_options, current_opendrive,
+            )
+            lanelet_options = filter_files_by_directory(
+                repo_root, lanelet_options, current_opendrive,
+            )
+        else:
+            scenario_options = filter_xosc_files_by_map(
+                repo_root, scenario_options, self.map.export_map(),
+            )
+            if current_lanelet and current_lanelet not in lanelet_options:
+                lanelet_options = [current_lanelet] + lanelet_options
+            if (
+                current_scenario and current_scenario not in scenario_options
+                and not self.map.export_map()
+            ):
+                scenario_options = [current_scenario] + scenario_options
         sumo_selected = self.additional.simulation == SimulationProfile.SUMO
         scenario_enabled = (
             not sumo_selected
             and self.additional.testing_profile != TestingProfile.DISABLED
         )
-        current_scenario = self.scenario.scenario_file.strip()
-        if current_scenario and current_scenario not in scenario_options and not scenario_map.strip():
-            scenario_options = [current_scenario] + scenario_options
 
-        current_lanelet = self.map.custom_lanelet.strip()
-        if current_lanelet and current_lanelet not in lanelet_options:
-            lanelet_options = [current_lanelet] + lanelet_options
-
-        current_opendrive = self.map.custom_opendrive.strip()
-        if current_opendrive and current_opendrive not in opendrive_options:
+        if (
+            current_opendrive
+            and current_opendrive not in opendrive_options
+        ):
             opendrive_options = [current_opendrive] + opendrive_options
 
         lanelet_select_options = [""] + lanelet_options
@@ -896,6 +935,13 @@ class SimulationConfig(BaseModel):
             if sumo_selected
             else "Definition of a prebuilt or custom map."
         )
+        directory_filter_description = (
+            " Scenarios and Lanelet2 files are shown only from the OpenDRIVE file’s directory."
+            " You can select a different OpenDRIVE map at any time."
+            if current_opendrive
+            else ""
+        )
+        map_section_description += directory_filter_description
         map_source_description = (
             "Choose a SUMO map. Available maps: campus."
             "CUSTOM_LANELET can still be used optionally."
@@ -905,7 +951,11 @@ class SimulationConfig(BaseModel):
                 "CUSTOM_OPENDRIVE and CUSTOM_LANELET."
             )
         )
-        scenario_control = "select_or_text" if scenario_options else "text"
+        scenario_control = (
+            "select_or_text"
+            if scenario_options or current_opendrive
+            else "text"
+        )
         vehicle_options = (
             (Vehicle.KARL.value,)
             if sumo_selected
@@ -978,7 +1028,7 @@ class SimulationConfig(BaseModel):
                     label="Custom OpenDRIVE File",
                     description=(
                         "Path to .xodr file. Requires map source 'Custom OpenDRIVE'; "
-                        "CUSTOM_LANELET is required."
+                        "CUSTOM_LANELET and matching scenarios must use the same directory."
                     ),
                     control="select_or_text",
                     options=tuple(opendrive_select_options),
@@ -987,10 +1037,14 @@ class SimulationConfig(BaseModel):
                 UiField(
                     path="map.custom_lanelet",
                     env_name="CUSTOM_LANELET",
-                    label="Custom Lanelet File",
-                    description="Optional for prebuilt maps; required for 'Custom OpenDRIVE'",
+                    label="Custom Lanelet2 File",
+                    description=(
+                        "Optional for prebuilt maps; required for 'Custom OpenDRIVE' "
+                        "and must share its scenario directory."
+                    ),
                     control="select_or_text",
                     options=tuple(lanelet_select_options),
+                    strict_options=bool(current_opendrive),
                 ),
                 UiField(
                     path="map.origin_lat",
@@ -1011,8 +1065,8 @@ class SimulationConfig(BaseModel):
                 UiField(
                     path="map.effective_lanelet_reload",
                     env_name="LANELET_RELOAD",
-                    label="Lanelet Reload (derived)",
-                    description="Disabled when custom lanelet map is used.",
+                    label="Lanelet2 Reload (derived)",
+                    description="Disabled when custom Lanelet2 map is used.",
                     control="bool",
                     disabled=True,
                 ),
@@ -1021,7 +1075,10 @@ class SimulationConfig(BaseModel):
 
         scenario_section = UiSection(
             title="Scenario",
-            description="Scenario file used for manual or automated testing.",
+            description=(
+                "Scenario file used for manual or automated testing."
+                + directory_filter_description
+            ),
             fields=(
                 UiField(
                     path="map.spawn_point",
@@ -1043,6 +1100,7 @@ class SimulationConfig(BaseModel):
                     options=tuple(scenario_select_options),
                     empty_option_label="No scenario selected",
                     disabled=not scenario_enabled,
+                    strict_options=bool(current_opendrive),
                 ),
             ),
         )

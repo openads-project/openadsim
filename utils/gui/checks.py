@@ -1,7 +1,9 @@
 """Domain dependency checks for simulation configuration."""
 
+import importlib.util
 from dataclasses import dataclass, field
 from pathlib import Path
+import sys
 from typing import Optional
 
 from models import (
@@ -42,6 +44,34 @@ class EnvValidationResult:
     warnings: list[str] = field(default_factory=list)
     config: Optional[SimulationConfig] = None
     raw_values: dict[str, str] = field(default_factory=dict)
+
+
+_SCENARIO_CHECKER_MODULE = None
+
+
+def _load_scenario_checker(repo_root: Path):
+    global _SCENARIO_CHECKER_MODULE
+    if _SCENARIO_CHECKER_MODULE is not None:
+        return _SCENARIO_CHECKER_MODULE
+    checker_path = repo_root / "utils/scenario-checker/scenario_checker.py"
+    if not checker_path.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location(
+        "openadsim_scenario_checker",
+        checker_path,
+    )
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    _SCENARIO_CHECKER_MODULE = module
+    return module
+
+
+def _repo_path(repo_root: Path, value: str) -> Path:
+    path = Path(value)
+    return path if path.is_absolute() else repo_root / path
 
 
 def _is_float(value: str) -> bool:
@@ -150,6 +180,59 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
                 )
             )
 
+        if repo_root is not None:
+            custom_opendrive = _repo_path(
+                repo_root,
+                config.map.custom_opendrive.strip(),
+            ).resolve()
+            custom_lanelet_value = config.map.custom_lanelet.strip()
+            custom_lanelet = (
+                _repo_path(repo_root, custom_lanelet_value).resolve()
+                if custom_lanelet_value
+                else None
+            )
+            if custom_opendrive.suffix.lower() != ".xodr":
+                result.errors.append(
+                    ValidationIssue(
+                        path="map.custom_opendrive",
+                        message="CUSTOM_OPENDRIVE must end in .xodr",
+                    )
+                )
+            if not custom_opendrive.is_file():
+                result.errors.append(
+                    ValidationIssue(
+                        path="map.custom_opendrive",
+                        message=f"CUSTOM_OPENDRIVE does not exist: {custom_opendrive}",
+                    )
+                )
+            if custom_lanelet is not None and not custom_lanelet.is_file():
+                result.errors.append(
+                    ValidationIssue(
+                        path="map.custom_lanelet",
+                        message=f"CUSTOM_LANELET does not exist: {custom_lanelet}",
+                    )
+                )
+            if custom_lanelet is not None and custom_lanelet.suffix.lower() != ".osm":
+                result.errors.append(
+                    ValidationIssue(
+                        path="map.custom_lanelet",
+                        message="CUSTOM_LANELET must end in .osm",
+                    )
+                )
+            if (
+                custom_lanelet is not None
+                and custom_opendrive.parent != custom_lanelet.parent
+            ):
+                result.errors.append(
+                    ValidationIssue(
+                        path="map.custom_lanelet",
+                        message=(
+                            "CUSTOM_OPENDRIVE and CUSTOM_LANELET must be in the "
+                            "same scenario directory"
+                        ),
+                    )
+                )
+
         if config.map.prebuilt_map is None and config.map.map_name.strip():
             result.errors.append(
                 ValidationIssue(
@@ -230,6 +313,61 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
                 level="warning",
             )
         )
+
+    if config.scenario.scenario_file.strip() and repo_root is not None:
+        scenario_file = _repo_path(repo_root, config.scenario.scenario_file.strip())
+        if not scenario_file.is_file():
+            result.errors.append(
+                ValidationIssue(
+                    path="scenario.scenario_file",
+                    message=f"SCENARIO_FILE does not exist: {scenario_file}",
+                )
+            )
+        else:
+            checker = _load_scenario_checker(repo_root)
+            if checker is not None:
+                custom_opendrive = config.map.custom_opendrive.strip()
+                custom_lanelet = config.map.custom_lanelet.strip()
+                scenario_report = checker.validate_scenario(
+                    scenario_file,
+                    repo_root=repo_root,
+                    opendrive=(
+                        _repo_path(repo_root, custom_opendrive)
+                        if custom_opendrive
+                        else None
+                    ),
+                    lanelet=(
+                        _repo_path(repo_root, custom_lanelet)
+                        if custom_opendrive and custom_lanelet
+                        else None
+                    ),
+                    expected_map=("" if custom_opendrive else config.map.export_map()),
+                    expected_opendrive=(
+                        _repo_path(repo_root, custom_opendrive)
+                        if custom_opendrive
+                        else None
+                    ),
+                    expected_lanelet=(
+                        _repo_path(repo_root, custom_lanelet)
+                        if custom_opendrive and custom_lanelet
+                        else None
+                    ),
+                )
+                for message in scenario_report.errors:
+                    result.errors.append(
+                        ValidationIssue(
+                            path="scenario.scenario_file",
+                            message=message,
+                        )
+                    )
+                for message in scenario_report.warnings:
+                    result.warnings.append(
+                        ValidationIssue(
+                            path="scenario.scenario_file",
+                            message=message,
+                            level="warning",
+                        )
+                    )
 
     # Additional options
     if sumo_selected and config.additional.perception_profile != PerceptionProfile.DISABLED:

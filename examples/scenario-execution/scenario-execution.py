@@ -23,6 +23,7 @@ DEFAULT_SCENARIO_FILTER = "*.xosc"
 DEFAULT_WAIT_SECONDS = "5"
 PROGRESS_INTERVAL_SECONDS = 10
 COMPOSE_COMMAND = ("docker", "compose", "--env-file", "/dev/null")
+SCENARIO_CHECKER = ROOT_DIR / "utils/scenario-checker/scenario_checker.py"
 ENV_NAME_PATTERN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 DELAY_PATTERN = re.compile(r"^[0-9]+(?:[.][0-9]+)?$")
 
@@ -263,6 +264,65 @@ def run_command(
         raise ScenarioExecutionError(f"Command not found: {command[0]}") from error
 
 
+def validate_scenario_compatibility(
+    scenario_file: Path,
+    environment: dict[str, str],
+) -> None:
+    require_file(SCENARIO_CHECKER, "scenario checker")
+    command = [
+        sys.executable,
+        str(SCENARIO_CHECKER),
+        "validate",
+        str(scenario_file),
+        "--repo-root",
+        str(ROOT_DIR),
+        "--json",
+    ]
+    if environment.get("MAP"):
+        command.extend(["--expected-map", environment["MAP"]])
+    if environment.get("CUSTOM_OPENDRIVE"):
+        opendrive_path = str(resolve_path(environment["CUSTOM_OPENDRIVE"]))
+        command.extend(
+            [
+                "--opendrive",
+                opendrive_path,
+                "--expected-opendrive",
+                opendrive_path,
+            ]
+        )
+    if environment.get("CUSTOM_LANELET"):
+        lanelet_path = str(resolve_path(environment["CUSTOM_LANELET"]))
+        command.extend(
+            [
+                "--lanelet",
+                lanelet_path,
+                "--expected-lanelet",
+                lanelet_path,
+            ]
+        )
+
+    completed = run_command(
+        command,
+        os.environ.copy(),
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        payload = json.loads(completed.stdout or "{}")
+    except json.JSONDecodeError as error:
+        raise ScenarioExecutionError(
+            f"Scenario checker returned invalid output: {completed.stderr.strip()}"
+        ) from error
+    for warning in payload.get("warnings", []):
+        LOGGER.warning("Scenario validation: %s", warning)
+    if completed.returncode or not payload.get("valid"):
+        errors = payload.get("errors", [])
+        raise ScenarioExecutionError(
+            "Scenario validation failed: " + "; ".join(errors or ["unknown error"])
+        )
+
+
 class ScenarioExecutor:
     def __init__(self, args: argparse.Namespace, config_path: Path, config: Config):
         self.args = args
@@ -357,6 +417,7 @@ class ScenarioExecutor:
     ) -> MapSelection:
         configured_map = environment.get("MAP", "")
         configured_opendrive = environment.get("CUSTOM_OPENDRIVE", "")
+        logic_file = read_logic_file(scenario_file)
         if configured_map and configured_opendrive:
             raise ScenarioExecutionError(
                 f"MAP and CUSTOM_OPENDRIVE cannot both be non-empty for {scenario_file}."
@@ -365,6 +426,22 @@ class ScenarioExecutor:
         if configured_opendrive:
             opendrive = resolve_path(configured_opendrive)
             require_file(opendrive, "CUSTOM_OPENDRIVE file")
+            logic_reference = Path(logic_file.replace("\\", "/"))
+            if opendrive.parent != scenario_file.parent.resolve():
+                raise ScenarioExecutionError(
+                    "CUSTOM_OPENDRIVE must be in the same directory as the "
+                    f"OpenSCENARIO file: {opendrive}"
+                )
+            if (
+                logic_reference.is_absolute()
+                or logic_reference.parent != Path(".")
+                or logic_reference.name != opendrive.name
+            ):
+                raise ScenarioExecutionError(
+                    "LogicFile filepath must reference CUSTOM_OPENDRIVE in the same "
+                    "directory as the OpenSCENARIO file; expected only the filename "
+                    f"{opendrive.name!r}, got {logic_file!r}"
+                )
             environment["CUSTOM_OPENDRIVE"] = repo_relative(opendrive)
             environment["MAP"] = ""
             return MapSelection(
@@ -378,8 +455,13 @@ class ScenarioExecutor:
             environment["CUSTOM_OPENDRIVE"] = ""
             description = f"configured prebuilt CARLA map: {configured_map}"
         else:
-            logic_file = read_logic_file(scenario_file)
             if logic_file.lower().endswith(".xodr"):
+                logic_reference = Path(logic_file.replace("\\", "/"))
+                if logic_reference.is_absolute() or logic_reference.parent != Path("."):
+                    raise ScenarioExecutionError(
+                        "LogicFile must reference an OpenDRIVE filename in the same "
+                        f"directory as the OpenSCENARIO file, got {logic_file!r}"
+                    )
                 opendrive = resolve_path(logic_file, scenario_file.parent)
                 require_file(opendrive, "OpenDRIVE file referenced by the scenario")
                 environment["CUSTOM_OPENDRIVE"] = repo_relative(opendrive)
@@ -435,6 +517,11 @@ class ScenarioExecutor:
             )
 
         if lanelet_file:
+            if lanelet_file.parent != scenario_file.parent.resolve():
+                raise ScenarioExecutionError(
+                    "CUSTOM_LANELET must be in the same directory as the "
+                    f"OpenSCENARIO file: {lanelet_file}"
+                )
             environment["CUSTOM_LANELET"] = repo_relative(lanelet_file)
             environment["LANELET_RELOAD"] = "false"
             return (
@@ -645,16 +732,17 @@ class ScenarioExecutor:
             self.pulled_profile_sets.add(profile_set)
 
         try:
-            self.prepare_output(environment["SCENARIO_NAME"], environment)
             map_selection = self.resolve_map(scenario_file, environment)
             lanelet_description = self.resolve_lanelet(
                 scenario_file, map_selection, environment
             )
+            validate_scenario_compatibility(scenario_file, environment)
+            self.prepare_output(environment["SCENARIO_NAME"], environment)
             environment_file = self.save_environment(environment, snapshot_names)
             compose_log = ROOT_DIR / environment["DATA_DIRECTORY"] / "compose.log"
 
             LOGGER.info("%s Map: %s", scenario_label, map_selection.description)
-            LOGGER.info("%s Lanelet: %s", scenario_label, lanelet_description)
+            LOGGER.info("%s Lanelet2: %s", scenario_label, lanelet_description)
             LOGGER.info(
                 "%s Bag recording: %s",
                 scenario_label,
@@ -734,6 +822,7 @@ class ScenarioExecutor:
             return 1
         LOGGER.info("Discovered %s scenarios", len(scenarios))
 
+        failures: list[tuple[Path, str]] = []
         xhost_enabled = False
         try:
             run_command(
@@ -744,7 +833,15 @@ class ScenarioExecutor:
             )
             xhost_enabled = True
             for index, scenario_file in enumerate(scenarios, start=1):
-                self.run_scenario(scenario_file, index, len(scenarios))
+                try:
+                    self.run_scenario(scenario_file, index, len(scenarios))
+                except (subprocess.CalledProcessError, ScenarioExecutionError, OSError) as error:
+                    reason = str(error)
+                    failures.append((scenario_file, reason))
+                    LOGGER.error(
+                        "[%s/%s] %s Failed | %s",
+                        index, len(scenarios), repo_relative(scenario_file), reason,
+                    )
                 if index < len(scenarios) and self.args.wait_seconds != "0":
                     LOGGER.info(
                         "Waiting %s seconds before the next scenario",
@@ -760,7 +857,13 @@ class ScenarioExecutor:
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
-        return 0
+        LOGGER.info(
+            "Execution summary | total=%s | succeeded=%s | failed=%s",
+            len(scenarios), len(scenarios) - len(failures), len(failures),
+        )
+        for scenario_file, reason in failures:
+            LOGGER.error("Failed scenario: %s | %s", repo_relative(scenario_file), reason)
+        return 1 if failures else 0
 
 
 def parse_delay(value: str) -> str:
@@ -790,7 +893,7 @@ Configuration:
   MAP selects a prebuilt CARLA map. CUSTOM_OPENDRIVE selects an .xodr file.
   They override RoadNetwork/LogicFile and must not both be non-empty.
   CUSTOM_LANELET overrides automatic .osm detection. LANELET_RELOAD is
-  derived from the resolved Lanelet source. Use -b to record a ROS bag. The -o
+  derived from the resolved Lanelet2 source. Use -b to record a ROS bag. The -o
   option also enables bag recording and requires OP_OPENDRIVE for prebuilt
   CARLA maps.
 
