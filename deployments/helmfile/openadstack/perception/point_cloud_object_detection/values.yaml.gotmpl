@@ -24,6 +24,7 @@ openadservice:
   gpu: true
   env:
     NAMESPACE: /perception
+    PARAMS: /params.yml
     POINT_CLOUD_TOPIC: /perception/point_cloud_fusion/point_cloud
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}

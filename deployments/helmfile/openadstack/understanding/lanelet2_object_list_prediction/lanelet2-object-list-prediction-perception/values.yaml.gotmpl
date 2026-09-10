@@ -14,6 +14,7 @@ openadservice:
       object_list_topic:=${OBJECT_LIST_TOPIC}
   env:
     NAMESPACE: /understanding
+    PARAMS: /params.yml
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn

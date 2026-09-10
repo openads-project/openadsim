@@ -25,6 +25,7 @@ openadservice:
     EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
     OBJECT_CIRCLES_TOPIC: ~/visualization/object_circles
     OBJECT_LIST_TOPIC: /understanding/lanelet2_object_list_prediction/object_list
+    PARAMS: /params.yml
     REFERENCE_TRAJECTORY_TOPIC: /planning/simple_planner/trajectory
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
