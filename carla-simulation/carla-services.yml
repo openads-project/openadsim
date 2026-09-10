@@ -241,7 +241,7 @@ services:
     image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.0
     environment:
       # --- name ------
-      CARLA_HOST: carla-simulator
+      CARLA_HOST: carla-server
       CARLA_PORT: 2000
       SCENARIO_DIRECTORY: /scenarios
     command:

@@ -1,6 +1,6 @@
 services:
 
-  carla-environment:
+  carla-client:
     profiles:
       - traffic
     extends:
@@ -10,8 +10,13 @@ services:
       - /bin/bash
       - -ic
       - |
-        exec python3 /set_environment.py
+        exec python3 /set_environment.py \
+          --host "$${CARLA_HOST}" \
+          --port "$${CARLA_PORT}"
     stop_grace_period: 30s
+    environment:
+      CARLA_HOST: ${CARLA_HOST:-carla-server}
+      CARLA_PORT: ${CARLA_PORT:-2000}
     volumes:
       - ./config/carla-environment/set_environment.py:/set_environment.py:ro
 
@@ -22,6 +27,8 @@ services:
       file: ./carla-services.yml
       service: carla-scenario-runner-ros
     environment:
+      CARLA_HOST: ${CARLA_HOST:-carla-server}
+      CARLA_PORT: ${CARLA_PORT:-2000}
       MAP: ${MAP:-}
       CUSTOM_OPENDRIVE: ${CUSTOM_OPENDRIVE:-}
       CUSTOM_LANELET: ${CUSTOM_LANELET:-}

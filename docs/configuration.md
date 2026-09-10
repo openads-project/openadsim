@@ -68,7 +68,7 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | `carla-ackermann-control` | `carla` | Applies Ackermann control commands to the ego vehicle |
 | `carla-manual-control` | `carla` | Manual keyboard control of the vehicle |
 | `carla-control-active-bridge` | `carla` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
-| `carla-environment` | `traffic` | Defines random traffic and environment variation |
+| `carla-client` | `traffic` | Defines random traffic and environment variation |
 | `carla-scenario-runner-ros-manual-testing` | `manual-testing` | Interactive scenario execution through RViz |
 | `carla-scenario-runner-ros-automated-testing` | `automated-testing` | Direct scenario execution from `SCENARIO_FILE` |
 

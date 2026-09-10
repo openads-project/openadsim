@@ -8,8 +8,8 @@ openadservice:
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
     USE_SIM_TIME: {{ (default "True" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
-    HOST: {{ (default "carla-server" (env "HOST")) | quote }}
-    PORT: {{ (default "2000" (env "PORT")) | quote }}
+    HOST: {{ (default "carla-server" (index .Values.composeEnvironment "CARLA_HOST")) | quote }}
+    PORT: {{ (default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | quote }}
     TIMEOUT: {{ (default "5000" (env "TIMEOUT")) | quote }}
     PASSIVE: {{ (default "False" (env "PASSIVE")) | quote }}
     PUBLISH_CLOCK: {{ (default "True" (env "PUBLISH_CLOCK")) | quote }}

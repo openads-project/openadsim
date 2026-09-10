@@ -8,5 +8,17 @@ openadservice:
   - mountPath: /workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
     data: |
 {{ readFile "DefaultEngine.ini" | indent 6 }}
+  name: {{ (default "carla-server" (index .Values.composeEnvironment "CARLA_HOST")) }}
+  ports: []
+  expose:
+  - port: {{ ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) }}
+    targetPort: {{ ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) }}
+    protocol: TCP
+  - port: {{ add ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) 1 }}
+    targetPort: {{ add ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) 1 }}
+    protocol: TCP
+  - port: {{ add ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) 2 }}
+    targetPort: {{ add ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) 2 }}
+    protocol: TCP
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}

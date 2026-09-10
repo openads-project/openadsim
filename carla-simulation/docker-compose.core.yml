@@ -25,6 +25,8 @@ services:
       file: ./carla-services.yml
       service: carla-ros-bridge
     environment:
+      HOST: ${CARLA_HOST:-carla-server}
+      PORT: ${CARLA_PORT:-2000}
       TOWN: ${MAP:-/opendrive.xodr}
       IGNORE_ALTITUDE: "True"
     volumes:

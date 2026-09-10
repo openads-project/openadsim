@@ -1,0 +1,15 @@
+openadservice:
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    exec python3 /set_environment.py \
+      --host "${CARLA_HOST}" \
+      --port "${CARLA_PORT}"
+  env:
+    CARLA_HOST: {{ (default "carla-server" (index .Values.composeEnvironment "CARLA_HOST")) | quote }}
+    CARLA_PORT: {{ (default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | quote }}
+  volumes:
+  - mountPath: /set_environment.py
+    data: |
+{{ readFile "set_environment.py" | indent 6 }}
