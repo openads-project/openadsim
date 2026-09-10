@@ -1,0 +1,16 @@
+openadservice:
+  image: ghcr.io/openads-project/carla-ros-bridge:latest_update-deployment_ci
+  env:
+    ACKERMANN_COMMAND_TOPIC: /control/ackermann_trajectory_control/controls
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    VEHICLE_CONTROL_COMMAND_TOPIC: /carla/ego_vehicle/vehicle_control_cmd_automated
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    ROLE_NAME: {{ (default "ego_vehicle" (index .Values.composeEnvironment "ROLE_NAME")) | quote }}
+    CONTROL_LOOP_RATE: {{ (default "0.05" (env "CONTROL_LOOP_RATE")) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml

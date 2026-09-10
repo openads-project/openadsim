@@ -1,0 +1,33 @@
+openadservice:
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    set -e
+    ros2 topic echo --once /planning/lanelet2_route_planning/route > /dev/null
+    exec ros2 bag record \
+      --storage mcap \
+      --output /tmp/rosbags/bag \
+      --topics \
+      /rosout \
+      /tf \
+      /tf_static \
+      /simulation/ego_data \
+      /simulation/imu \
+      /simulation/odometry \
+      /simulation/vehicle_state \
+      /simulation/object_list \
+      /localization/ego_state_estimation/ego_data \
+      /planning/lanelet2_route_planning/route \
+      /planning/simple_planner/trajectory \
+      /planning/trajectory_optimization/trajectory \
+      /understanding/autoware_multi_object_tracker/object_list \
+      /understanding/lanelet2_object_list_prediction/object_list
+  env:
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  volumes:
+  - mountPath: /tmp/rosbags
+    hostPath: /work/geller/openads-project/openadsim/openadstack/monitoring/volume

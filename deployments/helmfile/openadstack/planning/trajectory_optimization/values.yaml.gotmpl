@@ -1,0 +1,40 @@
+openadservice:
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    ros2 launch trajectory_optimization trajectory_optimization.launch.py \
+      namespace:=${NAMESPACE} \
+      name:=${NAME} \
+      log_level:=${LOG_LEVEL} \
+      use_sim_time:=${USE_SIM_TIME} \
+      params:=${PARAMS} \
+      ros_tracing:=${ROS_TRACING} \
+      driving_mode:=${DRIVING_MODE} \
+      ego_data_topic:=${EGO_DATA_TOPIC} \
+      object_list_topic:=${OBJECT_LIST_TOPIC} \
+      reference_trajectory_topic:=${REFERENCE_TRAJECTORY_TOPIC} \
+      route_topic:=${ROUTE_TOPIC} \
+      trajectory_topic:=${TRAJECTORY_TOPIC} \
+      boundary_marker_topic:=${BOUNDARY_MARKER_TOPIC} \
+      ego_circles_topic:=${EGO_CIRCLES_TOPIC} \
+      object_circles_topic:=${OBJECT_CIRCLES_TOPIC}
+  env:
+    NAMESPACE: /planning
+    EGO_CIRCLES_TOPIC: ~/visualization/ego_circles
+    EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+    OBJECT_CIRCLES_TOPIC: ~/visualization/object_circles
+    OBJECT_LIST_TOPIC: /understanding/lanelet2_object_list_prediction/object_list
+    REFERENCE_TRAJECTORY_TOPIC: /planning/simple_planner/trajectory
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROUTE_TOPIC: /planning/lanelet2_route_planning/route
+    RUST_LOG: zenoh=warn
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    ROS_TRACING: {{ (default "false" (default "false" (env "ROS_TRACING"))) | quote }}
+    DRIVING_MODE: {{ (default "ackermann" (env "DRIVING_MODE")) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /params.yml

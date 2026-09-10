@@ -1,0 +1,18 @@
+openadservice:
+  image: ghcr.io/openads-project/monitoring:v1.0.0
+  args:
+  - ros2
+  - run
+  - topic_tools
+  - transform
+  - /carla/ego_vehicle/vehicle_control_manual_override
+  - /control/active
+  - std_msgs/Bool
+  - std_msgs.msg.Bool(data=not m.data)
+  - --import
+  - std_msgs
+  env:
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0

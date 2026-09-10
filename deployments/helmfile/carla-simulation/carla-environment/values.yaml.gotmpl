@@ -1,0 +1,13 @@
+openadservice:
+  image: ghcr.io/openads-project/carla-simulator:client_v0.10.0-1.1.0
+  args:
+  - /bin/bash
+  - -ic
+  - exec python3 /set_environment.py
+  gpu: true
+  volumes:
+  - mountPath: /set_environment.py
+    data: |
+{{ readFile "set_environment.py" | indent 6 }}
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}

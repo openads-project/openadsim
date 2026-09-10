@@ -1,0 +1,23 @@
+openadservice:
+  env:
+    NAMESPACE: /carla
+    INPUT_EGO_DATA_TOPIC: /carla/carla_converter/ego_vehicle/ego_data
+    INPUT_MAP_INFO_TOPIC: /carla/carla_converter/map_info
+    INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/object_list
+    INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
+    OUTPUT_EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+    OUTPUT_EGO_IMU_TOPIC: /simulation/imu
+    OUTPUT_EGO_ODOMETRY_TOPIC: /simulation/odometry
+    OUTPUT_EGO_VEHICLE_STATE_TOPIC: /simulation/vehicle_state
+    OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
+    OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    LOAD_LANELET_MAP: {{ (default "true" (default "true" (env "LANELET_RELOAD"))) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml

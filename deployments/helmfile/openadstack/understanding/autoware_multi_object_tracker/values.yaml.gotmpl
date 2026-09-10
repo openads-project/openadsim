@@ -1,0 +1,29 @@
+openadservice:
+  env:
+    NAMESPACE: /understanding
+    DATA_ASSOCIATION_MATRIX_PATH: {{ (default "" (env "DATA_ASSOCIATION_MATRIX_PATH")) | quote }}
+    INPUT_CHANNELS_PATH: {{ (default "" (env "INPUT_CHANNELS_PATH")) | quote }}
+    INPUT_DETECTION01_CHANNEL: untracked_objects
+    INPUT_DETECTION01_OBJECTS: /perception/point_cloud_object_detection/object_list
+    OUTPUT_MERGED_OBJECTS: ~/merged_object_list
+    OUTPUT_OBJECTS: ~/object_list
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    TRACKER_SETTING_PATH: {{ (default "" (env "TRACKER_SETTING_PATH")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    INPUT_DETECTION02_CHANNEL: {{ (default "none" (env "INPUT_DETECTION02_CHANNEL")) | quote }}
+    INPUT_DETECTION03_CHANNEL: {{ (default "none" (env "INPUT_DETECTION03_CHANNEL")) | quote }}
+    INPUT_DETECTION04_CHANNEL: {{ (default "none" (env "INPUT_DETECTION04_CHANNEL")) | quote }}
+    INPUT_DETECTION05_CHANNEL: {{ (default "none" (env "INPUT_DETECTION05_CHANNEL")) | quote }}
+    INPUT_DETECTION06_CHANNEL: {{ (default "none" (env "INPUT_DETECTION06_CHANNEL")) | quote }}
+    INPUT_DETECTION07_CHANNEL: {{ (default "none" (env "INPUT_DETECTION07_CHANNEL")) | quote }}
+    INPUT_DETECTION08_CHANNEL: {{ (default "none" (env "INPUT_DETECTION08_CHANNEL")) | quote }}
+    INPUT_DETECTION09_CHANNEL: {{ (default "none" (env "INPUT_DETECTION09_CHANNEL")) | quote }}
+    INPUT_DETECTION10_CHANNEL: {{ (default "none" (env "INPUT_DETECTION10_CHANNEL")) | quote }}
+    INPUT_DETECTION11_CHANNEL: {{ (default "none" (env "INPUT_DETECTION11_CHANNEL")) | quote }}
+    INPUT_DETECTION12_CHANNEL: {{ (default "none" (env "INPUT_DETECTION12_CHANNEL")) | quote }}
+    PUBLISH_MERGED_OBJECTS: {{ (default "false" (env "PUBLISH_MERGED_OBJECTS")) | quote }}
+    EGO_SOURCE: {{ (default "tf" (env "EGO_SOURCE")) | quote }}
