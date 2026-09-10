@@ -28,6 +28,6 @@ openadservice:
     data: |
 {{ readFile "scenario_checker.py" | indent 6 }}
   - mountPath: /carla-simulation/scenarios
-    hostPath: /work/geller/openads-project/openadsim/carla-simulation/scenarios
+    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/scenarios
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}

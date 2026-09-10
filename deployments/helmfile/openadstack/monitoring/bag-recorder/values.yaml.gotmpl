@@ -1,4 +1,5 @@
 openadservice:
+  name: bag-recorder
   args:
   - /bin/bash
   - -ic
@@ -30,4 +31,4 @@ openadservice:
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
   volumes:
   - mountPath: /tmp/rosbags
-    hostPath: /work/geller/openads-project/openadsim/openadstack/monitoring/volume
+    hostPath: /work/geller/openads-project/openadsim-k8s/openadstack/monitoring/volume

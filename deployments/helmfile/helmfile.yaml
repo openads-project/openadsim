@@ -76,7 +76,7 @@ releases:
   values: [openadstack/control/ackermann_trajectory_control/values.yaml.gotmpl]
 - name: robot-state-publisher
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
-  version: 1.0.0-main
+  version: 26.9.4-main
   values: [openadstack/essentials/robot-state-publisher/values.yaml.gotmpl]
 - name: triton-server
   chart: oci://ghcr.io/openads-project/openads-helm/triton-server
@@ -93,12 +93,12 @@ releases:
   values: [openadstack/localization/lanelet2_map_server/values.yaml.gotmpl]
 - name: bag-recorder
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
-  version: 1.0.0-main
+  version: 26.9.4-main
   condition: profileGroups.bag-recording.enabled
   values: [openadstack/monitoring/bag-recorder/values.yaml.gotmpl]
 - name: rviz-carla
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
-  version: 1.0.0-main
+  version: 26.9.4-main
   condition: profileGroups.carla.enabled
   values: [openadstack/monitoring/rviz-carla/values.yaml.gotmpl]
 - name: point-cloud-fusion

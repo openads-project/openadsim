@@ -26,4 +26,4 @@ openadservice:
     CONTROL_ID: {{ (default "control" (env "CONTROL_ID")) | quote }}
   volumes:
   - mountPath: /config
-    hostPath: /work/geller/openads-project/openadsim/carla-simulation/config/carla_ros_bridge
+    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/config/carla_ros_bridge
