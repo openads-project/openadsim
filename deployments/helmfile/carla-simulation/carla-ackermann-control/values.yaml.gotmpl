@@ -2,6 +2,7 @@ openadservice:
   image: ghcr.io/openads-project/carla-ros-bridge:latest_update-deployment_ci
   env:
     ACKERMANN_COMMAND_TOPIC: /control/ackermann_trajectory_control/controls
+    PARAMS: /docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn

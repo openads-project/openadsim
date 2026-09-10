@@ -18,6 +18,7 @@ openadservice:
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
     USE_SIM_TIME: {{ (default "true" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    PARAMS: /docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
     LOAD_LANELET_MAP: {{ (default "true" (default "true" (env "LANELET_RELOAD"))) | quote }}
   rosParamFileData: |
 {{ readFile "params.yml" | indent 4 }}
