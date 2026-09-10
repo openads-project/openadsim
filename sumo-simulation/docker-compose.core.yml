@@ -49,23 +49,27 @@ services:
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
-    image: ghcr.io/openads-project/simulation_adapter:v1.4.0
+    image: ghcr.io/openads-project/simulation_adapter:v1.4.1
     environment:
       NAMESPACE: /sumo
       NAME: simulation_adapter
-      LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
       # inputs
-      EGO_DATA_INPUT: /sumo/sumo_interface/ego_data
-      MAP_INFO_INPUT: /sumo/sumo_interface/map_info
-      OBJECT_LIST_INPUT: /sumo/sumo_interface/object_list
-      TRAJECTORY_INPUT: /planning/trajectory_optimization/trajectory
+      INPUT_EGO_DATA_TOPIC: /sumo/sumo_interface/ego_data
+      INPUT_MAP_INFO_TOPIC: /sumo/sumo_interface/map_info
+      INPUT_OBJECT_LIST_TOPIC: /sumo/sumo_interface/object_list
+      INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
       # outputs
-      EGO_DATA_OUTPUT: /localization/ego_state_estimation/ego_data
-      IMU_OUTPUT: /simulation/imu
-      ODOMETRY_OUTPUT: /simulation/odometry
-      VEHICLE_STATE_OUTPUT: /simulation/vehicle_state
-      OBJECT_LIST_OUTPUT: /simulation/object_list
-      OBJECT_LIST_FIXED_OUTPUT: /simulation/object_list_fixed
+      OUTPUT_EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+      OUTPUT_EGO_IMU_TOPIC: /simulation/imu
+      OUTPUT_EGO_ODOMETRY_TOPIC: /simulation/odometry
+      OUTPUT_EGO_VEHICLE_STATE_TOPIC: /simulation/vehicle_state
+      OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
+      OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
+      # other
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+      PARAMS: ${PARAMS:-/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml}
+      LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
     command:
       - /bin/bash
       - -ic
@@ -73,16 +77,19 @@ services:
         ros2 launch simulation_adapter simulation_adapter.launch.py \
           namespace:=$${NAMESPACE} \
           name:=$${NAME} \
+          log_level:=$${LOG_LEVEL} \
+          use_sim_time:=$${USE_SIM_TIME} \
+          params:=$${PARAMS} \
           load_lanelet_map:=$${LOAD_LANELET_MAP} \
-          input_map_info_topic:=$${MAP_INFO_INPUT} \
-          input_ego_data_topic:=$${EGO_DATA_INPUT} \
-          input_object_list_topic:=$${OBJECT_LIST_INPUT} \
-          input_trajectory_topic:=$${TRAJECTORY_INPUT} \
-          output_ego_data_topic:=$${EGO_DATA_OUTPUT} \
-          output_ego_imu_topic:=$${IMU_OUTPUT} \
-          output_ego_odometry_topic:=$${ODOMETRY_OUTPUT} \
-          output_ego_vehicle_state_topic:=$${VEHICLE_STATE_OUTPUT} \
-          output_object_list_topic:=$${OBJECT_LIST_OUTPUT} \
-          output_object_list_fixed_topic:=$${OBJECT_LIST_FIXED_OUTPUT} \
+          input_map_info_topic:=$${INPUT_MAP_INFO_TOPIC} \
+          input_ego_data_topic:=$${INPUT_EGO_DATA_TOPIC} \
+          input_object_list_topic:=$${INPUT_OBJECT_LIST_TOPIC} \
+          input_trajectory_topic:=$${INPUT_TRAJECTORY_TOPIC} \
+          output_ego_data_topic:=$${OUTPUT_EGO_DATA_TOPIC} \
+          output_object_list_topic:=$${OUTPUT_OBJECT_LIST_TOPIC} \
+          output_object_list_fixed_topic:=$${OUTPUT_OBJECT_LIST_FIXED_TOPIC} \
+          output_ego_imu_topic:=$${OUTPUT_EGO_IMU_TOPIC} \
+          output_ego_odometry_topic:=$${OUTPUT_EGO_ODOMETRY_TOPIC} \
+          output_ego_vehicle_state_topic:=$${OUTPUT_EGO_VEHICLE_STATE_TOPIC}
     volumes:
       - ./config/simulation_adapter/params.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
