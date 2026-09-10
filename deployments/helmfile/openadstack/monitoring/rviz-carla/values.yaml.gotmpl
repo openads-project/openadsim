@@ -24,4 +24,4 @@ openadservice:
     data: |
 {{ readFile "carla.rviz" | indent 6 }}
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
-  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}
