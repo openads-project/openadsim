@@ -5,3 +5,6 @@ openadservice:
   - mountPath: /models
     image: ghcr.io/openads-project/point_cloud_object_detection/model:v1.0.0
     imagePath: models
+  dependsOn:
+  - host: zenoh-router
+    port: 7447

@@ -13,3 +13,6 @@ openadservice:
   - mountPath: /set_environment.py
     data: |
 {{ readFile "set_environment.py" | indent 6 }}
+  dependsOn:
+  - host: carla-server
+    port: 2000

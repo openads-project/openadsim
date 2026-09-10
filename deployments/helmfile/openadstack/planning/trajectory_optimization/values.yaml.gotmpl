@@ -39,3 +39,6 @@ openadservice:
   rosParamFileData: |
 {{ readFile "params.yml" | indent 4 }}
   rosParamFileMountPath: /params.yml
+  dependsOn:
+  - host: zenoh-router
+    port: 7447

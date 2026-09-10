@@ -10,5 +10,10 @@ openadservice:
     WIRELESS_CONTROLLER: {{ (default "False" (env "WIRELESS_CONTROLLER")) | quote }}
     WINDOW_WIDTH: {{ (default "800" (env "WINDOW_WIDTH")) | quote }}
     WINDOW_HEIGHT: {{ (default "600" (env "WINDOW_HEIGHT")) | quote }}
+  dependsOn:
+  - host: carla-server
+    port: 2000
+  - host: zenoh-router
+    port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

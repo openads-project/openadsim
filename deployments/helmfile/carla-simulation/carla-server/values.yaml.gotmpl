@@ -8,6 +8,9 @@ openadservice:
   - mountPath: /workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
     data: |
 {{ readFile "DefaultEngine.ini" | indent 6 }}
+  dependsOn:
+  - host: zenoh-router
+    port: 7447
   name: {{ (default "carla-server" (index .Values.composeEnvironment "CARLA_HOST")) }}
   ports: []
   expose:

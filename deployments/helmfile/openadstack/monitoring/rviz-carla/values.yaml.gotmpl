@@ -23,5 +23,8 @@ openadservice:
   - mountPath: /conf.rviz
     data: |
 {{ readFile "carla.rviz" | indent 6 }}
+  dependsOn:
+  - host: zenoh-router
+    port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}
