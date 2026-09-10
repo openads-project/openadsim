@@ -31,5 +31,4 @@ openadservice:
     PARAMS: /docker-ros/ws/install/lanelet2_map_server/share/lanelet2_map_server/config/params.yml
   volumes:
   - mountPath: /data/maps
-    image: ghcr.io/openads-project/lanelet2-maps:v1.0.4
-    imagePath: data/maps
+    hostPath: /work/geller/openads-project/openadsim-k8s/.runtime/lanelet2-maps-v1.0.4
