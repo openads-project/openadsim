@@ -18,3 +18,8 @@ openadservice:
   rosParamFileData: |
 {{ readFile "params.yml" | indent 4 }}
   rosParamFileMountPath: /docker-ros/ws/install/ros_middleware_bridge/share/ros_middleware_bridge/config/params.yml
+  dependsOn:
+  - host: carla-server
+    port: 2000
+  - host: zenoh-router
+    port: 7447
