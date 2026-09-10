@@ -12,5 +12,4 @@ openadservice:
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
   volumes:
   - mountPath: /urdf
-    image: ghcr.io/openads-project/openads-assets:v1.0.0
-    imagePath: urdf
+    hostPath: /work/geller/openads-project/openadsim-k8s/.runtime/openads-assets-v1.0.0
