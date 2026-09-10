@@ -6,6 +6,8 @@ services:
     extends:
       file: ../openadstack/monitoring/monitoring/docker-compose.yml
       service: monitoring.monitoring
+    environment:
+      - __GLX_VENDOR_LIBRARY_NAME= # needs to be set for multiple GPUS, but unset for remote setups
     command: bash -ic "rviz2 -d /conf.rviz --ros-args -p use_sim_time:=true"
     volumes:
       - ./volume:/docker-ros/ws/monitoring-volume
