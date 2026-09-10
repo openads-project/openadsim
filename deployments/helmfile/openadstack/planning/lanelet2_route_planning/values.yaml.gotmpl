@@ -1,0 +1,13 @@
+openadservice:
+  env:
+    NAMESPACE: /planning
+    EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /params.yml

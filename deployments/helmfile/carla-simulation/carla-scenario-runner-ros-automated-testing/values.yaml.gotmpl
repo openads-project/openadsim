@@ -1,0 +1,34 @@
+openadservice:
+  image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.0
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    set -e
+    python3 /scenario_checker.py validate-runtime "/${SCENARIO_FILE}"
+    exec python3 -u ../additional-files/scenario_runner.py \
+      --host carla-server \
+      --openscenario /${SCENARIO_FILE} \
+      --output \
+      --rtFactor 1.0 \
+      --waitForEgo
+  env:
+    CARLA_HOST: carla-simulator
+    CARLA_PORT: 2000
+    CUSTOM_LANELET: {{ (default "" (index .Values.composeEnvironment "CUSTOM_LANELET")) | quote }}
+    CUSTOM_OPENDRIVE: {{ (default "" (index .Values.composeEnvironment "CUSTOM_OPENDRIVE")) | quote }}
+    MAP: {{ (default "" (index .Values.composeEnvironment "MAP")) | quote }}
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    SCENARIO_DIRECTORY: /scenarios
+    SCENARIO_FILE: {{ (env "SCENARIO_FILE") | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  volumes:
+  - mountPath: /scenario_checker.py
+    data: |
+{{ readFile "scenario_checker.py" | indent 6 }}
+  - mountPath: /carla-simulation/scenarios
+    hostPath: /work/geller/openads-project/openadsim/carla-simulation/scenarios
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}

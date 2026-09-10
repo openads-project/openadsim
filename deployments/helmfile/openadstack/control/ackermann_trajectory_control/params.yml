@@ -1,0 +1,186 @@
+/**/*:
+  ros__parameters:
+    # General controller parameters
+    vehicle_frame_id: "base_link"
+    fixed_over_time_frame_id: "map"
+    control_frequency: 50.0 # [Hz]
+    vehicle_state_timeout: 0.2 # [s]
+    lateral_lookahead_time: 0.2 # [s]
+    longitudinal_lookahead_time: 0.1 # [s]
+
+    # Inverse single track parameters
+    wheelbase: 3.124 # [m]
+    # l_v: 1.58744   # [m] front offset to center of gravity
+    # l_h: 1.53656   # [m] rear offset to center of gravity
+    # m: 2395.0      # [kg] vehicle mass
+    # c_sv: 130000   # [N/rad] Cornering stiffness front
+    # c_sh: 190000   # [N/rad] Cornering stiffness rear
+    # EG = m / wheelbase * (l_h * c_sh - l_v * c_sv) / (c_sv * c_sh) # self-steering gradient
+    selfsteergradient: 0.002656230515 # [s^2/m]
+
+    # Other controller parameters
+    standstill_request_acceleration_gain: -0.5
+
+    # Control value constraints
+    max_longitudinal_acceleration: 2.0 # [m/s^2]
+    min_longitudinal_acceleration: -4.5 # [m/s^2]
+    max_longitudinal_jerk: 4.0 # [m/s^3]
+    use_speed_dependent_lateral_limits: true
+    lateral_limits_csv: "config/karl-lateral-limits-v1p3.csv"
+    max_curvature: 0.1933268013 # [1/m]; if use_speed_dependent_lateral_limits is false
+    # max_curvature_rate = 1 / (L * cos²(d)) * d_dot; with d = 0° and d_dot = 30°/s
+    max_curvature_rate: 0.1676052419 # [1/(m*s)]; if use_speed_dependent_lateral_limits is false
+    # max_curvature_acceleration = 1 / (L * cos²(d)) * (d_dot_dot + 2*tan(d)*d_dot²); with d = 0° and d_dot_dot = 130°/s²
+    max_curvature_acceleration: 0.7262893814 # [1/(m*s^2)]
+    anti_windup_gain: 1.0 # [1/s]
+    use_back_calculation: false
+    use_odom: false
+
+    # Gain scheduling lookup tables
+    velocity_lookup: # [m/s]
+      - -2.78
+      - -0.2
+      -  0.0
+      -  0.2
+      -  2.78
+      - 11.11
+      - 16.67
+      - 22.22
+      - 27.78
+      - 33.33
+      - 38.89
+    feed_forward_acceleration_gain:
+      - 0.0 # value for -2.78 m/s
+      - 0.0 # value for -0.2 m/s
+      - 1.0 # value for  0.0 m/s
+      - 1.0 # value for  0.2 m/s
+      - 1.0 # value for  2.78 m/s
+      - 1.0 # value for 11.11 m/s
+      - 1.0 # value for 16.67 m/s
+      - 1.0 # value for 22.22 m/s
+      - 1.0 # value for 27.78 m/s
+      - 1.0 # value for 33.33 m/s
+      - 1.0 # value for 38.89 m/s
+    feed_forward_steering_angle_gain:
+      - 0.0 # value for -2.78 m/s
+      - 0.0 # value for -0.2 m/s
+      - 1.0 # value for  0.0 m/s
+      - 1.0 # value for  0.2 m/s
+      - 1.0 # value for  2.78 m/s
+      - 1.0 # value for 11.11 m/s
+      - 1.0 # value for 16.67 m/s
+      - 1.0 # value for 22.22 m/s
+      - 1.0 # value for 27.78 m/s
+      - 1.0 # value for 33.33 m/s
+      - 1.0 # value for 38.89 m/s
+    # Velocity controller parameters
+    dv_p:
+      - 1.0 # value for -2.78 m/s
+      - 1.0 # value for -0.2 m/s
+      - 1.0 # value for  0.0 m/s
+      - 1.0 # value for  0.2 m/s
+      - 1.0 # value for  2.78 m/s
+      - 1.0 # value for 11.11 m/s
+      - 1.0 # value for 16.67 m/s
+      - 1.0 # value for 22.22 m/s
+      - 1.0 # value for 27.78 m/s
+      - 1.0 # value for 33.33 m/s
+      - 1.0 # value for 38.89 m/s
+    dv_i:
+      - 0.0 # value for -2.78 m/s
+      - 0.0 # value for -0.2 m/s
+      - 0.0 # value for  0.0 m/s
+      - 0.0 # value for  0.2 m/s
+      - 0.0 # value for  2.78 m/s
+      - 0.0 # value for 11.11 m/s
+      - 0.0 # value for 16.67 m/s
+      - 0.0 # value for 22.22 m/s
+      - 0.0 # value for 27.78 m/s
+      - 0.0 # value for 33.33 m/s
+      - 0.0 # value for 38.89 m/s
+    dv_d:
+      - 0.0 # value for -2.78 m/s
+      - 0.0 # value for -0.2 m/s
+      - 0.0 # value for  0.0 m/s
+      - 0.0 # value for  0.2 m/s
+      - 0.0 # value for  2.78 m/s
+      - 0.0 # value for 11.11 m/s
+      - 0.0 # value for 16.67 m/s
+      - 0.0 # value for 22.22 m/s
+      - 0.0 # value for 27.78 m/s
+      - 0.0 # value for 33.33 m/s
+      - 0.0 # value for 38.89 m/s
+    # Lateral deviation controller parameters
+    dy_p:
+      - 0.1   # value for -2.78 m/s
+      - 0.1   # value for -0.2 m/s
+      - 0.1   # value for  0.0 m/s
+      - 0.1   # value for  0.2 m/s
+      - 0.1   # value for  2.78 m/s
+      - 0.05  # value for 11.11 m/s
+      - 0.03  # value for 16.67 m/s
+      - 0.025 # value for 22.22 m/s
+      - 0.025 # value for 27.78 m/s
+      - 0.025 # value for 33.33 m/s
+      - 0.02  # value for 38.89 m/s
+    dy_i:
+      - 0.004  # value for -2.78 m/s
+      - 0.0    # value for -0.2 m/s
+      - 0.0    # value for  0.0 m/s
+      - 0.0    # value for  0.2 m/s
+      - 0.002  # value for  2.78 m/s
+      - 0.004  # value for 11.11 m/s
+      - 0.001  # value for 16.67 m/s
+      - 0.0007 # value for 22.22 m/s
+      - 0.0    # value for 27.78 m/s
+      - 0.0    # value for 33.33 m/s
+      - 0.0    # value for 38.89 m/s
+    dy_d:
+      - 0.04  # value for -2.78 m/s
+      - 0.0   # value for -0.2 m/s
+      - 0.0   # value for  0.0 m/s
+      - 0.0   # value for  0.2 m/s
+      - 0.04  # value for  2.78 m/s
+      - 0.02  # value for 11.11 m/s
+      - 0.02  # value for 16.67 m/s
+      - 0.02  # value for 22.22 m/s
+      - 0.015 # value for 27.78 m/s
+      - 0.015 # value for 33.33 m/s
+      - 0.015 # value for 38.89 m/s
+    # heading deviation controller parameters
+    dpsi_p:
+      - 1.0 # value for -2.78 m/s
+      - 0.0 # value for -0.2 m/s
+      - 0.0 # value for  0.0 m/s
+      - 0.0 # value for  0.2 m/s
+      - 1.0 # value for  2.78 m/s
+      - 1.0 # value for 11.11 m/s
+      - 1.0 # value for 16.67 m/s
+      - 1.0 # value for 22.22 m/s
+      - 1.0 # value for 27.78 m/s
+      - 1.0 # value for 33.33 m/s
+      - 1.0 # value for 38.89 m/s
+    dpsi_i:
+      - 1.2  # value for -2.78 m/s
+      - 0.0  # value for -0.2 m/s
+      - 0.0  # value for  0.0 m/s
+      - 0.0  # value for  0.2 m/s
+      - 1.2  # value for  2.78 m/s
+      - 0.6  # value for 11.11 m/s
+      - 0.4  # value for 16.67 m/s
+      - 0.14 # value for 22.22 m/s
+      - 0.13 # value for 27.78 m/s
+      - 0.13 # value for 33.33 m/s
+      - 0.13 # value for 38.89 m/s
+    dpsi_d:
+      - 0.0 # value for -2.78 m/s
+      - 0.0 # value for -0.2 m/s
+      - 0.0 # value for  0.0 m/s
+      - 0.0 # value for  0.2 m/s
+      - 0.0 # value for  2.78 m/s
+      - 0.0 # value for 11.11 m/s
+      - 0.0 # value for 16.67 m/s
+      - 0.0 # value for 22.22 m/s
+      - 0.0 # value for 27.78 m/s
+      - 0.0 # value for 33.33 m/s
+      - 0.0 # value for 38.89 m/s

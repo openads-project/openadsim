@@ -1,0 +1,19 @@
+openadservice:
+  env:
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    SIDE_A_NAME: {{ (default "bridge_fast" (env "SIDE_A_NAME")) | quote }}
+    SIDE_A_RMW_IMPLEMENTATION: {{ (default "rmw_fastrtps_cpp" (env "SIDE_A_RMW_IMPLEMENTATION")) | quote }}
+    SIDE_A_TX_PORT: {{ (default "17001" (env "SIDE_A_TX_PORT")) | quote }}
+    SIDE_A_RX_PORT: {{ (default "17002" (env "SIDE_A_RX_PORT")) | quote }}
+    SIDE_B_NAME: {{ (default "bridge_zenoh" (env "SIDE_B_NAME")) | quote }}
+    SIDE_B_RMW_IMPLEMENTATION: {{ (default "rmw_zenoh_cpp" (env "SIDE_B_RMW_IMPLEMENTATION")) | quote }}
+    SIDE_B_TX_PORT: {{ (default "17002" (env "SIDE_B_TX_PORT")) | quote }}
+    SIDE_B_RX_PORT: {{ (default "17001" (env "SIDE_B_RX_PORT")) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /docker-ros/ws/install/ros_middleware_bridge/share/ros_middleware_bridge/config/params.yml

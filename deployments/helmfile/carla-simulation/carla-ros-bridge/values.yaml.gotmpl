@@ -1,0 +1,36 @@
+openadservice:
+  env:
+    IGNORE_ALTITUDE: true
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    TOWN: {{ (default "/opendrive.xodr" (index .Values.composeEnvironment "MAP")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "True" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    HOST: {{ (default "carla-server" (env "HOST")) | quote }}
+    PORT: {{ (default "2000" (env "PORT")) | quote }}
+    TIMEOUT: {{ (default "5000" (env "TIMEOUT")) | quote }}
+    PASSIVE: {{ (default "False" (env "PASSIVE")) | quote }}
+    PUBLISH_CLOCK: {{ (default "True" (env "PUBLISH_CLOCK")) | quote }}
+    SYNCHRONOUS_MODE: {{ (default "True" (env "SYNCHRONOUS_MODE")) | quote }}
+    SYNCHRONOUS_MODE_WAIT_FOR_VEHICLE_CONTROL_COMMAND: {{ (default "False" (env "SYNCHRONOUS_MODE_WAIT_FOR_VEHICLE_CONTROL_COMMAND")) | quote }}
+    FIXED_DELTA_SECONDS: {{ (default "0.05" (env "FIXED_DELTA_SECONDS")) | quote }}
+    START_UNIX_TIME_STAMP: {{ (default "0" (env "START_UNIX_TIME_STAMP")) | quote }}
+    RT_FACTOR: {{ (default "1.0" (env "RT_FACTOR")) | quote }}
+    REGISTER_ALL_SENSORS: {{ (default "True" (env "REGISTER_ALL_SENSORS")) | quote }}
+    NATIVE_INTERFACE: {{ (default "True" (env "NATIVE_INTERFACE")) | quote }}
+    EGO_VEHICLE_ROLE_NAME: {{ (default "[\"hero\",\"ego_vehicle\",\"hero0\",\"hero1\",\"hero2\",\"hero3\"]" (env "EGO_VEHICLE_ROLE_NAME")) | quote }}
+    PUBLISH_STATIC_VEHICLES: {{ (default "True" (env "PUBLISH_STATIC_VEHICLES")) | quote }}
+    PUBLISH_COMPRESSED_IMAGES: {{ (default "True" (env "PUBLISH_COMPRESSED_IMAGES")) | quote }}
+    IGNORE_TILT: {{ (default "True" (env "IGNORE_TILT")) | quote }}
+    GEOREFERENCE_SUBSTITUTION: {{ (default "" (env "GEOREFERENCE_SUBSTITUTION")) | quote }}
+    GRID_CONVERGENCE: {{ (default "None" (env "GRID_CONVERGENCE")) | quote }}
+    PUBLISH_ETSI_MESSAGES: {{ (default "False" (env "PUBLISH_ETSI_MESSAGES")) | quote }}
+    MAPEM_TIMER_PERIOD: {{ (default "1.0" (env "MAPEM_TIMER_PERIOD")) | quote }}
+    SPATEM_TIMER_PERIOD: {{ (default "0.1" (env "SPATEM_TIMER_PERIOD")) | quote }}
+    INTEGRATE_ALL_JUNCTIONS: {{ (default "False" (env "INTEGRATE_ALL_JUNCTIONS")) | quote }}
+    WAYPOINTS_SEARCH_DISTANCE: {{ (default "1.0" (env "WAYPOINTS_SEARCH_DISTANCE")) | quote }}
+    LANE_WAYPOINTS_COUNT: {{ (default "10" (env "LANE_WAYPOINTS_COUNT")) | quote }}
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}
