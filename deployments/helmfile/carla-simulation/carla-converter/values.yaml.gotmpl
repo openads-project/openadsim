@@ -7,6 +7,7 @@ openadservice:
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
     USE_SIM_TIME: {{ (default "true" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    PARAMS: /docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
   rosParamFileData: |
 {{ readFile "params.yml" | indent 4 }}
   rosParamFileMountPath: /docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml

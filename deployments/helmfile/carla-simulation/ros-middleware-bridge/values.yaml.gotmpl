@@ -6,6 +6,7 @@ openadservice:
     USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    PARAMS: /docker-ros/ws/install/ros_middleware_bridge/share/ros_middleware_bridge/config/params.yml
     SIDE_A_NAME: {{ (default "bridge_fast" (env "SIDE_A_NAME")) | quote }}
     SIDE_A_RMW_IMPLEMENTATION: {{ (default "rmw_fastrtps_cpp" (env "SIDE_A_RMW_IMPLEMENTATION")) | quote }}
     SIDE_A_TX_PORT: {{ (default "17001" (env "SIDE_A_TX_PORT")) | quote }}
