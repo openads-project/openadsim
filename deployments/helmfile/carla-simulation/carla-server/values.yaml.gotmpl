@@ -21,4 +21,4 @@ openadservice:
     targetPort: {{ add ((default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | int) 2 }}
     protocol: TCP
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
-  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}
