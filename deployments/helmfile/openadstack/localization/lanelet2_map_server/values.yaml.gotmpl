@@ -28,7 +28,7 @@ openadservice:
     USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
-    PARAMS: {{ (default "/docker-ros/ws/install/lanelet2_map_server/share/lanelet2_map_server/config/params.yml" (env "PARAMS")) | quote }}
+    PARAMS: /docker-ros/ws/install/lanelet2_map_server/share/lanelet2_map_server/config/params.yml
   volumes:
   - mountPath: /data/maps
     image: ghcr.io/openads-project/lanelet2-maps:v1.0.4

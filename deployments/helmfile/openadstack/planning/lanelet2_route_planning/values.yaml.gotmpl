@@ -2,6 +2,7 @@ openadservice:
   env:
     NAMESPACE: /planning
     EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+    PARAMS: /params.yml
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
