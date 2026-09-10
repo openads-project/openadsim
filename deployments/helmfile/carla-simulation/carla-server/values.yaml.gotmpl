@@ -1,0 +1,12 @@
+openadservice:
+  image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.0
+  args:
+  - bash
+  - -ic
+  - ./Linux/CarlaUnreal.sh -nosound -RenderOffScreen --ros2
+  volumes:
+  - mountPath: /workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
+    data: |
+{{ readFile "DefaultEngine.ini" | indent 6 }}
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}

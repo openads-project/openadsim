@@ -1,0 +1,49 @@
+/**:
+  ros__parameters:
+    num_threads: 8
+    remote_host: 127.0.0.1
+    shm_namespace: middleware_bridge
+    socket_buffer_bytes: 1048576
+    max_udp_payload_bytes: 60000
+    max_shm_message_bytes: 50331648  # 48 MiB as default in 'rmw_zenoh'
+    shm_poll_interval_us: 1000
+    reassembly_timeout_ms: 1000
+    auto_discovery_wait_ms: 1000
+    auto_discovery_poll_ms: 1000
+    side_a2b.topics:
+      - __auto__
+    side_a2b.topic_types:
+      - rosgraph_msgs/msg/Clock
+      - tf2_msgs/msg/TFMessage
+      - sensor_msgs/msg/Imu
+      - sensor_msgs/msg/NavSatFix
+      - sensor_msgs/msg/Image
+      - sensor_msgs/msg/CameraInfo
+      - sensor_msgs/msg/PointCloud2
+      - nav_msgs/msg/Odometry
+    side_a2b.transports:
+      - udp
+      - udp
+      - udp
+      - udp
+      - shm
+      - udp
+      - shm
+      - udp
+    side_a2b.qos_depths:
+      - 5
+      - 5
+      - 5
+      - 5
+      - 1
+      - 5
+      - 1
+      - 5
+    side_b2a.topics:
+      - /carla/ego_vehicle/vehicle_control_cmd
+    side_b2a.topic_types:
+      - carla_msgs/msg/CarlaEgoVehicleControl
+    side_b2a.transports:
+      - udp
+    side_b2a.qos_depths:
+      - 1

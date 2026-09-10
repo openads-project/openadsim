@@ -1,0 +1,26 @@
+# The single profile selector for this Helmfile.
+# It uses COMPOSE_PROFILES exactly like Docker Compose. Its default comes from
+# the .env file that was used during conversion; export COMPOSE_PROFILES to
+# override it for one Helmfile invocation.
+# Available profiles: automated-testing, bag-recording, carla, manual-testing, ml-planning, no-perception, perception, planning, traffic
+{{- $selectedProfiles := splitList "," (env "COMPOSE_PROFILES" | default "carla,traffic,manual-testing,no-perception,planning") }}
+
+profileGroups:
+  automated-testing:
+    enabled: {{ or (has "automated-testing" $selectedProfiles) }}
+  bag-recording:
+    enabled: {{ or (has "bag-recording" $selectedProfiles) }}
+  carla:
+    enabled: {{ or (has "carla" $selectedProfiles) }}
+  manual-testing:
+    enabled: {{ or (has "manual-testing" $selectedProfiles) }}
+  ml-planning-or-perception:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "perception" $selectedProfiles) }}
+  ml-planning-or-planning:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "planning" $selectedProfiles) }}
+  no-perception:
+    enabled: {{ or (has "no-perception" $selectedProfiles) }}
+  perception:
+    enabled: {{ or (has "perception" $selectedProfiles) }}
+  traffic:
+    enabled: {{ or (has "traffic" $selectedProfiles) }}

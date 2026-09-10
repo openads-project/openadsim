@@ -1,0 +1,36 @@
+openadservice:
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    ros2 launch simple_planner simple_planner.launch.py \
+      namespace:=${NAMESPACE} \
+      name:=${NAME} \
+      log_level:=${LOG_LEVEL} \
+      use_sim_time:=${USE_SIM_TIME} \
+      params:=${PARAMS} \
+      trace:=${TRACE} \
+      ego_data_topic:=${EGO_DATA_TOPIC} \
+      object_list_topic:=${OBJECT_LIST_TOPIC} \
+      route_topic:=${ROUTE_TOPIC} \
+      grid_map_topic:=${GRID_MAP_TOPIC} \
+      trajectory_topic:=${TRAJECTORY_TOPIC} \
+      object_interaction_markers_topic:=${OBJECT_INTERACTION_MARKERS_TOPIC} \
+      left_turn_indicator_service:=${LEFT_TURN_INDICATOR_SERVICE} \
+      right_turn_indicator_service:=${RIGHT_TURN_INDICATOR_SERVICE} \
+      hazard_lights_service:=${HAZARD_LIGHTS_SERVICE}
+  env:
+    NAMESPACE: /planning
+    EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+    OBJECT_LIST_TOPIC: /understanding/lanelet2_object_list_prediction/object_list
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROUTE_TOPIC: /planning/lanelet2_route_planning/route
+    RUST_LOG: zenoh=warn
+    TRACE: {{ (default "false" (index .Values.composeEnvironment "TRACE")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /params.yml

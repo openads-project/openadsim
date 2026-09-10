@@ -1,0 +1,26 @@
+openadservice:
+  args:
+  - bash
+  - -ic
+  - rviz2 -d /conf.rviz --ros-args -p use_sim_time:=true
+  gpu: true
+  env:
+    NAMESPACE: /monitoring
+    CONFIG: /conf.rviz
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+  volumes:
+  - mountPath: /docker-ros/ws/monitoring-volume
+    hostPath: /work/geller/openads-project/openadsim/openadstack/monitoring/volume
+  - mountPath: /mesh
+    image: ghcr.io/openads-project/openads-assets:v1.0.0
+    imagePath: mesh
+  - mountPath: /conf.rviz
+    data: |
+{{ readFile "carla.rviz" | indent 6 }}
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | default "/.Xauthority" | quote }}

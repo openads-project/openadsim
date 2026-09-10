@@ -1,0 +1,13 @@
+/**/*:
+  ros__parameters:
+    carla_fixed_frame_id: "carla_map"
+    ego_data_actors: "ego_vehicle"
+    object_list_actors: "ego_vehicle"
+    pos_variances: 0.2
+    vel_variances: -1.0
+    acc_variances: -1.0
+    angle_variances: 0.1
+    angle_rate_variances: -1.0
+    enable_traffic_lights: false
+    traffic_light_frequency: 10.0
+    acceleration_filter_alpha: 1.0

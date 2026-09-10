@@ -1,0 +1,12 @@
+openadservice:
+  env:
+    NAMESPACE: /carla
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml

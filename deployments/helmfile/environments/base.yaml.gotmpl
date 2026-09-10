@@ -1,0 +1,11 @@
+# Generated from host-side variables referenced by multiple generated services.
+# Export a variable before running Helmfile to override its conversion-time value.
+composeEnvironment:
+  CUSTOM_LANELET: {{ env "CUSTOM_LANELET" | default "" | quote }}
+  CUSTOM_OPENDRIVE: {{ env "CUSTOM_OPENDRIVE" | default "" | quote }}
+  LOG_LEVEL: {{ env "LOG_LEVEL" | default "" | quote }}
+  MAP: {{ env "MAP" | default "campus" | quote }}
+  ROLE_NAME: {{ env "ROLE_NAME" | default "" | quote }}
+  ROS_DOMAIN_ID: {{ env "ROS_DOMAIN_ID" | default "" | quote }}
+  TRACE: {{ env "TRACE" | default "" | quote }}
+  USE_SIM_TIME: {{ env "USE_SIM_TIME" | default "true" | quote }}

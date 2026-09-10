@@ -1,0 +1,7 @@
+openadservice:
+  env:
+    CUDA_VISIBLE_DEVICES: 0
+  volumes:
+  - mountPath: /models
+    image: ghcr.io/openads-project/point_cloud_object_detection/model:v1.0.0
+    imagePath: models

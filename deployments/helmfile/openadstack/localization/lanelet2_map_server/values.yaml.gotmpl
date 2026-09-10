@@ -1,0 +1,35 @@
+openadservice:
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    ros2 run lanelet2_map_server lanelet2_map_server --ros-args \
+      -r __ns:=${NAMESPACE} \
+      -r __node:=${NAME} \
+      -p use_sim_time:=${USE_SIM_TIME} \
+      -p map_frame_id:=${MAP_FRAME_ID} \
+      -p use_automatic_map_selection:=${USE_AUTOMATIC_MAP_SELECTION} \
+      -p map_directory:=${MAP_DIRECTORY} \
+      -p map_filepath:=${MAP_FILEPATH} \
+      ${ORIGIN_LAT:+-p origin_lat:=${ORIGIN_LAT}} \
+      ${ORIGIN_LON:+-p origin_lon:=${ORIGIN_LON}} \
+  env:
+    NAMESPACE: /localization
+    MAP_DIRECTORY: /data/maps/default-maps
+    MAP_FILEPATH: /lanelet/lanelet.osm
+    MAP_FRAME_ID: map
+    NAV_SAT_FIX_TOPIC: /localization/ego_state_estimation/nav_sat_fix
+    ORIGIN_LAT: {{ (env "ORIGIN_LAT") | quote }}
+    ORIGIN_LON: {{ (env "ORIGIN_LON") | quote }}
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    RUST_LOG: zenoh=warn
+    USE_AUTOMATIC_MAP_SELECTION: false
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    PARAMS: {{ (default "/docker-ros/ws/install/lanelet2_map_server/share/lanelet2_map_server/config/params.yml" (env "PARAMS")) | quote }}
+  volumes:
+  - mountPath: /data/maps
+    image: ghcr.io/openads-project/lanelet2-maps:v1.0.4
+    imagePath: data/maps
