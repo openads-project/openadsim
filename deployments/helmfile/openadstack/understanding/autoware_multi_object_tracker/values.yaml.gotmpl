@@ -27,3 +27,6 @@ openadservice:
     INPUT_DETECTION12_CHANNEL: {{ (default "none" (env "INPUT_DETECTION12_CHANNEL")) | quote }}
     PUBLISH_MERGED_OBJECTS: {{ (default "false" (env "PUBLISH_MERGED_OBJECTS")) | quote }}
     EGO_SOURCE: {{ (default "tf" (env "EGO_SOURCE")) | quote }}
+  dependsOn:
+  - host: zenoh-router
+    port: 7447

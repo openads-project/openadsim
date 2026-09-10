@@ -32,5 +32,10 @@ openadservice:
     INTEGRATE_ALL_JUNCTIONS: {{ (default "False" (env "INTEGRATE_ALL_JUNCTIONS")) | quote }}
     WAYPOINTS_SEARCH_DISTANCE: {{ (default "1.0" (env "WAYPOINTS_SEARCH_DISTANCE")) | quote }}
     LANE_WAYPOINTS_COUNT: {{ (default "10" (env "LANE_WAYPOINTS_COUNT")) | quote }}
+  dependsOn:
+  - host: carla-server
+    port: 2000
+  - host: zenoh-router
+    port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

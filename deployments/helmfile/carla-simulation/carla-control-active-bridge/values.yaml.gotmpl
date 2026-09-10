@@ -16,3 +16,6 @@ openadservice:
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  dependsOn:
+  - host: zenoh-router
+    port: 7447

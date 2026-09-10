@@ -30,5 +30,10 @@ openadservice:
 {{ readFile "scenario_checker.py" | indent 6 }}
   - mountPath: /carla-simulation/scenarios
     hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/scenarios
+  dependsOn:
+  - host: carla-server
+    port: 2000
+  - host: zenoh-router
+    port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

@@ -13,3 +13,6 @@ openadservice:
   volumes:
   - mountPath: /urdf
     hostPath: /work/geller/openads-project/openadsim-k8s/.runtime/openads-assets-v1.0.0
+  dependsOn:
+  - host: zenoh-router
+    port: 7447

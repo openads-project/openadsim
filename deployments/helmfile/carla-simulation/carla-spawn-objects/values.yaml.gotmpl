@@ -27,3 +27,8 @@ openadservice:
   volumes:
   - mountPath: /config
     hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/config/carla_ros_bridge
+  dependsOn:
+  - host: carla-server
+    port: 2000
+  - host: zenoh-router
+    port: 7447
