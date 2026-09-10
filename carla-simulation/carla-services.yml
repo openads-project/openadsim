@@ -294,6 +294,8 @@ services:
     depends_on:
       carla-server:
         condition: service_healthy
+      zenoh-router:
+        condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
