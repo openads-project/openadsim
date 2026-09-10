@@ -1,4 +1,5 @@
 openadservice:
+  name: rviz-carla
   args:
   - bash
   - -ic
@@ -15,7 +16,7 @@ openadservice:
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
   volumes:
   - mountPath: /docker-ros/ws/monitoring-volume
-    hostPath: /work/geller/openads-project/openadsim/openadstack/monitoring/volume
+    hostPath: /work/geller/openads-project/openadsim-k8s/openadstack/monitoring/volume
   - mountPath: /mesh
     image: ghcr.io/openads-project/openads-assets:v1.0.0
     imagePath: mesh
