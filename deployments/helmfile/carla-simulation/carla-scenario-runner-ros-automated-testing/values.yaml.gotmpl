@@ -1,5 +1,4 @@
 openadservice:
-  image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.0
   args:
   - /bin/bash
   - -ic
@@ -13,17 +12,16 @@ openadservice:
       --rtFactor 1.0 \
       --waitForEgo
   env:
-    CARLA_HOST: carla-simulator
-    CARLA_PORT: 2000
+    CARLA_HOST: {{ (default "carla-server" (index .Values.composeEnvironment "CARLA_HOST")) | quote }}
     CUSTOM_LANELET: {{ (default "" (index .Values.composeEnvironment "CUSTOM_LANELET")) | quote }}
     CUSTOM_OPENDRIVE: {{ (default "" (index .Values.composeEnvironment "CUSTOM_OPENDRIVE")) | quote }}
     MAP: {{ (default "" (index .Values.composeEnvironment "MAP")) | quote }}
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    SCENARIO_DIRECTORY: /scenarios
     SCENARIO_FILE: {{ (env "SCENARIO_FILE") | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    CARLA_PORT: {{ (default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | quote }}
   volumes:
   - mountPath: /scenario_checker.py
     data: |

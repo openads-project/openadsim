@@ -1,6 +1,8 @@
 # Generated from host-side variables referenced by multiple generated services.
 # Export a variable before running Helmfile to override its conversion-time value.
 composeEnvironment:
+  CARLA_HOST: {{ env "CARLA_HOST" | default "" | quote }}
+  CARLA_PORT: {{ env "CARLA_PORT" | default "" | quote }}
   CUSTOM_LANELET: {{ env "CUSTOM_LANELET" | default "" | quote }}
   CUSTOM_OPENDRIVE: {{ env "CUSTOM_OPENDRIVE" | default "" | quote }}
   LOG_LEVEL: {{ env "LOG_LEVEL" | default "" | quote }}
