@@ -40,3 +40,8 @@ openadservice:
   rosParamFileData: |
 {{ readFile "params.yml" | indent 4 }}
   rosParamFileMountPath: /params.yml
+  dependsOn:
+  - host: triton-server
+    port: 8000
+  - host: zenoh-router
+    port: 7447
