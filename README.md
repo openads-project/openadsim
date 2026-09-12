@@ -27,10 +27,9 @@ OpenADSim is the official environment for closed-loop simulation of [*OpenADStac
 ## 🚀 Quick Start
 
 > [!IMPORTANT]
-> Check the general [OpenADS system requirements](https://openads-project.github.io/start/start.html#requirements) and install [Git LFS](https://git-lfs.com/). Graphical applications require access to a local X11 server.
+> Check the general [OpenADS system requirements](https://openads-project.github.io/start/start.html#requirements). Graphical applications require access to a local X11 server.
 
 ```bash
-git lfs install
 git clone --recursive https://github.com/openads-project/openadsim.git
 cd openadsim
 ```
