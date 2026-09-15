@@ -9,5 +9,19 @@ services:
       service: planning.lanelet2-route-planning
     environment:
       PARAMS: /params.yml
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch lanelet2_route_planning lanelet2_route_planning_with_action_client_launch.py \
+          namespace:=$${NAMESPACE} \
+          name:=$${NAME} \
+          log_level:=$${LOG_LEVEL} \
+          use_sim_time:=$${USE_SIM_TIME} \
+          params:=$${PARAMS} \
+          ego_data_topic:=$${EGO_DATA_TOPIC} \
+          route_topic:=$${ROUTE_TOPIC} \
+          global_route_topic:=$${GLOBAL_ROUTE_TOPIC} \
+          diagnostics_topic:=$${DIAGNOSTICS_TOPIC}
     volumes:
       - ./params.yml:/params.yml
