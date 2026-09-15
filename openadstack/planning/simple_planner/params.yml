@@ -19,18 +19,20 @@
     trigger_turn_signals: False     # true: planner will request turn signal services; false: planner will not trigger turn signals
 
     #### grid map parameters
-    consider_grid_map: False                # true: planner will consider grid map; false: planner will ignore grid map
-    grid_map_timeout: 1.0                   # time after which a received grid map is considered invalid (s) (use -1 for no timeout)
-    grid_occupied_threshold: 15             # minimum occupancy value that is considered blocked in the grid map
-    consider_out_of_grid: False             # true: points outside the grid map are treated as occupied; false: free
+    consider_grid_map: False        # true: planner will consider grid map; false: planner will ignore grid map
+    grid_map_timeout: 0.25          # time after which a received grid map is considered invalid (s) (use -1 for no timeout)
+    grid_occupied_threshold: 50     # minimum occupancy value that is considered blocked in the grid map
+    consider_out_of_grid: False     # true: points outside the grid map are treated as occupied; false: free
     grid_longitudinal_safety_distance: 1.5  # longitudinal ego-box margin; negative values shrink the box (m)
     grid_lateral_safety_distance: 0.0       # lateral ego-box margin; negative values shrink the box (m)
-    
-    #### traffic light parameters
+
+    #### regulatory element parameters
     consider_traffic_lights: False  # true: planner will consider traffic lights; false: planner will ignore traffic lights
-    offset_to_stop_line: 0.0        # additional distance to stop in front of a stop line (m) (default: 0.0 -> stops with front of vehicle at stop line)
+    consider_stop_signs: False      # true: planner will consider stop signs; false: planner will ignore stop signs
+    consider_yield_signs: False     # true: planner will consider yield signs; false: planner will ignore yield signs
+    offset_to_stop_line: 0.0        # additional distance to stop in front of a regulatory-element stop line (m) (default: 0.0 -> stops with front of vehicle at stop line)
     ignore_stop_line_threshold: 0.5 # a stop line will be ignored if the front of the vehicle has already passed the stop line by more than this threshold (m)
-    consider_future_states: False   # true: trajectory will consider forecast of traffic light states; false: trajectory will only consider current traffic light state
+    consider_future_states: False   # true: trajectory will consider forecast states of supported regulatory elements; false: only current states
 
     #### object parameters
     consider_objects: True          # true: planner will consider perceived objects on the route; false: planner will ignore objects
