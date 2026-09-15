@@ -9,19 +9,23 @@ services:
       service: planning.lanelet2-route-planning
     environment:
       PARAMS: /params.yml
+    volumes:
+      - ./params.yml:/params.yml
+
+  planning.plan-route-action-client:
+    profiles:
+      - planning
+      - ml-planning
+    extends:
+      file: ../../openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/lanelet2_route_planning:latest
     command:
       - /bin/bash
       - -ic
       - |
-        ros2 launch lanelet2_route_planning lanelet2_route_planning_with_action_client_launch.py \
-          namespace:=$${NAMESPACE} \
-          name:=$${NAME} \
-          log_level:=$${LOG_LEVEL} \
-          use_sim_time:=$${USE_SIM_TIME} \
-          params:=$${PARAMS} \
-          ego_data_topic:=$${EGO_DATA_TOPIC} \
-          route_topic:=$${ROUTE_TOPIC} \
-          global_route_topic:=$${GLOBAL_ROUTE_TOPIC} \
-          diagnostics_topic:=$${DIAGNOSTICS_TOPIC}
+        ros2 run plan_route_action_client plan_route_action_client \
+          --ros-args \
+          --params-file /params.yml
     volumes:
-      - ./params.yml:/params.yml
+      - ./params.plan-route-action-client.yml:/params.yml

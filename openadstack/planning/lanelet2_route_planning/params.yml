@@ -21,25 +21,3 @@
     diagnostic_updater:
       period: 0.1
       use_fqn: true
-      # ego_data_diagnostic:
-      #   min_frequency: 45.45 # 0.022s
-      #   max_frequency: 55.55 # 0.018s
-      #   min_acceptable_timestamp_delta: 0.0
-      #   max_acceptable_timestamp_delta: 0.002
-      # route_timer_diagnostic:
-      #   min_frequency: 18.18 # 0.055s
-      #   max_frequency: 22.22 # 0.045s
-      # global_route_timer_diagnostic:
-      #   min_frequency: 0.91 # 1.1s
-      #   max_frequency: 1.11 # 0.9s
-
-    # --- plan_route_action_client ---
-    waypoints:
-      - "50.787524, 6.050095, -1"
-      - "50.779794, 6.050634, -1"
-      - "50.784935, 6.043669, -1"
-      - "50.787801, 6.046555"
-    enable_random_destination: false
-    enable_continuous_planning: true
-    continuous_planning_replanning_proportion: 0.6
-    cancel_route: false
