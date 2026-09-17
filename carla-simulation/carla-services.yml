@@ -71,19 +71,21 @@ services:
       NAME: carla_spawn_objects
       # --- other -----
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      USE_SIM_TIME: ${USE_SIM_TIME:-false}
-      OBJECTS_DEFINITION_FILE: ${OBJECTS_DEFINITION_FILE:-objects.json}
-      OBJECTS_DIRECTORY: ${OBJECTS_DIRECTORY:-/docker-ros/ws/install/carla_spawn_objects/share/carla_spawn_objects/config}
-      BLUEPRINTS_DIRECTORY: ${BLUEPRINTS_DIRECTORY:-/docker-ros/ws/install/carla_spawn_objects/share/carla_spawn_objects/config/blueprints}
-      ROLE_NAME: ${ROLE_NAME:-ego_vehicle}
-      SPAWN_POINT_EGO_VEHICLE: ${SPAWN_POINT_EGO_VEHICLE:-None}
-      SPAWN_SENSORS_ONLY: ${SPAWN_SENSORS_ONLY:-False}
-      CONTROL_ID: ${CONTROL_ID:-control}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+      OBJECTS_DEFINITION_FILE: objects.json
+      OBJECTS_DIRECTORY: /docker-ros/ws/install/carla_spawn_objects/share/carla_spawn_objects/config
+      BLUEPRINTS_DIRECTORY: /docker-ros/ws/install/carla_spawn_objects/share/carla_spawn_objects/config/blueprints
+      ROLE_NAME: ego_vehicle
+      SPAWN_POINT_EGO_VEHICLE: None
+      SPAWN_SENSORS_ONLY: false
+      CONTROL_ID: control
     command:
       - /bin/bash
       - -ic
       - |
         ros2 launch carla_spawn_objects carla_example_ego_vehicle.launch.py \
+          log_level:="$${LOG_LEVEL}" \
+          use_sim_time:="$${USE_SIM_TIME}" \
           objects_definition_file:=$${OBJECTS_DEFINITION_FILE} \
           objects_directory:=$${OBJECTS_DIRECTORY} \
           blueprints_directory:=$${BLUEPRINTS_DIRECTORY} \
@@ -106,33 +108,33 @@ services:
       NAME: carla_ros_bridge
       # --- other -----
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      USE_SIM_TIME: ${USE_SIM_TIME:-True}
-      HOST: ${HOST:-carla-server}
-      PORT: ${PORT:-2000}
-      TIMEOUT: ${TIMEOUT:-5000}
-      PASSIVE: ${PASSIVE:-False}
-      PUBLISH_CLOCK: ${PUBLISH_CLOCK:-True}
-      SYNCHRONOUS_MODE: ${SYNCHRONOUS_MODE:-True}
-      SYNCHRONOUS_MODE_WAIT_FOR_VEHICLE_CONTROL_COMMAND: ${SYNCHRONOUS_MODE_WAIT_FOR_VEHICLE_CONTROL_COMMAND:-False}
-      FIXED_DELTA_SECONDS: ${FIXED_DELTA_SECONDS:-0.05}
-      START_UNIX_TIME_STAMP: ${START_UNIX_TIME_STAMP:-0}
-      TOWN: ${TOWN:-}
-      RT_FACTOR: ${RT_FACTOR:-1.0}
-      REGISTER_ALL_SENSORS: ${REGISTER_ALL_SENSORS:-True}
-      NATIVE_INTERFACE: ${NATIVE_INTERFACE:-True}
-      EGO_VEHICLE_ROLE_NAME: ${EGO_VEHICLE_ROLE_NAME:-["hero","ego_vehicle","hero0","hero1","hero2","hero3"]}
-      PUBLISH_STATIC_VEHICLES: ${PUBLISH_STATIC_VEHICLES:-True}
-      PUBLISH_COMPRESSED_IMAGES: ${PUBLISH_COMPRESSED_IMAGES:-True}
-      IGNORE_ALTITUDE: ${IGNORE_ALTITUDE:-False}
-      IGNORE_TILT: ${IGNORE_TILT:-True}
-      GEOREFERENCE_SUBSTITUTION: ${GEOREFERENCE_SUBSTITUTION:-}
-      GRID_CONVERGENCE: ${GRID_CONVERGENCE:-None}
-      PUBLISH_ETSI_MESSAGES: ${PUBLISH_ETSI_MESSAGES:-False}
-      MAPEM_TIMER_PERIOD: ${MAPEM_TIMER_PERIOD:-1.0}
-      SPATEM_TIMER_PERIOD: ${SPATEM_TIMER_PERIOD:-0.1}
-      INTEGRATE_ALL_JUNCTIONS: ${INTEGRATE_ALL_JUNCTIONS:-False}
-      WAYPOINTS_SEARCH_DISTANCE: ${WAYPOINTS_SEARCH_DISTANCE:-1.0}
-      LANE_WAYPOINTS_COUNT: ${LANE_WAYPOINTS_COUNT:-10}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+      HOST: carla-server
+      PORT: 2000
+      TIMEOUT: 5000
+      PASSIVE: false
+      PUBLISH_CLOCK: true
+      SYNCHRONOUS_MODE: true
+      SYNCHRONOUS_MODE_WAIT_FOR_VEHICLE_CONTROL_COMMAND: false
+      FIXED_DELTA_SECONDS: 0.05
+      START_UNIX_TIME_STAMP: 0
+      TOWN: ""
+      RT_FACTOR: 1.0
+      REGISTER_ALL_SENSORS: true
+      NATIVE_INTERFACE: true
+      EGO_VEHICLE_ROLE_NAME: '["hero","ego_vehicle","hero0","hero1","hero2","hero3"]'
+      PUBLISH_STATIC_VEHICLES: true
+      PUBLISH_COMPRESSED_IMAGES: true
+      IGNORE_ALTITUDE: false
+      IGNORE_TILT: true
+      GEOREFERENCE_SUBSTITUTION: ""
+      GRID_CONVERGENCE: None
+      PUBLISH_ETSI_MESSAGES: false
+      MAPEM_TIMER_PERIOD: 1.0
+      SPATEM_TIMER_PERIOD: 0.1
+      INTEGRATE_ALL_JUNCTIONS: false
+      WAYPOINTS_SEARCH_DISTANCE: 1.0
+      LANE_WAYPOINTS_COUNT: 10
     command:
       - /bin/bash
       - -ic
@@ -185,15 +187,17 @@ services:
       VEHICLE_CONTROL_COMMAND_TOPIC: ${VEHICLE_CONTROL_COMMAND_TOPIC:-}
       # --- other -----
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      USE_SIM_TIME: ${USE_SIM_TIME:-false}
-      PARAMS: ${PARAMS:-/docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/settings.yaml}
-      ROLE_NAME: ${ROLE_NAME:-ego_vehicle}
-      CONTROL_LOOP_RATE: ${CONTROL_LOOP_RATE:-0.05}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+      PARAMS: /docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/settings.yaml
+      ROLE_NAME: ego_vehicle
+      CONTROL_LOOP_RATE: 0.05
     command:
       - /bin/bash
       - -ic
       - |
         ros2 launch carla_ackermann_control carla_ackermann_control.launch.py \
+          log_level:="$${LOG_LEVEL}" \
+          use_sim_time:="$${USE_SIM_TIME}" \
           params:=$${PARAMS} \
           role_name:=$${ROLE_NAME} \
           control_loop_rate:=$${CONTROL_LOOP_RATE} \
@@ -216,16 +220,18 @@ services:
       NAME: carla_manual_control
       # --- other -----
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      USE_SIM_TIME: ${USE_SIM_TIME:-false}
-      ROLE_NAME: ${ROLE_NAME:-ego_vehicle}
-      WIRELESS_CONTROLLER: ${WIRELESS_CONTROLLER:-False}
-      WINDOW_WIDTH: ${WINDOW_WIDTH:-800}
-      WINDOW_HEIGHT: ${WINDOW_HEIGHT:-600}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+      ROLE_NAME: ego_vehicle
+      WIRELESS_CONTROLLER: false
+      WINDOW_WIDTH: 800
+      WINDOW_HEIGHT: 600
     command:
       - /bin/bash
       - -ic
       - |
         ros2 launch carla_manual_control carla_manual_control.launch.py \
+          log_level:="$${LOG_LEVEL}" \
+          use_sim_time:="$${USE_SIM_TIME}" \
           role_name:=$${ROLE_NAME} \
           wireless_controller:=$${WIRELESS_CONTROLLER} \
           window_width:=$${WINDOW_WIDTH} \
@@ -241,7 +247,7 @@ services:
     image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.0
     environment:
       # --- name ------
-      CARLA_HOST: carla-server
+      CARLA_HOST: carla-simulator
       CARLA_PORT: 2000
       SCENARIO_DIRECTORY: /scenarios
     command:
@@ -293,8 +299,6 @@ services:
   ros-middleware-bridge:
     depends_on:
       carla-server:
-        condition: service_healthy
-      zenoh-router:
         condition: service_healthy
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
