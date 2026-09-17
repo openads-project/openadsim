@@ -4,7 +4,7 @@ openadservice:
   - {{ "/bin/bash" | quote }}
   - {{ "-ic" | quote }}
   - |-
-{{ (printf "%s%s%s%s%s%s" "ros2 run robot_state_publisher robot_state_publisher \\\n  /urdf/" (default "karl" (default "karl" (env "VEHICLE"))) "/" (default "karl" (default "karl" (env "VEHICLE"))) ".urdf \\\n  --ros-args -p use_sim_time:=" (default "true" (index .Values.composeEnvironment "USE_SIM_TIME"))) | indent 4 }}
+{{ (printf "%s%s%s%s%s%s" "ros2 run robot_state_publisher robot_state_publisher \\\n  /urdf/" (default "karl" (env "VEHICLE")) "/" (default "karl" (env "VEHICLE")) ".urdf \\\n  --ros-args -p use_sim_time:=" (default "true" (index .Values.composeEnvironment "USE_SIM_TIME"))) | indent 4 }}
   env:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
