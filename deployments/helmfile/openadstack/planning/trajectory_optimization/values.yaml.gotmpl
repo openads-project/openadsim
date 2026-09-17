@@ -34,7 +34,7 @@ openadservice:
     USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
-    ROS_TRACING: {{ (default "false" (default "false" (env "ROS_TRACING"))) | quote }}
+    ROS_TRACING: {{ (default "false" (env "ROS_TRACING")) | quote }}
     DRIVING_MODE: {{ (default "ackermann" (env "DRIVING_MODE")) | quote }}
   rosParamFileData: |
 {{ readFile "params.yml" | indent 4 }}

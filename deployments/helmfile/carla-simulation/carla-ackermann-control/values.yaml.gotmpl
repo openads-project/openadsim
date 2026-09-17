@@ -1,15 +1,25 @@
 openadservice:
   image: ghcr.io/openads-project/carla-ros-bridge:latest_update-deployment_ci
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    ros2 launch carla_ackermann_control carla_ackermann_control.launch.py \
+      params:=${PARAMS} \
+      role_name:=${ROLE_NAME} \
+      control_loop_rate:=${CONTROL_LOOP_RATE} \
+      ${ACKERMANN_COMMAND_TOPIC:+ackermann_command_topic:=${ACKERMANN_COMMAND_TOPIC}} \
+      ${VEHICLE_CONTROL_COMMAND_TOPIC:+vehicle_control_command_topic:=${VEHICLE_CONTROL_COMMAND_TOPIC}}
   env:
     ACKERMANN_COMMAND_TOPIC: /control/ackermann_trajectory_control/controls
     PARAMS: /docker-ros/ws/install/carla_ackermann_control/share/carla_ackermann_control/config/params.yml
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     VEHICLE_CONTROL_COMMAND_TOPIC: /carla/ego_vehicle/vehicle_control_cmd_automated
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     ROLE_NAME: {{ (default "ego_vehicle" (index .Values.composeEnvironment "ROLE_NAME")) | quote }}
     CONTROL_LOOP_RATE: {{ (default "0.05" (env "CONTROL_LOOP_RATE")) | quote }}
   rosParamFileData: |
