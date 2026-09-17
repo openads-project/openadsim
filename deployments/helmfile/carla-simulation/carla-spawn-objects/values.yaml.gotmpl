@@ -18,12 +18,7 @@ openadservice:
     SPAWN_POINT: {{ (default "" (env "SPAWN_POINT")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
-    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
-    OBJECTS_DEFINITION_FILE: {{ (default "objects.json" (env "OBJECTS_DEFINITION_FILE")) | quote }}
-    ROLE_NAME: {{ (default "ego_vehicle" (index .Values.composeEnvironment "ROLE_NAME")) | quote }}
-    SPAWN_POINT_EGO_VEHICLE: {{ (default "None" (env "SPAWN_POINT_EGO_VEHICLE")) | quote }}
-    SPAWN_SENSORS_ONLY: {{ (default "False" (env "SPAWN_SENSORS_ONLY")) | quote }}
-    CONTROL_ID: {{ (default "control" (env "CONTROL_ID")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
   volumes:
   - mountPath: /config
     hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/config/carla_ros_bridge
