@@ -2,9 +2,9 @@
 
 Run these commands from the OpenADSim repository root.
 
-Regenerate the supported Helmfile release universe. `COMPOSE_PROFILES` from
-`.env` determines which releases are enabled by default. GUI and SUMO are not
-exported yet:
+Regenerate the supported Helmfile release universe. Host environment values
+are evaluated when Helmfile runs and are not embedded during generation. GUI
+and SUMO are not exported yet:
 
 ```sh
 ./utils/compose-to-k8s/compose_to_helmfile.py \

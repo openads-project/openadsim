@@ -14,11 +14,11 @@ openadservice:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    SENSORS: {{ (default "" (default "global-sensors.json,karl-minimal.json" (env "SENSORS"))) | quote }}
-    SPAWN_POINT: {{ (default "" (default "50.787510,6.045938,260.0,90.0,wgs84" (env "SPAWN_POINT"))) | quote }}
-    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    SENSORS: {{ (default "" (env "SENSORS")) | quote }}
+    SPAWN_POINT: {{ (default "" (env "SPAWN_POINT")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     OBJECTS_DEFINITION_FILE: {{ (default "objects.json" (env "OBJECTS_DEFINITION_FILE")) | quote }}
     ROLE_NAME: {{ (default "ego_vehicle" (index .Values.composeEnvironment "ROLE_NAME")) | quote }}
     SPAWN_POINT_EGO_VEHICLE: {{ (default "None" (env "SPAWN_POINT_EGO_VEHICLE")) | quote }}

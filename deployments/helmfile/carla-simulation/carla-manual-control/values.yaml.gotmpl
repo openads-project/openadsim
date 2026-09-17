@@ -1,11 +1,20 @@
 openadservice:
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    ros2 launch carla_manual_control carla_manual_control.launch.py \
+      role_name:=${ROLE_NAME} \
+      wireless_controller:=${WIRELESS_CONTROLLER} \
+      window_width:=${WINDOW_WIDTH} \
+      window_height:=${WINDOW_HEIGHT}
   env:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
     ROLE_NAME: {{ (default "ego_vehicle" (index .Values.composeEnvironment "ROLE_NAME")) | quote }}
     WIRELESS_CONTROLLER: {{ (default "False" (env "WIRELESS_CONTROLLER")) | quote }}
     WINDOW_WIDTH: {{ (default "800" (env "WINDOW_WIDTH")) | quote }}
