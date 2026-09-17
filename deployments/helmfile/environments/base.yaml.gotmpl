@@ -1,13 +1,13 @@
-# Generated from host-side variables referenced by multiple generated services.
-# Export a variable before running Helmfile to override its conversion-time value.
+# generated from host-side variables referenced by multiple generated services.
+# export variables before running Helmfile; generation-time values are not retained.
 composeEnvironment:
-  CARLA_HOST: {{ env "CARLA_HOST" | default "" | quote }}
-  CARLA_PORT: {{ env "CARLA_PORT" | default "" | quote }}
-  CUSTOM_LANELET: {{ env "CUSTOM_LANELET" | default "" | quote }}
-  CUSTOM_OPENDRIVE: {{ env "CUSTOM_OPENDRIVE" | default "" | quote }}
-  LOG_LEVEL: {{ env "LOG_LEVEL" | default "" | quote }}
-  MAP: {{ env "MAP" | default "campus" | quote }}
-  ROLE_NAME: {{ env "ROLE_NAME" | default "" | quote }}
-  ROS_DOMAIN_ID: {{ env "ROS_DOMAIN_ID" | default "" | quote }}
-  TRACE: {{ env "TRACE" | default "" | quote }}
-  USE_SIM_TIME: {{ env "USE_SIM_TIME" | default "true" | quote }}
+  CARLA_HOST: {{ env "CARLA_HOST" | quote }}
+  CARLA_PORT: {{ env "CARLA_PORT" | quote }}
+  CUSTOM_LANELET: {{ env "CUSTOM_LANELET" | quote }}
+  CUSTOM_OPENDRIVE: {{ env "CUSTOM_OPENDRIVE" | quote }}
+  LOG_LEVEL: {{ env "LOG_LEVEL" | quote }}
+  MAP: {{ env "MAP" | quote }}
+  ROLE_NAME: {{ env "ROLE_NAME" | quote }}
+  ROS_DOMAIN_ID: {{ env "ROS_DOMAIN_ID" | quote }}
+  TRACE: {{ env "TRACE" | quote }}
+  USE_SIM_TIME: {{ env "USE_SIM_TIME" | quote }}
