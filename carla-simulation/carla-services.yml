@@ -261,7 +261,7 @@ services:
           window_width:=$${WINDOW_WIDTH} \
           window_height:=$${WINDOW_HEIGHT}
 
-  carla-ros-scenario-runner:
+  carla-scenario-runner-ros:
     depends_on:
       carla-server:
         condition: service_healthy
@@ -270,11 +270,6 @@ services:
       service: ros2-x11-service
     image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.1
     environment:
-      # --- name ------
-      NAMESPACE: /
-      NAME: carla_ros_scenario_runner
-      # --- other -----
-      LOG_LEVEL: ${LOG_LEVEL:-info}
       USE_SIM_TIME: ${USE_SIM_TIME:-true}
       CARLA_HOST: carla-server
       CARLA_PORT: 2000

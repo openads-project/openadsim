@@ -36,22 +36,13 @@ services:
     extends:
       file: ./carla-services.yml
       service: carla-spawn-objects
-    depends_on: 
+    depends_on:
       - carla-ros-bridge
     environment:
       BLUEPRINTS_DIRECTORY: /config/blueprints
       OBJECTS_DIRECTORY: /config/objects
-      SPAWN_POINT: ${SPAWN_POINT:-}
-      SENSORS: ${SENSORS:-}
-    command:
-      - /bin/bash
-      - -ic
-      - | 
-        ros2 launch carla_spawn_objects carla_example_ego_vehicle.launch.py \
-          blueprints_directory:=$${BLUEPRINTS_DIRECTORY} \
-          objects_directory:=$${OBJECTS_DIRECTORY} \
-          $${SPAWN_POINT:+spawn_point_ego_vehicle:=$${SPAWN_POINT}} \
-          $${SENSORS:+objects_definition_file:=$${SENSORS}}
+      OBJECTS_DEFINITION_FILE: ${SENSORS:-}
+      SPAWN_POINT_EGO_VEHICLE: ${SPAWN_POINT:-}
     volumes:
       - ./config/carla_ros_bridge:/config:ro
 
@@ -63,59 +54,27 @@ services:
       service: carla-converter
     environment:
       NAMESPACE: /carla
-      # outputs
-      TRAFFIC_LIGHTS_TOPIC: ~/traffic_light
     volumes:
       - ./config/carla_converter/params.yml:/docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
-
 
   carla-simulation-adapter:
     profiles:
       - carla
     extends:
-      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
-      service: ros2-service
-    image: ghcr.io/openads-project/simulation_adapter:v1.4.1
+      file: ./carla-services.yml
+      service: simulation-adapter
     environment:
       NAMESPACE: /carla
-      NAME: simulation_adapter
-      # inputs
       INPUT_EGO_DATA_TOPIC: /carla/carla_converter/ego_vehicle/ego_data
       INPUT_MAP_INFO_TOPIC: /carla/carla_converter/map_info
       INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/object_list
       INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
-      # outputs
       OUTPUT_EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
       OUTPUT_EGO_IMU_TOPIC: /simulation/imu
       OUTPUT_EGO_ODOMETRY_TOPIC: /simulation/odometry
       OUTPUT_EGO_VEHICLE_STATE_TOPIC: /simulation/vehicle_state
       OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
       OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
-      # other
-      LOG_LEVEL: ${LOG_LEVEL:-info}
-      USE_SIM_TIME: ${USE_SIM_TIME:-true}
-      PARAMS: ${PARAMS:-/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml}
       LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
-    command:
-      - /bin/bash
-      - -ic
-      - |
-        ros2 launch simulation_adapter simulation_adapter.launch.py \
-          namespace:=$${NAMESPACE} \
-          name:=$${NAME} \
-          log_level:=$${LOG_LEVEL} \
-          use_sim_time:=$${USE_SIM_TIME} \
-          params:=$${PARAMS} \
-          load_lanelet_map:=$${LOAD_LANELET_MAP} \
-          input_map_info_topic:=$${INPUT_MAP_INFO_TOPIC} \
-          input_ego_data_topic:=$${INPUT_EGO_DATA_TOPIC} \
-          input_object_list_topic:=$${INPUT_OBJECT_LIST_TOPIC} \
-          input_trajectory_topic:=$${INPUT_TRAJECTORY_TOPIC} \
-          output_ego_data_topic:=$${OUTPUT_EGO_DATA_TOPIC} \
-          output_object_list_topic:=$${OUTPUT_OBJECT_LIST_TOPIC} \
-          output_object_list_fixed_topic:=$${OUTPUT_OBJECT_LIST_FIXED_TOPIC} \
-          output_ego_imu_topic:=$${OUTPUT_EGO_IMU_TOPIC} \
-          output_ego_odometry_topic:=$${OUTPUT_EGO_ODOMETRY_TOPIC} \
-          output_ego_vehicle_state_topic:=$${OUTPUT_EGO_VEHICLE_STATE_TOPIC}
     volumes:
       - ./config/simulation_adapter/params_${VEHICLE:-karl}.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
