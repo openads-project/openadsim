@@ -39,7 +39,7 @@ services:
           map_info_topic:=$${MAP_INFO_TOPIC} \
           gnss_topic:=$${GNSS_TOPIC}
     volumes:
-      - ./config/sumo_interface/params.yml:/docker-ros/ws/install/sumo_interface/share/sumo_interface/config/params.yml
+      - ./sumo_interface/params.yml:/docker-ros/ws/install/sumo_interface/share/sumo_interface/config/params.yml
    
   sumo-simulation-adapter:
     profiles:
@@ -92,4 +92,22 @@ services:
           output_ego_odometry_topic:=$${OUTPUT_EGO_ODOMETRY_TOPIC} \
           output_ego_vehicle_state_topic:=$${OUTPUT_EGO_VEHICLE_STATE_TOPIC}
     volumes:
-      - ./config/simulation_adapter/params.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
+      - ./simulation_adapter/params.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
+
+  sumo-control-active-bridge:
+    profiles:
+      - sumo
+    depends_on:
+      - sumo-interface
+    restart: unless-stopped # requires incoming topic
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: ghcr.io/openads-project/monitoring:v1.0.0
+    command: >
+      ros2 run topic_tools transform
+        /sumo/manual_control_override
+        /control/active
+        std_msgs/Bool
+        "std_msgs.msg.Bool(data=not m.data)"
+        --import std_msgs

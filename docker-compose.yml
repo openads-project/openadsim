@@ -3,13 +3,10 @@ include:
 
   # simulation
   - carla-simulation/docker-compose.yml
-  - sumo-simulation/docker-compose.core.yml
+  - sumo-simulation/docker-compose.yml
 
-  # automated driving stack
+  # stack
   - openadstack/docker-compose.yml
-
-  # control
-  - sumo-simulation/docker-compose.control.yml
 
   # utils
   - utils/gui/docker-compose.yml
