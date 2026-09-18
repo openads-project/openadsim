@@ -24,11 +24,13 @@ jobs:
       - name: Install requirements
         run: python -m pip install -r openadstack/openadstack/utils/scripts/requirements.txt
       - name: Render compose sources
-        run: python openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation
+        run: |
+          python openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation
+          python openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir sumo-simulation
       - name: Check generated files
         run: |
           if [[ ! -z "$(git status --porcelain)" ]]; then
-            echo "::error::render_compose_sources.py changed files. Run it locally with --root-dir carla-simulation and commit the result."
+            echo "::error::render_compose_sources.py changed files. Render the CARLA and SUMO sources locally and commit the result."
             git diff
             exit 1
           fi

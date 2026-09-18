@@ -6,7 +6,7 @@
 
 services:
 
-  carla-converter:
+  carla.carla-converter:
     profiles:
       - carla
     depends_on:
@@ -18,7 +18,8 @@ services:
     image: ghcr.io/openads-project/carla_converter:v1.3.2
     environment:
       # --- name ------
-      NAMESPACE: /
+      # NAMESPACE: /
+      NAMESPACE: /carla
       NAME: carla_converter
       # --- outputs ---
       OBJECT_LIST_TOPIC: ~/object_list

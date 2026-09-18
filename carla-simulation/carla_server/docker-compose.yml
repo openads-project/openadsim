@@ -19,7 +19,7 @@ services:
       interval: 2s
       timeout: 1s
       retries: 3
-    image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.0
+    image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
     environment:
       CARLA_PORT: 2000
     # command:
@@ -61,4 +61,3 @@ services:
           -RenderOffScreen \
           --ros2 \
           -carla-rpc-port=$${CARLA_PORT}
-    ipc: service:zenoh-router
