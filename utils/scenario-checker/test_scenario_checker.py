@@ -449,7 +449,7 @@ class ScenarioCheckerTests(unittest.TestCase):
         lanelet = self.root / "custom.osm"
         opendrive.write_text("<OpenDRIVE/>", encoding="utf-8")
         lanelet.write_text("<osm/>", encoding="utf-8")
-        scenario_root = self.root / "carla-simulation/scenarios"
+        scenario_root = self.root / "scenarios"
         result = import_scenario(
             self.scenario,
             output_root=scenario_root / "custom-imports",
@@ -458,7 +458,7 @@ class ScenarioCheckerTests(unittest.TestCase):
             lanelet=lanelet,
             repo_root=self.root,
         )
-        prefix = "carla-simulation/scenarios/custom-imports/runtime"
+        prefix = "scenarios/custom-imports/runtime"
         environment = {
             "SCENARIO_FILE": f"{prefix}/runtime.xosc",
             "MAP": "",

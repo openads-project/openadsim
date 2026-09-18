@@ -32,11 +32,11 @@ PRESETS = {
         ),
         map=MapConfig(
             prebuilt_map=None,
-            custom_opendrive="carla-simulation/scenarios/simple-scenario/synthetic_curve_cut_in.xodr",
-            custom_lanelet="carla-simulation/scenarios/simple-scenario/synthetic_curve_cut_in.osm",
+            custom_opendrive="scenarios/simple-scenario/synthetic_curve_cut_in.xodr",
+            custom_lanelet="scenarios/simple-scenario/synthetic_curve_cut_in.osm",
             spawn_point="100.0,100.0,-100.0,0.0",
         ),
-        scenario=ScenarioConfig(scenario_file="carla-simulation/scenarios/simple-scenario/synthetic_curve_cut_in.xosc"),
+        scenario=ScenarioConfig(scenario_file="scenarios/simple-scenario/synthetic_curve_cut_in.xosc"),
         additional=AdditionalOptionsConfig(
             traffic_profile=TrafficProfile.DISABLED,
             testing_profile=TestingProfile.AUTOMATED,

@@ -29,18 +29,18 @@ Validate all scenarios for one active map, as used by manual scenario selection:
 
 ```bash
 python3 utils/scenario-checker/scenario_checker.py validate-folder \
-  carla-simulation/scenarios --expected-map campus
+  scenarios --expected-map campus
 ```
 
 Runtime containers use one environment-aware call before starting ScenarioRunner:
 
 ```bash
-python3 /scenario_checker.py validate-runtime /carla-simulation/scenarios/example.xosc
+python3 /scenario_checker.py validate-runtime /scenarios/example.xosc
 ```
 
 The command reads `MAP`, `CUSTOM_OPENDRIVE`, and `CUSTOM_LANELET` and resolves
 repository-relative map paths below the mounted scenario root. Folder-based
-manual testing uses `validate-runtime /carla-simulation/scenarios`. The checker
+manual testing uses `validate-runtime /scenarios`. The checker
 detects files and directories automatically. For custom maps, the configured
 `.xodr`, `.osm`, and every matching `.xosc` must be in the same directory. The
 `LogicFile` value must be the exact `.xodr` filename without a directory.
@@ -49,7 +49,7 @@ Create a self-contained scenario bundle with a normalized scenario copy:
 
 ```bash
 python3 utils/scenario-checker/scenario_checker.py import scenario.xosc \
-  --output-root carla-simulation/scenarios/custom-imports \
+  --output-root scenarios/custom-imports \
   --name my-scenario \
   --opendrive map.xodr \
   --lanelet map.osm

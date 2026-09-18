@@ -27,7 +27,7 @@ services:
       CUSTOM_LANELET: ${CUSTOM_LANELET:-}
     volumes:
       - ../../utils/scenario-checker/scenario_checker.py:/scenario_checker.py:ro
-      - ../scenarios:/carla-simulation/scenarios
+      - ../../scenarios:/scenarios
 
   carla-scenario-runner-ros-manual-testing:
     profiles:
@@ -41,8 +41,8 @@ services:
       - -ic
       - |
         set -e
-        python3 /scenario_checker.py validate-runtime /carla-simulation/scenarios
-        SCENARIOS_DIR=/carla-simulation/scenarios
+        python3 /scenario_checker.py validate-runtime /scenarios
+        SCENARIOS_DIR=/scenarios
         if [ -n "$${CUSTOM_OPENDRIVE}" ]; then
           SCENARIOS_DIR="$$(dirname "/$${CUSTOM_OPENDRIVE#/}")"
         fi
