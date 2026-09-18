@@ -1,0 +1,19 @@
+# docker compose --profile $COMPOSE_PROFILES config --services | sort
+include:
+
+  # simulation
+  - carla_server/docker-compose.yml
+  - carla_client/docker-compose.yml
+  - ros_middleware_bridge/docker-compose.yml
+  - carla_ros_bridge/docker-compose.yml
+  - carla_spawn_objects/docker-compose.yml
+  - carla_converter/docker-compose.yml
+  - simulation_adapter/docker-compose.yml
+
+  # control
+  - carla_ackermann_control/docker-compose.yml
+  - carla_manual_control/docker-compose.yml
+  - carla_control_active_bridge/docker-compose.yml
+
+  # scenarios
+  - carla_scenario_runner/docker-compose.yml

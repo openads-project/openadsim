@@ -1,0 +1,27 @@
+# Remote compose file with overrides defined here can be rendered by
+# `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
+
+include:
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:main-carla_spawn_objects
+
+services:
+
+  carla-spawn-objects:
+    profiles:
+      - carla
+    depends_on:
+      carla-server:
+        condition: service_healthy
+      carla-ros-bridge:
+        condition: service_started
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    environment:
+      OBJECTS_DEFINITION_FILE: ${SENSORS:-objects.json}
+      OBJECTS_DIRECTORY: /config/objects
+      BLUEPRINTS_DIRECTORY: /config/blueprints
+      SPAWN_POINT_EGO_VEHICLE: ${SPAWN_POINT:-None}
+    volumes:
+      - ./objects:/config/objects:ro
+      - ./blueprints:/config/blueprints:ro

@@ -16,8 +16,8 @@ Two layouts are available. The minimal layout spawns the physical sensor platfor
 
 | Layout | Lidars and cameras | V2X object lists | Use case |
 | --- | --- | --- | --- |
-| Minimal ([`rita-minimal.json`](../carla-simulation/config/carla_ros_bridge/objects/rita-minimal.json)) | `srisu2` only | all four units | Default, lower computational load |
-| All ([`rita-all.json`](../carla-simulation/config/carla_ros_bridge/objects/rita-all.json)) | all four units | all four units | Complete sensor setup |
+| Minimal ([`rita-minimal.json`](../carla-simulation/carla_spawn_objects/objects/rita-minimal.json)) | `srisu2` only | all four units | Default, lower computational load |
+| All ([`rita-all.json`](../carla-simulation/carla_spawn_objects/objects/rita-all.json)) | all four units | all four units | Complete sensor setup |
 
 ## Getting Started
 

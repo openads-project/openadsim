@@ -64,11 +64,11 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | `carla-ros-bridge` | `carla` | ROS 2 bridge; loads `MAP` or `CUSTOM_OPENDRIVE` |
 | `carla-spawn-objects` | `carla` | Spawns ego vehicle and sensors from `SENSORS`; optional `SPAWN_POINT` |
 | `carla-converter` | `carla` | Generates stack-relevant ego, object, and map topics |
-| `carla-simulation-adapter` | `carla` | Transforms CARLA data and coordinate frames for OpenADStack; optional Lanelet2 map selection via `LANELET_RELOAD` |
+| `simulation-adapter` | `carla` | Transforms CARLA data and coordinate frames for OpenADStack; optional Lanelet2 map selection via `LANELET_RELOAD` |
 | `carla-ackermann-control` | `carla` | Applies Ackermann control commands to the ego vehicle |
 | `carla-manual-control` | `carla` | Manual keyboard control of the vehicle |
 | `carla-control-active-bridge` | `carla` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
-| `carla-environment` | `traffic` | Defines random traffic and environment variation |
+| `carla-client` | `traffic` | Defines random traffic and environment variation |
 | `carla-scenario-runner-ros-manual-testing` | `manual-testing` | Interactive scenario execution through RViz |
 | `carla-scenario-runner-ros-automated-testing` | `automated-testing` | Direct scenario execution from `SCENARIO_FILE` |
 
