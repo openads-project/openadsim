@@ -28,4 +28,3 @@ services:
   carla-server-offscreen:
     profiles: !override
       - donotuse
-    ipc: service:zenoh-router
