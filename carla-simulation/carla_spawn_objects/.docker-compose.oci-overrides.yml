@@ -2,7 +2,7 @@
 # `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
 
 include:
-  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:main-carla_spawn_objects
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:v0.10.0-1.1.1-carla_spawn_objects
 
 services:
 
