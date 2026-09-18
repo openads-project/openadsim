@@ -2,14 +2,15 @@
 # `../openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir .`
 
 include:
-  - oci://ghcr.io/openads-project/carla-simulator/compose:helm-server
-  - oci://ghcr.io/openads-project/carla-simulator/compose:helm-client
-  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_spawn_objects
-  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_ros_bridge
-  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_ackermann_control
-  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:update-deployment-carla_manual_control
-  - oci://ghcr.io/openads-project/carla-scenario-runner/compose:v0.10.0-1.1.0
-  - oci://ghcr.io/openads-project/carla_converter/compose:v1.3.1
+  - oci://ghcr.io/openads-project/carla-simulator/compose:v0.10.0-1.1.1-carla-server
+  - oci://ghcr.io/openads-project/carla-simulator/compose:v0.10.0-1.1.1-carla-client
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:main-carla_spawn_objects
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:main-carla_ros_bridge
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:main-carla_ackermann_control
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:main-carla_manual_control
+  - oci://ghcr.io/openads-project/carla-scenario-runner/compose:helm # TODO
+  - oci://ghcr.io/openads-project/carla_converter/compose:v1.3.2
+  - oci://ghcr.io/openads-project/simulation_adapter/compose:v1.4.2
   - oci://ghcr.io/openads-project/ros_middleware_bridge/compose:v1.2.1
 
 services:
@@ -72,6 +73,14 @@ services:
         condition: service_healthy
 
   carla-converter:
+    extends:
+      file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    depends_on:
+      carla-server:
+        condition: service_healthy
+
+  simulation-adapter:
     extends:
       file: ../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
