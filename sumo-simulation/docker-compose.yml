@@ -1,0 +1,9 @@
+# docker compose --profile $COMPOSE_PROFILES config --services | sort
+include:
+
+  # simulation
+  - sumo_interface/docker-compose.yml
+  - simulation_adapter/docker-compose.yml
+
+  # control
+  - sumo_control_active_bridge/docker-compose.yml
