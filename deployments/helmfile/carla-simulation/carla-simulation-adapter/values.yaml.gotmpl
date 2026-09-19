@@ -13,11 +13,11 @@ openadservice:
     OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
     OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
-    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
-    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
-    USE_SIM_TIME: {{ (default "true" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
     PARAMS: {{ (default "/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml" (env "PARAMS")) | quote }}
     LOAD_LANELET_MAP: {{ (default "true" (env "LANELET_RELOAD")) | quote }}
   rosParamFileData: |

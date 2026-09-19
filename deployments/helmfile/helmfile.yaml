@@ -2,7 +2,6 @@ environments:
   default:
     values:
       - environments/profiles.yaml.gotmpl
-      - environments/base.yaml.gotmpl
       - environments/overrides.yaml.gotmpl
 
 ---
