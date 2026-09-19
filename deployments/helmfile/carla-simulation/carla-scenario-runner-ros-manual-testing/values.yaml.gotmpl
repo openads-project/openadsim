@@ -14,16 +14,16 @@ openadservice:
       scenario_runner_path:=${SCENARIO_RUNNER_ROOT} \
       scenarios_dir:=${SCENARIOS_DIR}
   env:
-    CARLA_HOST: {{ (default "carla-server" (index .Values.composeEnvironment "CARLA_HOST")) | quote }}
-    CUSTOM_LANELET: {{ (default "" (index .Values.composeEnvironment "CUSTOM_LANELET")) | quote }}
-    CUSTOM_OPENDRIVE: {{ (default "" (index .Values.composeEnvironment "CUSTOM_OPENDRIVE")) | quote }}
-    MAP: {{ (default "" (index .Values.composeEnvironment "MAP")) | quote }}
+    CARLA_HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    CUSTOM_LANELET: {{ (default "" (env "CUSTOM_LANELET")) | quote }}
+    CUSTOM_OPENDRIVE: {{ (default "" (env "CUSTOM_OPENDRIVE")) | quote }}
+    MAP: {{ (default "" (env "MAP")) | quote }}
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
-    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    SCENARIO_MAP: {{ (default (default "" (index .Values.composeEnvironment "MAP")) (index .Values.composeEnvironment "CUSTOM_OPENDRIVE")) | quote }}
+    SCENARIO_MAP: {{ (default (default "" (env "MAP")) (env "CUSTOM_OPENDRIVE")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
-    CARLA_PORT: {{ (default "2000" (index .Values.composeEnvironment "CARLA_PORT")) | quote }}
+    CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
   volumes:
   - mountPath: /scenario_checker.py
     data: |

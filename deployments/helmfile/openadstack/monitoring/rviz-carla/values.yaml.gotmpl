@@ -9,11 +9,11 @@ openadservice:
     NAMESPACE: /monitoring
     CONFIG: /conf.rviz
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
-    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (env "USE_SIM_TIME")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
-    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
   volumes:
   - mountPath: /docker-ros/ws/monitoring-volume
     hostPath: /work/geller/openads-project/openadsim-k8s/openadstack/monitoring/volume

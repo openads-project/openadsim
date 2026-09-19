@@ -26,7 +26,7 @@ openadservice:
       /understanding/lanelet2_object_list_prediction/object_list
   env:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
-    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
   volumes:

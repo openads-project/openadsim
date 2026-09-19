@@ -27,12 +27,12 @@ openadservice:
     PARAMS: /params.yml
     POINT_CLOUD_TOPIC: /perception/point_cloud_fusion/point_cloud
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
-    ROS_DOMAIN_ID: {{ (default "0" (index .Values.composeEnvironment "ROS_DOMAIN_ID")) | quote }}
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    TRACE: {{ (default "false" (index .Values.composeEnvironment "TRACE")) | quote }}
-    USE_SIM_TIME: {{ (default "false" (index .Values.composeEnvironment "USE_SIM_TIME")) | quote }}
+    TRACE: {{ (default "false" (env "TRACE")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (env "USE_SIM_TIME")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
-    LOG_LEVEL: {{ (default "info" (index .Values.composeEnvironment "LOG_LEVEL")) | quote }}
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
   volumes:
   - mountPath: /models
     image: ghcr.io/openads-project/point_cloud_object_detection/model:v1.0.0
