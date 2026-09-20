@@ -1,0 +1,3 @@
+helmfiles:
+  - path: addons/helmfile.yaml
+  - path: generated/helmfile.yaml

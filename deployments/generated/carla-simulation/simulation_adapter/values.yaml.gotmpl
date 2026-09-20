@@ -1,0 +1,34 @@
+openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
+  name: carla-simulation-adapter
+  env:
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
+    NAMESPACE: /carla
+    INPUT_MAP_INFO_TOPIC: /carla/carla_converter/map_info
+    INPUT_EGO_DATA_TOPIC: /carla/carla_converter/ego_vehicle/ego_data
+    INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/object_list
+    INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
+    OUTPUT_EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+    OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
+    OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
+    OUTPUT_EGO_IMU_TOPIC: /simulation/imu
+    OUTPUT_EGO_ODOMETRY_TOPIC: /simulation/odometry
+    OUTPUT_EGO_VEHICLE_STATE_TOPIC: /simulation/vehicle_state
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
+    LOAD_LANELET_MAP: {{ (default "true" (env "LANELET_RELOAD")) | quote }}
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  rosParamFileData: |
+{{ readFile "params.yml" | indent 4 }}
+  rosParamFileMountPath: /docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
+  dependsOn:
+  - host: carla-server
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
+  - host: zenoh-router
+    port: 7447
