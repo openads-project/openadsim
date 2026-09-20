@@ -43,8 +43,13 @@ services:
           SCENARIOS_DIR="$$(dirname "/$${CUSTOM_OPENDRIVE#/}")"
         fi
         exec ros2 launch carla_ros_scenario_runner carla_ros_scenario_runner_with_selection.launch.py \
-          scenario_runner_path:=$${SCENARIO_RUNNER_PATH} \
-          scenarios_dir:=$${SCENARIOS_DIR}
+          use_sim_time:=${USE_SIM_TIME} \
+          host:=${CARLA_HOST} \
+          port:=${CARLA_PORT} \
+          role_name:=${ROLE_NAME} \
+          scenario_runner_path:=${SCENARIO_RUNNER_PATH} \
+          wait_for_ego:=${WAIT_FOR_EGO} \
+          scenarios_dir:=${SCENARIOS_DIR}
 
   carla-scenario-runner-ros-automated-testing:
     profiles:
