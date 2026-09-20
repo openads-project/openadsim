@@ -37,11 +37,9 @@ openadservice:
   - mountPath: /carla-simulation/scenarios
     hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/scenarios
   dependsOn:
-  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
-    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
+  - host: carla-server
+    port: 2000
   - host: zenoh-router
     port: 7447
-  envHostPrefixKeys:
-  - CARLA_HOST
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

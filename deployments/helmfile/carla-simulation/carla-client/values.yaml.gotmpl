@@ -19,7 +19,5 @@ openadservice:
     data: |
 {{ readFile "set_environment.py" | indent 6 }}
   dependsOn:
-  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
-    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
-  envHostPrefixKeys:
-  - CARLA_HOST
+  - host: carla-server
+    port: 2000
