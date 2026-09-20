@@ -101,6 +101,7 @@ set +a
 export DEPLOYMENT_PREFIX=sim1
 export CARLA_HOST=sim1-carla-server
 export NODE=i220043.ika.rwth-aachen.de
+export OPENADSIM_PATH=/work/geller/openads-project/openadsim  # absolute checkout path on the selected node
 
 helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml template
 helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml sync
@@ -108,4 +109,4 @@ helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml 
 
 Rerun preparation after changing the source Helmfile, the local base chart,
 or a parent chart reference. Changes only to service values take effect on the
-next `template` or `sync`. Preparation alone does not deploy anything.
+next `template` or `sync`. `OPENADSIM_PATH` must be the absolute repository path on the selected Kubernetes node. Preparation alone does not deploy anything.

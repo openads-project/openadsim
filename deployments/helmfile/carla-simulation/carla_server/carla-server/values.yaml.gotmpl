@@ -15,7 +15,7 @@ openadservice:
       --ros2 \
       -carla-rpc-port=${CARLA_PORT}
   env:
-    CARLA_PORT: 2000
+    CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
   volumes:
   - mountPath: /workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
     data: |

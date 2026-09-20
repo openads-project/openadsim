@@ -18,9 +18,9 @@ openadservice:
     USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
   volumes:
   - mountPath: /config/objects
-    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/carla_spawn_objects/objects
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "deployments/helmfile/carla-simulation/carla_spawn_objects/objects" | clean) | quote }}
   - mountPath: /config/blueprints
-    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/carla_spawn_objects/blueprints
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "deployments/helmfile/carla-simulation/carla_spawn_objects/blueprints" | clean) | quote }}
   dependsOn:
   - host: carla-server
     port: 2000

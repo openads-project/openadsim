@@ -18,7 +18,7 @@ openadservice:
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
   volumes:
   - mountPath: /urdf
-    hostPath: /work/geller/openads-project/openadsim-k8s/.runtime/openads-assets-v1.0.0
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") ".runtime/openads-assets-v1.0.0" | clean) | quote }}
   dependsOn:
   - host: zenoh-router
     port: 7447

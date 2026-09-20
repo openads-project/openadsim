@@ -35,7 +35,7 @@ openadservice:
     data: |
 {{ readFile "scenario_checker.py" | indent 6 }}
   - mountPath: /scenarios
-    hostPath: /work/geller/openads-project/openadsim-k8s/scenarios
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "scenarios" | clean) | quote }}
   dependsOn:
   - host: carla-server
     port: 2000

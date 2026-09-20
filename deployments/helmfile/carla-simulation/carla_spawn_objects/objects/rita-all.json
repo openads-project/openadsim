@@ -1,0 +1,52 @@
+{
+    "objects": [
+        {
+            "type": "blueprint.srisu",
+            "id": "srisu1",
+            "spawn_point": {
+                "lat": 50.779692,
+                "lon": 6.050775,
+                "alt_above_ground": 0.0,
+                "roll": 0.0,
+                "pitch": 0.0,
+                "yaw": -109.93
+            }
+        },
+        {
+            "type": "blueprint.srisu",
+            "id": "srisu2",
+            "spawn_point": {
+                "lat": 50.779457,
+                "lon": 6.050782,
+                "alt_above_ground": 0.0,
+                "roll": 0.0,
+                "pitch": 0.0,
+                "yaw": 117.76
+            }
+        },
+        {
+            "type": "blueprint.srisu",
+            "id": "srisu3",
+            "spawn_point": {
+                "lat": 50.779446,
+                "lon": 6.050505,
+                "alt_above_ground": 0.0,
+                "roll": 0.0,
+                "pitch": 0.0,
+                "yaw": 42.48
+            }
+        },
+        {
+            "type": "blueprint.srisu",
+            "id": "srisu4",
+            "spawn_point": {
+                "lat": 50.779656,
+                "lon": 6.050454,
+                "alt_above_ground": 0.0,
+                "roll": 0.0,
+                "pitch": 0.0,
+                "yaw": -32.30
+            }
+        }
+    ]
+}

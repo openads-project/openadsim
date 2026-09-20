@@ -1,0 +1,23 @@
+{
+    "blueprints": [
+        {
+            "id": "radar_long_range",
+            "type": "sensor.other.radar",
+            "horizontal_fov": 30.0,
+            "vertical_fov": 10.0,
+            "range": 200.0
+        },
+        {
+            "id": "radar_mid_range",
+            "type": "sensor.other.radar",
+            "horizontal_fov": 110.0,
+            "vertical_fov": 23.0
+        },
+        {
+            "id": "radar_short_range",
+            "type": "sensor.other.radar",
+            "horizontal_fov": 130.0,
+            "vertical_fov": 14.0
+        }
+    ]
+}
