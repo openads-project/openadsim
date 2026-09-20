@@ -4,8 +4,7 @@ environments:
       - environments/profiles.yaml.gotmpl
       - environments/services.yaml.gotmpl
       - environments/overrides.yaml.gotmpl
-
-  openadscale:
+  external-carla:
     values:
       - environments/profiles.yaml.gotmpl
       - environments/services.yaml.gotmpl

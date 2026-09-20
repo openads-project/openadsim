@@ -1,13 +1,12 @@
+# omit simulator-side and interactive releases in the external-carla use case.
 serviceEnabled:
   carla-server:
     enabled: false
-  carla-client:
-    enabled: false
-  carla-manual-control:
+  carla-scenario-runner-ros-manual-testing:
     enabled: false
   carla-scenario-runner-ros-automated-testing:
     enabled: false
-  carla-scenario-runner-ros-manual-testing:
-    enabled: false
   rviz-carla:
+    enabled: false
+  carla-manual-control:
     enabled: false

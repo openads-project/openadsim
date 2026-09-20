@@ -17,7 +17,12 @@ openadservice:
       SCENARIOS_DIR="$(dirname "/${CUSTOM_OPENDRIVE#/}")"
     fi
     exec ros2 launch carla_ros_scenario_runner carla_ros_scenario_runner_with_selection.launch.py \
+      use_sim_time:=${USE_SIM_TIME} \
+      host:=${CARLA_HOST} \
+      port:=${CARLA_PORT} \
+      role_name:=${ROLE_NAME} \
       scenario_runner_path:=${SCENARIO_RUNNER_PATH} \
+      wait_for_ego:=${WAIT_FOR_EGO} \
       scenarios_dir:=${SCENARIOS_DIR}
   env:
     CUSTOM_LANELET: {{ (default "" (env "CUSTOM_LANELET")) | quote }}
