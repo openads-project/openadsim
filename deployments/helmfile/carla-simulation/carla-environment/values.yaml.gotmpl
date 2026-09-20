@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   image: ghcr.io/openads-project/carla-simulator:client_v0.10.0-1.1.0
   args:
   - /bin/bash

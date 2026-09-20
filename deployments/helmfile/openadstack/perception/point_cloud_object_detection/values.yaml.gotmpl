@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   image: ghcr.io/openads-project/point_cloud_object_detection:v3.0.0-slim
   args:
   - /bin/bash

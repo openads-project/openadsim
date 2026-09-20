@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   name: carla-scenario-runner-ros-automated-testing
   args:
   - /bin/bash
@@ -7,21 +12,22 @@ openadservice:
     set -e
     python3 /scenario_checker.py validate-runtime "/${SCENARIO_FILE}"
     exec python3 -u ../additional-files/scenario_runner.py \
-      --host carla-server \
+      --host "${CARLA_HOST}" \
       --openscenario /${SCENARIO_FILE} \
       --output \
       --rtFactor 1.0 \
       --waitForEgo
   env:
-    CARLA_HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
     CUSTOM_LANELET: {{ (default "" (env "CUSTOM_LANELET")) | quote }}
     CUSTOM_OPENDRIVE: {{ (default "" (env "CUSTOM_OPENDRIVE")) | quote }}
     MAP: {{ (default "" (env "MAP")) | quote }}
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
+    SCENARIO_DIRECTORY: /scenarios
     SCENARIO_FILE: {{ (env "SCENARIO_FILE") | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    CARLA_HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
     CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
   volumes:
   - mountPath: /scenario_checker.py
@@ -30,9 +36,11 @@ openadservice:
   - mountPath: /carla-simulation/scenarios
     hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/scenarios
   dependsOn:
-  - host: carla-server
-    port: 2000
+  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
   - host: zenoh-router
     port: 7447
+  envHostPrefixKeys:
+  - CARLA_HOST
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

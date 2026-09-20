@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   args:
   - /bin/bash
   - -ic
@@ -23,7 +28,7 @@ openadservice:
   - mountPath: /config
     hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/config/carla_ros_bridge
   dependsOn:
-  - host: carla-server
-    port: 2000
+  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
   - host: zenoh-router
     port: 7447

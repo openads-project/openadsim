@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   env:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
@@ -19,7 +24,7 @@ openadservice:
 {{ readFile "params.yml" | indent 4 }}
   rosParamFileMountPath: /docker-ros/ws/install/ros_middleware_bridge/share/ros_middleware_bridge/config/params.yml
   dependsOn:
-  - host: carla-server
-    port: 2000
+  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
   - host: zenoh-router
     port: 7447
