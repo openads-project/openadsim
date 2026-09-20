@@ -10,8 +10,8 @@ openadservice:
   - -ic
   - exec python3 /set_environment.py
   env:
-    CARLA_HOST: carla-server
-    CARLA_PORT: 2000
+    CARLA_HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
   volumes:
   - mountPath: /set_environment.py
     data: |

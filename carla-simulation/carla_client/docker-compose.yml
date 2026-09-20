@@ -17,8 +17,8 @@ services:
       service: gpu-x11-service
     image: ghcr.io/openads-project/carla-simulator:client_v0.10.0-1.1.1
     environment:
-      CARLA_HOST: carla-server
-      CARLA_PORT: 2000
+      CARLA_HOST: ${CARLA_HOST:-carla-server}
+      CARLA_PORT: ${CARLA_PORT:-2000}
     # command:
     #   - sleep
     #   - infinity

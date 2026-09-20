@@ -6,6 +6,8 @@ openadservice:
 {{- end }}
   image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
   env:
+    HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
     IGNORE_ALTITUDE: true
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}

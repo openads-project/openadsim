@@ -16,6 +16,8 @@ services:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
     environment:
+      HOST: ${CARLA_HOST:-carla-server}
+      PORT: ${CARLA_PORT:-2000}
       TOWN: ${MAP:-/opendrive.xodr}
       IGNORE_ALTITUDE: "True"
     volumes:
