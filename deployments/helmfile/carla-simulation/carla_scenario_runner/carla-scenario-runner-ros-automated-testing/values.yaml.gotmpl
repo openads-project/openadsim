@@ -19,17 +19,17 @@ openadservice:
       --rtFactor 1.0 \
       --waitForEgo
   env:
-    CUSTOM_LANELET: {{ (default "" (env "CUSTOM_LANELET")) | quote }}
-    CUSTOM_OPENDRIVE: {{ (default "" (env "CUSTOM_OPENDRIVE")) | quote }}
-    MAP: {{ (default "" (env "MAP")) | quote }}
-    RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
-    RUST_LOG: zenoh=warn
-    SCENARIO_FILE: {{ (env "SCENARIO_FILE") | quote }}
-    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
     CARLA_HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
     CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
+    MAP: {{ (default "" (env "MAP")) | quote }}
+    CUSTOM_OPENDRIVE: {{ (default "" (env "CUSTOM_OPENDRIVE")) | quote }}
+    CUSTOM_LANELET: {{ (default "" (env "CUSTOM_LANELET")) | quote }}
+    SCENARIO_FILE: {{ (env "SCENARIO_FILE") | quote }}
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
   volumes:
   - mountPath: /scenario_checker.py
     data: |
@@ -38,7 +38,7 @@ openadservice:
     hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "scenarios" | clean) | quote }}
   dependsOn:
   - host: carla-server
-    port: 2000
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
   - host: zenoh-router
     port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}

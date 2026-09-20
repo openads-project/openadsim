@@ -4,13 +4,6 @@ environments:
       - environments/profiles.yaml.gotmpl
       - environments/services.yaml.gotmpl
       - environments/overrides.yaml.gotmpl
-  external-carla:
-    values:
-      - environments/profiles.yaml.gotmpl
-      - environments/services.yaml.gotmpl
-      - environments/external-carla.yaml
-      - environments/overrides.yaml.gotmpl
-
 ---
 releases:
 # carla-simulation
@@ -69,10 +62,10 @@ releases:
   version: 1.2.1-main
   condition: serviceEnabled.ros-middleware-bridge.enabled
   values: [carla-simulation/ros_middleware_bridge/values.yaml.gotmpl]
-- name: '{{ printf "%s-simulation-adapter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
+- name: '{{ printf "%s-carla-simulation-adapter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/simulation_adapter/helm/simulation-adapter
   version: 1.4.2-main
-  condition: serviceEnabled.simulation-adapter.enabled
+  condition: serviceEnabled.carla-simulation-adapter.enabled
   values: [carla-simulation/simulation_adapter/values.yaml.gotmpl]
 # openadstack
 - name: '{{ printf "%s-ackermann-trajectory-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'

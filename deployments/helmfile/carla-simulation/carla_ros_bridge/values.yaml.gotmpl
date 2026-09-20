@@ -7,8 +7,8 @@ openadservice:
   image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
   env:
     HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
-    PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
     IGNORE_ALTITUDE: true
+    PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
@@ -21,7 +21,7 @@ openadservice:
     hostPath: {{ (ternary (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") (env "CUSTOM_OPENDRIVE") | clean) "" (ne (env "CUSTOM_OPENDRIVE") "")) | quote }}
   dependsOn:
   - host: carla-server
-    port: 2000
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
   - host: zenoh-router
     port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}

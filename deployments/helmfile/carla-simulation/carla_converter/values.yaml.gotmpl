@@ -17,6 +17,6 @@ openadservice:
   rosParamFileMountPath: /docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
   dependsOn:
   - host: carla-server
-    port: 2000
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
   - host: zenoh-router
     port: 7447
