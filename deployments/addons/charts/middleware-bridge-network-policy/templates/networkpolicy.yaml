@@ -1,0 +1,43 @@
+{{- $prefix := required "namePrefix is required" .Values.namePrefix -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.middlewareBridgeName | quote }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.carlaServerName | quote }}
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.carlaServerName | quote }}
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.zenohRouterName | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ .Values.zenohPort }}
+        - protocol: UDP
+          port: {{ .Values.zenohPort }}
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

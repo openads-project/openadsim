@@ -1,0 +1,38 @@
+openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
+  image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
+  args:
+  - /bin/bash
+  - -ic
+  - |-
+    ./Linux/CarlaUnreal.sh \
+      -nosound \
+      -RenderOffScreen \
+      --ros2 \
+      -carla-rpc-port=${CARLA_PORT}
+  env:
+    CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
+  volumes:
+  - mountPath: /workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
+    data: |
+{{ readFile "DefaultEngine.ini" | indent 6 }}
+  dependsOn:
+  - host: zenoh-router
+    port: 7447
+  ports: []
+  expose:
+  - port: {{ (default "2000" (env "CARLA_PORT")) | int }}
+    targetPort: {{ (default "2000" (env "CARLA_PORT")) | int }}
+    protocol: TCP
+  - port: {{ add ((default "2000" (env "CARLA_PORT")) | int) 1 }}
+    targetPort: {{ add ((default "2000" (env "CARLA_PORT")) | int) 1 }}
+    protocol: TCP
+  - port: {{ add ((default "2000" (env "CARLA_PORT")) | int) 2 }}
+    targetPort: {{ add ((default "2000" (env "CARLA_PORT")) | int) 2 }}
+    protocol: TCP
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

@@ -1,0 +1,28 @@
+openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
+  image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
+  env:
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
+    HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
+    TOWN: {{ (default "/opendrive.xodr" (env "MAP")) | quote }}
+    IGNORE_ALTITUDE: true
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  volumes:
+  - mountPath: /opendrive.xodr
+    hostPath: {{ (ternary (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") (env "CUSTOM_OPENDRIVE") | clean) "" (ne (env "CUSTOM_OPENDRIVE") "")) | quote }}
+  dependsOn:
+  - host: carla-server
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
+  - host: zenoh-router
+    port: 7447
+  x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
+  x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}

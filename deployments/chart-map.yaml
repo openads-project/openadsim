@@ -1,0 +1,115 @@
+# explicit chart and deployment overrides for the OpenADSim offloading workflow.
+# normal OpenADServices use the generic GHCR image-to-chart convention.
+chart_version_suffix: -main
+values_root: openadservice
+excluded_profiles:
+  - gui
+  - sumo
+  - donotuse
+
+deployment:
+  name_prefix_env: DEPLOYMENT_PREFIX
+  node_env: NODE
+  host_path_root_env: OPENADSIM_PATH
+
+ignored_environment:
+  - ZENOH_CONFIG_OVERRIDE
+ignored_volume_names:
+  - DEFAULT_RMW_ZENOH_SESSION_CONFIG.json5
+  - DEFAULT_RMW_ZENOH_ROUTER_CONFIG.json5
+
+# fixed bind sources are copied by default; dynamic sources stay host paths.
+# keep writable shared mounts on their original host path.
+volume_policies:
+  carla-scenario-runner-ros-manual-testing:
+    /scenarios: hostPath
+  carla-scenario-runner-ros-automated-testing:
+    /scenarios: hostPath
+  carla-ros-bridge:
+    /opendrive.xodr: hostPath
+  localization.lanelet2-map-server:
+    /lanelet/lanelet.osm: hostPath
+  monitoring.bag-recorder:
+    /tmp/rosbags: hostPath
+  monitoring.rviz-carla:
+    /docker-ros/ws/monitoring-volume: hostPath
+
+services:
+  zenoh-router:
+    chart: oci://ghcr.io/openads-project/openads-helm/zenoh-router
+    version: 0.2.10
+  triton-server:
+    chart: oci://ghcr.io/openads-project/openads-helm/triton-server
+    version: "26.05"
+
+  # these assets are currently extracted on the node for Kubernetes mounts.
+  robot-state-publisher:
+    chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
+    version: 26.9.4-main
+    values:
+      volumes:
+        - mountPath: /urdf
+          hostPath: .runtime/openads-assets-v1.0.0
+  localization.lanelet2-map-server:
+    chart: oci://ghcr.io/openads-project/lanelet2_map_server/helm/lanelet2-map-server
+    version: 1.2.2-main
+    values:
+      volumes:
+        - mountPath: /data/maps
+          hostPath: .runtime/lanelet2-maps-v1.0.4
+
+  carla-server:
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-simulator
+    version: 0.1.0-helm
+    dependency_port_env: CARLA_PORT
+    values:
+      # Compose publishes the port on the local host.  In Kubernetes the
+      # chart's ClusterIP service is sufficient and must not get a fixed
+      # NodePort from the Compose default.
+      ports: []
+      expose:
+        - port: ${CARLA_PORT:-2000}
+          targetPort: ${CARLA_PORT:-2000}
+          protocol: TCP
+        - port: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 1 }}'
+          targetPort: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 1 }}'
+          protocol: TCP
+        - port: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 2 }}'
+          targetPort: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 2 }}'
+          protocol: TCP
+  carla-spawn-objects:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
+    version: 0.10.0-1.1.0-carla-spawn-objects-update-deployment
+  carla-ackermann-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
+    version: 0.10.0-1.1.0-carla-ackermann-control-update-deployment
+  carla-manual-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
+    version: 0.10.0-1.1.0-carla-manual-control-update-deployment
+  carla-control-active-bridge:
+    chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
+    version: 26.9.4
+  ros-middleware-bridge:
+    chart: oci://ghcr.io/openads-project/ros_middleware_bridge/helm/ros-middleware-bridge
+    version: 1.2.1-main
+  carla-ros-bridge:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
+    version: 0.10.0-1.1.0-carla-ros-bridge-update-deployment
+
+  carla-scenario-runner-ros-manual-testing:
+    chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
+    version: 0.10.0-1.1.0-helm
+  carla-scenario-runner-ros-automated-testing:
+    chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
+    version: 0.10.0-1.1.0-helm
+    value_replacements:
+      args:
+        - find: '--host carla-server'
+          replace: '--host "${CARLA_HOST}"'
+  perception.point-cloud-object-detection:
+    param_replacements:
+      - find: 'triton-server:8001'
+        replace: '{{ include "openadservice.prefixedHost" (dict "host" "triton-server" "namePrefix" .Values.namePrefix) }}:8001'
+  carla-client:
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
+    version: 0.1.0-helm

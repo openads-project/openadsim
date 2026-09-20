@@ -1,0 +1,37 @@
+openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
+  env:
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
+    NAMESPACE: /understanding
+    INPUT_DETECTION01_OBJECTS: /perception/point_cloud_object_detection/object_list
+    OUTPUT_OBJECTS: ~/object_list
+    OUTPUT_MERGED_OBJECTS: ~/merged_object_list
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "false" (env "USE_SIM_TIME")) | quote }}
+    INPUT_DETECTION01_CHANNEL: untracked_objects
+    INPUT_DETECTION02_CHANNEL: {{ (default "none" (env "INPUT_DETECTION02_CHANNEL")) | quote }}
+    INPUT_DETECTION03_CHANNEL: {{ (default "none" (env "INPUT_DETECTION03_CHANNEL")) | quote }}
+    INPUT_DETECTION04_CHANNEL: {{ (default "none" (env "INPUT_DETECTION04_CHANNEL")) | quote }}
+    INPUT_DETECTION05_CHANNEL: {{ (default "none" (env "INPUT_DETECTION05_CHANNEL")) | quote }}
+    INPUT_DETECTION06_CHANNEL: {{ (default "none" (env "INPUT_DETECTION06_CHANNEL")) | quote }}
+    INPUT_DETECTION07_CHANNEL: {{ (default "none" (env "INPUT_DETECTION07_CHANNEL")) | quote }}
+    INPUT_DETECTION08_CHANNEL: {{ (default "none" (env "INPUT_DETECTION08_CHANNEL")) | quote }}
+    INPUT_DETECTION09_CHANNEL: {{ (default "none" (env "INPUT_DETECTION09_CHANNEL")) | quote }}
+    INPUT_DETECTION10_CHANNEL: {{ (default "none" (env "INPUT_DETECTION10_CHANNEL")) | quote }}
+    INPUT_DETECTION11_CHANNEL: {{ (default "none" (env "INPUT_DETECTION11_CHANNEL")) | quote }}
+    INPUT_DETECTION12_CHANNEL: {{ (default "none" (env "INPUT_DETECTION12_CHANNEL")) | quote }}
+    TRACKER_SETTING_PATH: {{ (default "" (env "TRACKER_SETTING_PATH")) | quote }}
+    DATA_ASSOCIATION_MATRIX_PATH: {{ (default "" (env "DATA_ASSOCIATION_MATRIX_PATH")) | quote }}
+    INPUT_CHANNELS_PATH: {{ (default "" (env "INPUT_CHANNELS_PATH")) | quote }}
+    PUBLISH_MERGED_OBJECTS: {{ (default "false" (env "PUBLISH_MERGED_OBJECTS")) | quote }}
+    EGO_SOURCE: {{ (default "tf" (env "EGO_SOURCE")) | quote }}
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  dependsOn:
+  - host: zenoh-router
+    port: 7447

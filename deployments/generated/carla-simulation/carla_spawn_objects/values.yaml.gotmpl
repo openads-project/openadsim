@@ -1,0 +1,28 @@
+openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
+  image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
+  env:
+    ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
+    LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
+    USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
+    OBJECTS_DEFINITION_FILE: {{ (default "objects.json" (env "SENSORS")) | quote }}
+    OBJECTS_DIRECTORY: /config/objects
+    BLUEPRINTS_DIRECTORY: /config/blueprints
+    SPAWN_POINT_EGO_VEHICLE: {{ (default "None" (env "SPAWN_POINT")) | quote }}
+    RMW_IMPLEMENTATION: rmw_zenoh_cpp
+    RUST_LOG: zenoh=warn
+    ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+  volumes:
+  - mountPath: /config/objects
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "deployments/generated/carla-simulation/carla_spawn_objects/objects" | clean) | quote }}
+  - mountPath: /config/blueprints
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "deployments/generated/carla-simulation/carla_spawn_objects/blueprints" | clean) | quote }}
+  dependsOn:
+  - host: carla-server
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
+  - host: zenoh-router
+    port: 7447
