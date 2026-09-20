@@ -1,4 +1,5 @@
 openadservice:
+  name: carla-simulation-adapter
   namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
 {{- if env "NODE" }}
   nodeSelector:
@@ -28,6 +29,6 @@ openadservice:
   rosParamFileMountPath: /docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml
   dependsOn:
   - host: carla-server
-    port: 2000
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
   - host: zenoh-router
     port: 7447

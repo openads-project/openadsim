@@ -24,7 +24,7 @@ serviceEnabled:
     enabled: {{ or (has "carla" $selectedProfiles) }}
   ros-middleware-bridge:
     enabled: {{ or (has "carla" $selectedProfiles) }}
-  simulation-adapter:
+  carla-simulation-adapter:
     enabled: {{ or (has "carla" $selectedProfiles) }}
   ackermann-trajectory-control:
     enabled: {{ or (has "ml-planning" $selectedProfiles) (has "planning" $selectedProfiles) }}

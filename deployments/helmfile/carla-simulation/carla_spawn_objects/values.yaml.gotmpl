@@ -23,6 +23,6 @@ openadservice:
     hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") "deployments/helmfile/carla-simulation/carla_spawn_objects/blueprints" | clean) | quote }}
   dependsOn:
   - host: carla-server
-    port: 2000
+    port: {{ (default "2000" (env "CARLA_PORT")) | int }}
   - host: zenoh-router
     port: 7447
