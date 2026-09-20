@@ -4,20 +4,20 @@ openadservice:
   nodeSelector:
     kubernetes.io/hostname: {{ env "NODE" | quote }}
 {{- end }}
-  name: carla-scenario-runner-ros-manual-testing
+  name: carla-scenario-runner-ros-automated-testing
+  image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.1
   args:
   - /bin/bash
   - -ic
   - |-
     set -e
-    python3 /scenario_checker.py validate-runtime /carla-simulation/scenarios
-    SCENARIOS_DIR=/carla-simulation/scenarios
-    if [ -n "${CUSTOM_OPENDRIVE}" ]; then
-      SCENARIOS_DIR="$(dirname "/${CUSTOM_OPENDRIVE#/}")"
-    fi
-    exec ros2 launch carla_ros_scenario_runner carla_ros_scenario_runner_with_selection.launch.py \
-      scenario_runner_path:=${SCENARIO_RUNNER_ROOT} \
-      scenarios_dir:=${SCENARIOS_DIR}
+    python3 /scenario_checker.py validate-runtime "/${SCENARIO_FILE}"
+    exec python3 -u "${SCENARIO_RUNNER_PATH}/scenario_runner.py" \
+      --host "${CARLA_HOST}" \
+      --openscenario /${SCENARIO_FILE} \
+      --output \
+      --rtFactor 1.0 \
+      --waitForEgo
   env:
     CUSTOM_LANELET: {{ (default "" (env "CUSTOM_LANELET")) | quote }}
     CUSTOM_OPENDRIVE: {{ (default "" (env "CUSTOM_OPENDRIVE")) | quote }}
@@ -25,17 +25,17 @@ openadservice:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    SCENARIO_DIRECTORY: /scenarios
-    SCENARIO_MAP: {{ (default (default "" (env "MAP")) (env "CUSTOM_OPENDRIVE")) | quote }}
+    SCENARIO_FILE: {{ (env "SCENARIO_FILE") | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
+    USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
     CARLA_HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
     CARLA_PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
   volumes:
   - mountPath: /scenario_checker.py
     data: |
 {{ readFile "scenario_checker.py" | indent 6 }}
-  - mountPath: /carla-simulation/scenarios
-    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/scenarios
+  - mountPath: /scenarios
+    hostPath: /work/geller/openads-project/openadsim-k8s/scenarios
   dependsOn:
   - host: carla-server
     port: 2000

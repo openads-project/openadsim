@@ -4,6 +4,7 @@ openadservice:
   nodeSelector:
     kubernetes.io/hostname: {{ env "NODE" | quote }}
 {{- end }}
+  image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
   env:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
