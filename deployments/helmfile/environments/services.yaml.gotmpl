@@ -1,0 +1,58 @@
+# select releases from Compose profiles.
+{{- $selectedProfiles := splitList "," (env "COMPOSE_PROFILES" | default "") }}
+
+serviceEnabled:
+  carla-ackermann-control:
+    enabled: {{ has "carla" $selectedProfiles }}
+  carla-client:
+    enabled: {{ has "traffic" $selectedProfiles }}
+  carla-control-active-bridge:
+    enabled: {{ has "carla" $selectedProfiles }}
+  carla-converter:
+    enabled: {{ has "carla" $selectedProfiles }}
+  carla-manual-control:
+    enabled: {{ has "carla" $selectedProfiles }}
+  carla-ros-bridge:
+    enabled: {{ has "carla" $selectedProfiles }}
+  carla-scenario-runner-ros-automated-testing:
+    enabled: {{ has "automated-testing" $selectedProfiles }}
+  carla-scenario-runner-ros-manual-testing:
+    enabled: {{ has "manual-testing" $selectedProfiles }}
+  carla-server:
+    enabled: {{ has "carla" $selectedProfiles }}
+  carla-spawn-objects:
+    enabled: {{ has "carla" $selectedProfiles }}
+  ros-middleware-bridge:
+    enabled: {{ has "carla" $selectedProfiles }}
+  simulation-adapter:
+    enabled: {{ has "carla" $selectedProfiles }}
+  ackermann-trajectory-control:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "planning" $selectedProfiles) }}
+  robot-state-publisher:
+    enabled: true
+  triton-server:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "perception" $selectedProfiles) }}
+  zenoh-router:
+    enabled: true
+  lanelet2-map-server:
+    enabled: true
+  bag-recorder:
+    enabled: {{ has "bag-recording" $selectedProfiles }}
+  rviz-carla:
+    enabled: {{ has "carla" $selectedProfiles }}
+  point-cloud-fusion:
+    enabled: {{ has "perception" $selectedProfiles }}
+  point-cloud-object-detection:
+    enabled: {{ has "perception" $selectedProfiles }}
+  lanelet2-route-planning:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "planning" $selectedProfiles) }}
+  simple-planner:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "planning" $selectedProfiles) }}
+  trajectory-optimization:
+    enabled: {{ or (has "ml-planning" $selectedProfiles) (has "planning" $selectedProfiles) }}
+  autoware-multi-object-tracker:
+    enabled: {{ has "perception" $selectedProfiles }}
+  lanelet2-object-list-prediction-no-perception:
+    enabled: {{ has "no-perception" $selectedProfiles }}
+  lanelet2-object-list-prediction-perception:
+    enabled: {{ has "perception" $selectedProfiles }}

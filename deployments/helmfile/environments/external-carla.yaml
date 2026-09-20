@@ -1,0 +1,13 @@
+serviceEnabled:
+  carla-server:
+    enabled: false
+  carla-client:
+    enabled: false
+  carla-manual-control:
+    enabled: false
+  carla-scenario-runner-ros-automated-testing:
+    enabled: false
+  carla-scenario-runner-ros-manual-testing:
+    enabled: false
+  rviz-carla:
+    enabled: false
