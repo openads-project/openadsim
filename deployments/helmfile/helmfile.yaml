@@ -7,135 +7,135 @@ environments:
 ---
 releases:
 # carla-simulation
-- name: carla-ackermann-control
+- name: '{{ printf "%s-carla-ackermann-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
   version: 0.10.0-1.1.0-carla-ackermann-control-update-deployment
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-ackermann-control/values.yaml.gotmpl]
-- name: carla-client
+- name: '{{ printf "%s-carla-client" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
   version: 0.1.0-helm
   condition: profileGroups.traffic.enabled
   values: [carla-simulation/carla-client/values.yaml.gotmpl]
-- name: carla-control-active-bridge
+- name: '{{ printf "%s-carla-control-active-bridge" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
   version: 26.9.4
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-control-active-bridge/values.yaml.gotmpl]
-- name: carla-converter
+- name: '{{ printf "%s-carla-converter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla_converter/helm/carla-converter
   version: 1.3.1-main
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-converter/values.yaml.gotmpl]
-- name: carla-manual-control
+- name: '{{ printf "%s-carla-manual-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
   version: 0.10.0-1.1.0-carla-manual-control-update-deployment
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-manual-control/values.yaml.gotmpl]
-- name: carla-ros-bridge
+- name: '{{ printf "%s-carla-ros-bridge" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
   version: 0.10.0-1.1.0-carla-ros-bridge-update-deployment
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-ros-bridge/values.yaml.gotmpl]
-- name: carla-scenario-runner-ros-automated-testing
+- name: '{{ printf "%s-carla-scenario-runner-ros-automated-testing" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
   version: 0.10.0-1.1.0-helm
   condition: profileGroups.automated-testing.enabled
   values: [carla-simulation/carla-scenario-runner-ros-automated-testing/values.yaml.gotmpl]
-- name: carla-scenario-runner-ros-manual-testing
+- name: '{{ printf "%s-carla-scenario-runner-ros-manual-testing" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
   version: 0.10.0-1.1.0-helm
   condition: profileGroups.manual-testing.enabled
   values: [carla-simulation/carla-scenario-runner-ros-manual-testing/values.yaml.gotmpl]
-- name: carla-server
+- name: '{{ printf "%s-carla-server" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-simulator
   version: 0.1.0-helm
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-server/values.yaml.gotmpl]
-- name: carla-simulation-adapter
+- name: '{{ printf "%s-carla-simulation-adapter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/simulation_adapter/helm/simulation-adapter
   version: 1.4.1-main
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-simulation-adapter/values.yaml.gotmpl]
-- name: carla-spawn-objects
+- name: '{{ printf "%s-carla-spawn-objects" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
   version: 0.10.0-1.1.0-carla-spawn-objects-update-deployment
   condition: profileGroups.carla.enabled
   values: [carla-simulation/carla-spawn-objects/values.yaml.gotmpl]
-- name: ros-middleware-bridge
+- name: '{{ printf "%s-ros-middleware-bridge" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/ros_middleware_bridge/helm/ros-middleware-bridge
   version: 1.2.1-main
   condition: profileGroups.carla.enabled
   values: [carla-simulation/ros-middleware-bridge/values.yaml.gotmpl]
 # openadstack
-- name: ackermann-trajectory-control
+- name: '{{ printf "%s-ackermann-trajectory-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/ackermann_trajectory_control/helm/ackermann-trajectory-control
   version: 1.5.0-main
   condition: profileGroups.ml-planning-or-planning.enabled
   values: [openadstack/control/ackermann_trajectory_control/values.yaml.gotmpl]
-- name: robot-state-publisher
+- name: '{{ printf "%s-robot-state-publisher" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
   version: 26.9.4-main
   values: [openadstack/essentials/robot-state-publisher/values.yaml.gotmpl]
-- name: triton-server
+- name: '{{ printf "%s-triton-server" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/openads-helm/triton-server
-  version: 26.05
+  version: '26.05'
   condition: profileGroups.ml-planning-or-perception.enabled
   values: [openadstack/essentials/triton-server/values.yaml.gotmpl]
-- name: zenoh-router
+- name: '{{ printf "%s-zenoh-router" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/openads-helm/zenoh-router
   version: 0.2.10
   values: [openadstack/essentials/zenoh-router/values.yaml.gotmpl]
-- name: lanelet2-map-server
+- name: '{{ printf "%s-lanelet2-map-server" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/lanelet2_map_server/helm/lanelet2-map-server
   version: 1.2.2-main
   values: [openadstack/localization/lanelet2_map_server/values.yaml.gotmpl]
-- name: bag-recorder
+- name: '{{ printf "%s-bag-recorder" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
   version: 26.9.4-main
   condition: profileGroups.bag-recording.enabled
   values: [openadstack/monitoring/bag-recorder/values.yaml.gotmpl]
-- name: rviz-carla
+- name: '{{ printf "%s-rviz-carla" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
-  version: 26.9.4-main
+  version: 1.0.0-main
   condition: profileGroups.carla.enabled
   values: [openadstack/monitoring/rviz-carla/values.yaml.gotmpl]
-- name: point-cloud-fusion
+- name: '{{ printf "%s-point-cloud-fusion" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/point_cloud_fusion/helm/point-cloud-fusion
   version: 1.4.0-main
   condition: profileGroups.perception.enabled
   values: [openadstack/perception/point_cloud_fusion/values.yaml.gotmpl]
-- name: point-cloud-object-detection
+- name: '{{ printf "%s-point-cloud-object-detection" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/point_cloud_object_detection/helm/point-cloud-object-detection
   version: 3.0.0-main
   condition: profileGroups.perception.enabled
   values: [openadstack/perception/point_cloud_object_detection/values.yaml.gotmpl]
-- name: lanelet2-route-planning
+- name: '{{ printf "%s-lanelet2-route-planning" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/lanelet2_route_planning/helm/lanelet2-route-planning
   version: 1.2.0-main
   condition: profileGroups.ml-planning-or-planning.enabled
   values: [openadstack/planning/lanelet2_route_planning/values.yaml.gotmpl]
-- name: simple-planner
+- name: '{{ printf "%s-simple-planner" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/simple_planner/helm/simple-planner
   version: 1.4.0-main
   condition: profileGroups.ml-planning-or-planning.enabled
   values: [openadstack/planning/simple_planner/values.yaml.gotmpl]
-- name: trajectory-optimization
+- name: '{{ printf "%s-trajectory-optimization" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/trajectory_optimization/helm/trajectory-optimization
   version: 1.4.0-main
   condition: profileGroups.ml-planning-or-planning.enabled
   values: [openadstack/planning/trajectory_optimization/values.yaml.gotmpl]
-- name: autoware-multi-object-tracker
+- name: '{{ printf "%s-autoware-multi-object-tracker" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/thinking-cars/autoware_multi_object_tracker/helm/autoware-multi-object-tracker
   version: 1.1.0-main
   condition: profileGroups.perception.enabled
   values: [openadstack/understanding/autoware_multi_object_tracker/values.yaml.gotmpl]
-- name: lanelet2-object-list-prediction-no-perception
+- name: '{{ printf "%s-lanelet2-object-list-prediction-no-perception" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/lanelet2_object_list_prediction/helm/lanelet2-object-list-prediction
   version: 1.0.2-main
   condition: profileGroups.no-perception.enabled
   values: [openadstack/understanding/lanelet2_object_list_prediction/lanelet2-object-list-prediction-no-perception/values.yaml.gotmpl]
-- name: lanelet2-object-list-prediction-perception
+- name: '{{ printf "%s-lanelet2-object-list-prediction-perception" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/lanelet2_object_list_prediction/helm/lanelet2-object-list-prediction
   version: 1.0.2-main
   condition: profileGroups.perception.enabled

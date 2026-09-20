@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   env:
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
@@ -7,8 +12,8 @@ openadservice:
     LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
     USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
   dependsOn:
-  - host: carla-server
-    port: 2000
+  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
   - host: zenoh-router
     port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}

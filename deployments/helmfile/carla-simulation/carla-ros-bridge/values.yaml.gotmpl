@@ -1,4 +1,9 @@
 openadservice:
+  namePrefix: {{ env "DEPLOYMENT_PREFIX" | quote }}
+{{- if env "NODE" }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ env "NODE" | quote }}
+{{- end }}
   args:
   - /bin/bash
   - -ic
@@ -44,9 +49,11 @@ openadservice:
     HOST: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
     PORT: {{ (default "2000" (env "CARLA_PORT")) | quote }}
   dependsOn:
-  - host: carla-server
-    port: 2000
+  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
+    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
   - host: zenoh-router
     port: 7447
+  envHostPrefixKeys:
+  - HOST
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
   x11XauthorityFile: {{ env "XAUTHORITY_DOCKER" | quote }}
