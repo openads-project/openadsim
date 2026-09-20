@@ -4,11 +4,18 @@ openadservice:
   nodeSelector:
     kubernetes.io/hostname: {{ env "NODE" | quote }}
 {{- end }}
-  image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.0
+  image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
   args:
-  - bash
+  - /bin/bash
   - -ic
-  - ./Linux/CarlaUnreal.sh -nosound -RenderOffScreen --ros2
+  - |-
+    ./Linux/CarlaUnreal.sh \
+      -nosound \
+      -RenderOffScreen \
+      --ros2 \
+      -carla-rpc-port=${CARLA_PORT}
+  env:
+    CARLA_PORT: 2000
   volumes:
   - mountPath: /workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
     data: |

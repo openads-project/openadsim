@@ -4,29 +4,23 @@ openadservice:
   nodeSelector:
     kubernetes.io/hostname: {{ env "NODE" | quote }}
 {{- end }}
-  args:
-  - /bin/bash
-  - -ic
-  - |-
-    ros2 launch carla_spawn_objects carla_example_ego_vehicle.launch.py \
-      blueprints_directory:=${BLUEPRINTS_DIRECTORY} \
-      objects_directory:=${OBJECTS_DIRECTORY} \
-      ${SPAWN_POINT:+spawn_point_ego_vehicle:=${SPAWN_POINT}} \
-      ${SENSORS:+objects_definition_file:=${SENSORS}}
+  image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
   env:
     BLUEPRINTS_DIRECTORY: /config/blueprints
+    OBJECTS_DEFINITION_FILE: {{ (default "objects.json" (env "SENSORS")) | quote }}
     OBJECTS_DIRECTORY: /config/objects
     RMW_IMPLEMENTATION: rmw_zenoh_cpp
     ROS_DOMAIN_ID: {{ (default "0" (env "ROS_DOMAIN_ID")) | quote }}
     RUST_LOG: zenoh=warn
-    SENSORS: {{ (default "" (env "SENSORS")) | quote }}
-    SPAWN_POINT: {{ (default "" (env "SPAWN_POINT")) | quote }}
+    SPAWN_POINT_EGO_VEHICLE: {{ (default "None" (env "SPAWN_POINT")) | quote }}
     ZENOH_ROUTER_CHECK_ATTEMPTS: 0
     LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
     USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
   volumes:
-  - mountPath: /config
-    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/config/carla_ros_bridge
+  - mountPath: /config/objects
+    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/carla_spawn_objects/objects
+  - mountPath: /config/blueprints
+    hostPath: /work/geller/openads-project/openadsim-k8s/carla-simulation/carla_spawn_objects/blueprints
   dependsOn:
   - host: carla-server
     port: 2000

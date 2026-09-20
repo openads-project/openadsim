@@ -763,7 +763,7 @@ def _runtime_asset_path(value: str, scenario_root: Path) -> Path:
         resolved = reference.resolve()
     else:
         normalized = value.strip().replace("\\", "/").lstrip("/")
-        repository_prefix = "carla-simulation/scenarios/"
+        repository_prefix = "scenarios/"
         if repository_prefix in normalized:
             normalized = normalized.split(repository_prefix, 1)[1]
         resolved = (root / normalized).resolve()
@@ -776,7 +776,7 @@ def _runtime_asset_path(value: str, scenario_root: Path) -> Path:
 
 def _scenario_root_from_file(scenario: Path) -> Path:
     for parent in scenario.resolve().parents:
-        if parent.name == "scenarios" and parent.parent.name == "carla-simulation":
+        if parent.name == "scenarios":
             return parent
     return scenario.resolve().parent
 

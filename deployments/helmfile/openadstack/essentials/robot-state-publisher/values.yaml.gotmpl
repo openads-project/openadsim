@@ -5,6 +5,7 @@ openadservice:
     kubernetes.io/hostname: {{ env "NODE" | quote }}
 {{- end }}
   name: robot-state-publisher
+  image: ghcr.io/openads-project/monitoring:v1.0.0
   args:
   - {{ "/bin/bash" | quote }}
   - {{ "-ic" | quote }}

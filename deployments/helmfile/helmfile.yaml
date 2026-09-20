@@ -11,62 +11,62 @@ releases:
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
   version: 0.10.0-1.1.0-carla-ackermann-control-update-deployment
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-ackermann-control/values.yaml.gotmpl]
+  values: [carla-simulation/carla_ackermann_control/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-client" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
   version: 0.1.0-helm
   condition: profileGroups.traffic.enabled
-  values: [carla-simulation/carla-client/values.yaml.gotmpl]
+  values: [carla-simulation/carla_client/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-control-active-bridge" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
   version: 26.9.4
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-control-active-bridge/values.yaml.gotmpl]
+  values: [carla-simulation/carla_control_active_bridge/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-converter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla_converter/helm/carla-converter
-  version: 1.3.1-main
+  version: 1.3.2-main
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-converter/values.yaml.gotmpl]
+  values: [carla-simulation/carla_converter/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-manual-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
   version: 0.10.0-1.1.0-carla-manual-control-update-deployment
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-manual-control/values.yaml.gotmpl]
+  values: [carla-simulation/carla_manual_control/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-ros-bridge" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
   version: 0.10.0-1.1.0-carla-ros-bridge-update-deployment
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-ros-bridge/values.yaml.gotmpl]
+  values: [carla-simulation/carla_ros_bridge/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-scenario-runner-ros-automated-testing" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
   version: 0.10.0-1.1.0-helm
   condition: profileGroups.automated-testing.enabled
-  values: [carla-simulation/carla-scenario-runner-ros-automated-testing/values.yaml.gotmpl]
+  values: [carla-simulation/carla_scenario_runner/carla-scenario-runner-ros-automated-testing/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-scenario-runner-ros-manual-testing" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
   version: 0.10.0-1.1.0-helm
   condition: profileGroups.manual-testing.enabled
-  values: [carla-simulation/carla-scenario-runner-ros-manual-testing/values.yaml.gotmpl]
+  values: [carla-simulation/carla_scenario_runner/carla-scenario-runner-ros-manual-testing/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-server" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-simulator
   version: 0.1.0-helm
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-server/values.yaml.gotmpl]
-- name: '{{ printf "%s-carla-simulation-adapter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
-  chart: oci://ghcr.io/openads-project/simulation_adapter/helm/simulation-adapter
-  version: 1.4.1-main
-  condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-simulation-adapter/values.yaml.gotmpl]
+  values: [carla-simulation/carla_server/carla-server/values.yaml.gotmpl]
 - name: '{{ printf "%s-carla-spawn-objects" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
   version: 0.10.0-1.1.0-carla-spawn-objects-update-deployment
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/carla-spawn-objects/values.yaml.gotmpl]
+  values: [carla-simulation/carla_spawn_objects/values.yaml.gotmpl]
 - name: '{{ printf "%s-ros-middleware-bridge" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/ros_middleware_bridge/helm/ros-middleware-bridge
   version: 1.2.1-main
   condition: profileGroups.carla.enabled
-  values: [carla-simulation/ros-middleware-bridge/values.yaml.gotmpl]
+  values: [carla-simulation/ros_middleware_bridge/values.yaml.gotmpl]
+- name: '{{ printf "%s-simulation-adapter" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
+  chart: oci://ghcr.io/openads-project/simulation_adapter/helm/simulation-adapter
+  version: 1.4.2-main
+  condition: profileGroups.carla.enabled
+  values: [carla-simulation/simulation_adapter/values.yaml.gotmpl]
 # openadstack
 - name: '{{ printf "%s-ackermann-trajectory-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/ackermann_trajectory_control/helm/ackermann-trajectory-control
@@ -92,7 +92,7 @@ releases:
   values: [openadstack/localization/lanelet2_map_server/values.yaml.gotmpl]
 - name: '{{ printf "%s-bag-recorder" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
-  version: 26.9.4-main
+  version: 1.0.0-main
   condition: profileGroups.bag-recording.enabled
   values: [openadstack/monitoring/bag-recorder/values.yaml.gotmpl]
 - name: '{{ printf "%s-rviz-carla" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
