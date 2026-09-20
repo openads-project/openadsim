@@ -1,0 +1,19 @@
+{
+    "objects": [
+        {
+            "type": "blueprint.beacon",
+            "id": "beacon1",
+            "spawn_point": {"x": -33.0, "y": 173.0, "z": 254.8, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight1",
+            "spawn_point": {"x": -33.0, "y": 168.5, "z": 254.8, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier1",
+            "spawn_point": {"x": -33.0, "y": 170.8, "z": 255.5, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        }
+    ]
+}

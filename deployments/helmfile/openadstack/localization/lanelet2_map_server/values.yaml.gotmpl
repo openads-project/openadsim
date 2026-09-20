@@ -36,7 +36,9 @@ openadservice:
     PARAMS: {{ (default "/docker-ros/ws/install/lanelet2_map_server/share/lanelet2_map_server/config/params.yml" (env "PARAMS")) | quote }}
   volumes:
   - mountPath: /data/maps
-    hostPath: /work/geller/openads-project/openadsim-k8s/.runtime/lanelet2-maps-v1.0.4
+    hostPath: {{ (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") ".runtime/lanelet2-maps-v1.0.4" | clean) | quote }}
+  - mountPath: /lanelet/lanelet.osm
+    hostPath: {{ (ternary (printf "%s/%s" (requiredEnv "OPENADSIM_PATH") (env "CUSTOM_LANELET") | clean) "" (ne (env "CUSTOM_LANELET") "")) | quote }}
   dependsOn:
   - host: zenoh-router
     port: 7447

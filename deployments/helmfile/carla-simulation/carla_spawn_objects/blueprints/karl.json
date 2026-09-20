@@ -1,0 +1,102 @@
+{
+    "blueprints": [
+        {
+            "id": "karl_rack_lidars",
+            "type": "group",
+            "children": [
+                {
+                    "id": "lidar_front",
+                    "type": "blueprint.lidar_aeries_ii",
+                    "spawn_point": {"x": 2.8499, "y": 0.6455, "z": 0.0614, "roll": 0.0, "pitch": 0.0, "yaw": -3.4377}
+                },
+                {
+                    "id": "lidar_fl",
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "spawn_point": {"x": 2.89, "y": 1.444, "z": 0.1, "roll": 0.0, "pitch": 20.0, "yaw": 45.0}
+                },
+                {
+                    "id": "lidar_fr",
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "spawn_point": {"x": 2.89, "y": 0.04, "z": 0.1, "roll": 0.0, "pitch": 20.0, "yaw": -45.0}
+                },
+                {
+                    "id": "lidar_rr",
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "spawn_point": {"x": 0.04, "y": 0.04, "z": 0.1, "roll": 0.0, "pitch": 20.0, "yaw": -135.0}
+                },
+                {
+                    "id": "lidar_rl",
+                    "type": "blueprint.lidar_ouster_os1_128",
+                    "spawn_point": {"x": 0.04, "y": 1.444, "z": 0.1, "roll": 0.0, "pitch": 20.0, "yaw": 135.0}
+                }
+            ]
+        },
+        {
+            "id": "karl_rack_cameras",
+            "type": "group",
+            "children": [
+                {
+                    "id": "camera_front_left",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f4",
+                    "spawn_point": {"x": 2.8146, "y": 1.4637, "z": -0.0013, "roll": -0.1166, "pitch": 5.9344, "yaw": 45.1565}
+                },
+                {
+                    "id": "camera_front_center",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f4",
+                    "spawn_point": {"x": 2.9592, "y": 0.7903, "z": 0.0061, "roll": 0.1078, "pitch": 5.5148, "yaw": 0.3433}
+                },
+                {
+                    "id": "camera_front_right",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f4",
+                    "spawn_point": {"x": 2.9388, "y": 0.0951, "z": 0.0067, "roll": 0.1934, "pitch": 5.3588, "yaw": -43.6624}
+                },
+                {
+                    "id": "camera_mid_right",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "spawn_point": {"x": 1.685, "y": 0.0027, "z": 0.0021, "roll": 0.3284, "pitch": 20.9842, "yaw": -89.2525}
+                },
+                {
+                    "id": "camera_rear_right",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "spawn_point": {"x": 0.1231, "y": 0.0352, "z": -0.012, "roll": -0.1653, "pitch": 20.5007, "yaw": -136.7474}
+                },
+                {
+                    "id": "camera_rear_center",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "spawn_point": {"x": -0.0226, "y": 0.7404, "z": 0.105, "roll": -0.2975, "pitch": 0.3582, "yaw": -179.7672}
+                },
+                {
+                    "id": "camera_rear_left",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "spawn_point": {"x": 0.0601, "y": 1.3474, "z": 0.0082, "roll": 0.1775, "pitch": 20.3891, "yaw": 135.3664}
+                },
+                {
+                    "id": "camera_mid_left",
+                    "type": "blueprint.camera_rgb_1280x720_fov110_f2",
+                    "spawn_point": {"x": 1.5602, "y": 1.4506, "z": -0.0322, "roll": 1.0142, "pitch": 19.9258, "yaw": 90.6135}
+                }
+            ]
+        },
+        {
+            "id": "karl_rack_radars",
+            "type": "group",
+            "children": [
+                {
+                    "id": "radar_fl",
+                    "type": "blueprint.radar_short_range",
+                    "spawn_point": {"x": 2.0505, "y": 0.86, "z": 0.73, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+                },
+                {
+                    "id": "radar_f",
+                    "type": "blueprint.radar_mid_range",
+                    "spawn_point": {"x": 2.3105, "y": -0.3, "z": 0.25, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+                },
+                {
+                    "id": "radar_fr",
+                    "type": "blueprint.radar_short_range",
+                    "spawn_point": {"x": 2.0505, "y": -0.86, "z": 0.73, "roll": 0.0, "pitch": 0.0, "yaw": -90.0}
+                }
+            ]
+        }
+    ]
+}

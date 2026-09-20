@@ -1,0 +1,24 @@
+{
+    "objects": [
+        {
+            "type": "sensor.pseudo.actor_list",
+            "id": "actor_list"
+        },
+        {
+            "type": "sensor.pseudo.objects",
+            "id": "objects"
+        },
+        {
+            "type": "sensor.pseudo.markers",
+            "id": "markers"
+        },
+        {
+            "type": "sensor.pseudo.opendrive_map",
+            "id": "carla_map"
+        },
+        {
+            "type": "sensor.pseudo.traffic_lights",
+            "id": "traffic_lights"
+        }
+    ]
+}
