@@ -16,7 +16,6 @@ openadservice:
   dependsOn:
   - host: zenoh-router
     port: 7447
-  name: {{ (default "carla-server" (env "CARLA_HOST")) }}
   ports: []
   expose:
   - port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}

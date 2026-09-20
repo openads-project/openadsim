@@ -12,8 +12,8 @@ openadservice:
     LOG_LEVEL: {{ (default "info" (env "LOG_LEVEL")) | quote }}
     USE_SIM_TIME: {{ (default "true" (env "USE_SIM_TIME")) | quote }}
   dependsOn:
-  - host: {{ (default "carla-server" (env "CARLA_HOST")) | quote }}
-    port: {{ ((default "2000" (env "CARLA_PORT")) | int) }}
+  - host: carla-server
+    port: 2000
   - host: zenoh-router
     port: 7447
   x11Display: {{ env "DISPLAY_X11_DOCKER" | default (env "DISPLAY") | quote }}
