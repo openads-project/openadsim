@@ -18,12 +18,17 @@ services:
     image: ghcr.io/openads-project/carla-scenario-runner/ros:v0.10.0-1.1.1
     environment:
       USE_SIM_TIME: ${USE_SIM_TIME:-true}
-      CARLA_HOST: carla-server
-      CARLA_PORT: 2000
+      # CARLA_HOST: carla-server
+      CARLA_HOST: ${CARLA_HOST:-carla-server}
+      # CARLA_PORT: 2000
+      CARLA_PORT: ${CARLA_PORT:-2000}
       ROLE_NAME: ego_vehicle
       SCENARIO_RUNNER_PATH: /docker-ros/additional-files
       WAIT_FOR_EGO: true
       SCENARIOS_DIR: /scenarios
+      MAP: ${MAP:-}
+      CUSTOM_OPENDRIVE: ${CUSTOM_OPENDRIVE:-}
+      CUSTOM_LANELET: ${CUSTOM_LANELET:-}
     command:
       - /bin/bash
       - -ic
@@ -36,16 +41,6 @@ services:
           scenario_runner_path:=$${SCENARIO_RUNNER_PATH} \
           wait_for_ego:=$${WAIT_FOR_EGO} \
           scenarios_dir:=$${SCENARIOS_DIR}
-
-  carla-scenario-runner-ros-template:
-    profiles:
-      - donotuse
-    extends:
-      service: carla-scenario-runner-ros
-    environment:
-      MAP: ${MAP:-}
-      CUSTOM_OPENDRIVE: ${CUSTOM_OPENDRIVE:-}
-      CUSTOM_LANELET: ${CUSTOM_LANELET:-}
     volumes:
       - ../../utils/scenario-checker/scenario_checker.py:/scenario_checker.py:ro
       - ../../scenarios:/scenarios
@@ -54,7 +49,7 @@ services:
     profiles:
       - manual-testing
     extends:
-      service: carla-scenario-runner-ros-template
+      service: carla-scenario-runner-ros
     environment:
       SCENARIO_MAP: ${CUSTOM_OPENDRIVE:-${MAP:-}}
     command:
@@ -77,7 +72,7 @@ services:
     depends_on:
       - carla-ros-bridge
     extends:
-      service: carla-scenario-runner-ros-template
+      service: carla-scenario-runner-ros
     environment:
       SCENARIO_FILE: ${SCENARIO_FILE}
     command:
