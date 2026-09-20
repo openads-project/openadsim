@@ -98,9 +98,10 @@ set `CARLA_HOST` explicitly to the prefixed service name: its default is
 set -a
 . ./.env
 set +a
-export COMPOSE_PROFILES=carla,traffic
 export DEPLOYMENT_PREFIX=sim1
 export CARLA_HOST=sim1-carla-server
+export NODE=i220043.ika.rwth-aachen.de
+
 helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml template
 helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml sync
 ```

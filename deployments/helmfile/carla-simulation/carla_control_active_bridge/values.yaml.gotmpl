@@ -5,7 +5,6 @@ openadservice:
     kubernetes.io/hostname: {{ env "NODE" | quote }}
 {{- end }}
   name: carla-control-active-bridge
-  image: ghcr.io/openads-project/monitoring:v1.0.0
   args:
   - ros2
   - run
