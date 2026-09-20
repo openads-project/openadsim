@@ -100,8 +100,8 @@ set -a
 set +a
 export DEPLOYMENT_PREFIX=sim1
 export CARLA_HOST=sim1-carla-server
-export NODE=i220043.ika.rwth-aachen.de
-export OPENADSIM_PATH=/work/geller/openads-project/openadsim  # absolute checkout path on the selected node
+export NODE=i2200043.ika.rwth-aachen.de
+export OPENADSIM_PATH=/work/geller/openads-project/openadsim-k8s  # absolute checkout path on the selected node
 
 helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml template
 helmfile --file deployments/helmfile/.runtime/openadservice-1.2.0/helmfile.yaml sync
