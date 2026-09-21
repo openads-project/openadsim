@@ -2,7 +2,7 @@
 # based on `.docker-compose.oci-overrides.yml` with resolved includes
 #   include:
 #     # https://github.com/openads-project/monitoring/blob/v26.9.4/deployment/compose/docker-compose.yml
-#     - oci://ghcr.io/openads-project/monitoring:compose-v26.9.4
+#     - oci://ghcr.io/openads-project/monitoring/compose:v26.9.4
 
 services:
 
