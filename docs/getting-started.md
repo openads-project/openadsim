@@ -184,16 +184,16 @@ docker compose logs -f carla-ros-bridge carla-spawn-objects localization.lanelet
 
 ![CARLA](https://img.shields.io/badge/simulation-CARLA-0055A4)
 
-For CARLA, sensor layouts are configured through JSON files in `carla-simulation/config/carla_ros_bridge/objects`.
+For CARLA, sensor layouts are configured through JSON files in `carla-simulation/carla_spawn_objects/objects`.
 
 1. Duplicate an existing object configuration:
 
 ```bash
-cp carla-simulation/config/carla_ros_bridge/objects/karl-minimal.json \
-  carla-simulation/config/carla_ros_bridge/objects/karl-custom.json
+cp carla-simulation/carla_spawn_objects/objects/karl-minimal.json \
+  carla-simulation/carla_spawn_objects/objects/karl-custom.json
 ```
 
-2. Edit `carla-simulation/config/carla_ros_bridge/objects/karl-custom.json` and add, remove, or change sensors. Reuse sensor blueprint definitions from `carla-simulation/config/carla_ros_bridge/blueprints` where possible.
+2. Edit `carla-simulation/carla_spawn_objects/objects/karl-custom.json` and add, remove, or change sensors. Reuse sensor blueprint definitions from `carla-simulation/carla_spawn_objects/blueprints` where possible.
 
 3. Select the custom sensor layout in the Configuration GUI or set it in `.env`:
 

@@ -2,16 +2,11 @@
 include:
 
   # simulation
-  - carla-simulation/docker-compose.core.yml
-  - carla-simulation/docker-compose.scenario.yml
-  - sumo-simulation/docker-compose.core.yml
+  - carla-simulation/docker-compose.yml
+  - sumo-simulation/docker-compose.yml
 
-  # automated driving stack
+  # stack
   - openadstack/docker-compose.yml
-
-  # control
-  - carla-simulation/docker-compose.control.yml
-  - sumo-simulation/docker-compose.control.yml
 
   # utils
   - utils/gui/docker-compose.yml

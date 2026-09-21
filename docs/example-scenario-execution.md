@@ -24,7 +24,7 @@ OpenSCENARIO does not define test criteria, but the CARLA scenario runner evalua
 
 ## Demo Scenarios
 
-Demo scenarios are stored in [`carla-simulation/scenarios`](https://github.com/openads-project/openadsim/tree/main/carla-simulation/scenarios). Four use `campus`, one uses `aldenhoven`, and one uses a synthetic OpenDRIVE map. `campus` and `aldenhoven` are two of the prebuilt CARLA maps included with OpenADSim.
+Demo scenarios are stored in [`scenarios`](https://github.com/openads-project/openadsim/tree/main/scenarios). Four use `campus`, one uses `aldenhoven`, and one uses a synthetic OpenDRIVE map. `campus` and `aldenhoven` are two of the prebuilt CARLA maps included with OpenADSim.
 
 | Scenario | Map | Content | Source |
 | --- | --- | --- | --- |
@@ -82,7 +82,7 @@ The `automated-testing` profile starts `SCENARIO_FILE` immediately and reports t
 
    ```bash
    COMPOSE_PROFILES=carla,no-traffic,automated-testing,no-perception,planning \
-   SCENARIO_FILE=carla-simulation/scenarios/scenario-generator/campus_following.xosc \
+   SCENARIO_FILE=scenarios/scenario-generator/campus_following.xosc \
    MAP=campus \
    docker compose up -d
    ```

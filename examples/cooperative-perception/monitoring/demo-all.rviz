@@ -1059,7 +1059,7 @@ Visualization Manager:
                 Filter size: 10
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /carla/carla_converter/srisu1/v2x_objectlist
+                Value: /carla_converter/srisu1/v2x_objectlist
               Value: false
               Velocity arrow:
                 Use velocity color: true
@@ -1232,7 +1232,7 @@ Visualization Manager:
                 Filter size: 10
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /carla/carla_converter/srisu2/v2x_objectlist
+                Value: /carla_converter/srisu2/v2x_objectlist
               Value: false
               Velocity arrow:
                 Use velocity color: true
@@ -1405,7 +1405,7 @@ Visualization Manager:
                 Filter size: 10
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /carla/carla_converter/srisu3/v2x_objectlist
+                Value: /carla_converter/srisu3/v2x_objectlist
               Value: false
               Velocity arrow:
                 Use velocity color: true
@@ -1578,7 +1578,7 @@ Visualization Manager:
                 Filter size: 10
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /carla/carla_converter/srisu4/v2x_objectlist
+                Value: /carla_converter/srisu4/v2x_objectlist
               Value: false
               Velocity arrow:
                 Use velocity color: true

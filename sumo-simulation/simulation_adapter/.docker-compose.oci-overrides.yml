@@ -1,0 +1,31 @@
+# Remote compose file with overrides defined here can be rendered by
+# `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir sumo-simulation`
+
+include:
+  - oci://ghcr.io/openads-project/simulation_adapter/compose:v1.4.2
+
+services:
+
+  simulation-adapter:
+    profiles:
+      - sumo
+    depends_on:
+      - sumo-interface
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    environment:
+      NAMESPACE: /sumo
+      INPUT_EGO_DATA_TOPIC: /sumo/sumo_interface/ego_data
+      INPUT_MAP_INFO_TOPIC: /sumo/sumo_interface/map_info
+      INPUT_OBJECT_LIST_TOPIC: /sumo/sumo_interface/object_list
+      INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
+      OUTPUT_EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
+      OUTPUT_EGO_IMU_TOPIC: /simulation/imu
+      OUTPUT_EGO_ODOMETRY_TOPIC: /simulation/odometry
+      OUTPUT_EGO_VEHICLE_STATE_TOPIC: /simulation/vehicle_state
+      OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list
+      OUTPUT_OBJECT_LIST_FIXED_TOPIC: /simulation/object_list_fixed
+      LOAD_LANELET_MAP: ${LANELET_RELOAD:-true}
+    volumes:
+      - ./params.yml:/docker-ros/ws/install/simulation_adapter/share/simulation_adapter/config/params.yml

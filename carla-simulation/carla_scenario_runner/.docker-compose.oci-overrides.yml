@@ -1,72 +1,68 @@
+# Remote compose file with overrides defined here can be rendered by
+# `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
+
+include:
+  - oci://ghcr.io/openads-project/carla-scenario-runner/compose:v0.10.0-1.1.1
+
 services:
 
-  carla-environment:
-    profiles:
-      - traffic
-    extends:
-      file: ./carla-services.yml
-      service: carla-client
-    command:
-      - /bin/bash
-      - -ic
-      - |
-        exec python3 /set_environment.py
-    stop_grace_period: 30s
-    volumes:
-      - ./config/carla-environment/set_environment.py:/set_environment.py:ro
-
-  carla-scenario-runner-ros-template:
+  carla-scenario-runner-ros:
     profiles:
       - donotuse
+    depends_on:
+      carla-server:
+        condition: service_healthy
     extends:
-      file: ./carla-services.yml
-      service: carla-scenario-runner-ros
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
     environment:
+      CARLA_HOST: ${CARLA_HOST:-carla-server}
+      CARLA_PORT: ${CARLA_PORT:-2000}
       MAP: ${MAP:-}
       CUSTOM_OPENDRIVE: ${CUSTOM_OPENDRIVE:-}
       CUSTOM_LANELET: ${CUSTOM_LANELET:-}
     volumes:
-      - ../utils/scenario-checker/scenario_checker.py:/scenario_checker.py:ro
-      - ./scenarios:/carla-simulation/scenarios
+      - ../../utils/scenario-checker/scenario_checker.py:/scenario_checker.py:ro
+      - ../../scenarios:/scenarios
 
   carla-scenario-runner-ros-manual-testing:
     profiles:
       - manual-testing
     extends:
-      service: carla-scenario-runner-ros-template
+      service: carla-scenario-runner-ros
     environment:
       SCENARIO_MAP: ${CUSTOM_OPENDRIVE:-${MAP:-}}
-    command: 
+    command:
       - /bin/bash
       - -ic
       - |
         set -e
-        python3 /scenario_checker.py validate-runtime /carla-simulation/scenarios
-        SCENARIOS_DIR=/carla-simulation/scenarios
+        python3 /scenario_checker.py validate-runtime /scenarios
+        SCENARIOS_DIR=/scenarios
         if [ -n "$${CUSTOM_OPENDRIVE}" ]; then
           SCENARIOS_DIR="$$(dirname "/$${CUSTOM_OPENDRIVE#/}")"
         fi
         exec ros2 launch carla_ros_scenario_runner carla_ros_scenario_runner_with_selection.launch.py \
-          scenario_runner_path:=$${SCENARIO_RUNNER_ROOT} \
+          scenario_runner_path:=$${SCENARIO_RUNNER_PATH} \
           scenarios_dir:=$${SCENARIOS_DIR}
 
   carla-scenario-runner-ros-automated-testing:
     profiles:
       - automated-testing
     extends:
-      service: carla-scenario-runner-ros-template
+      service: carla-scenario-runner-ros
     depends_on:
       - carla-ros-bridge
     environment:
       SCENARIO_FILE: ${SCENARIO_FILE}
-    command: 
+    command:
       - /bin/bash
       - -ic
       - |
         set -e
         python3 /scenario_checker.py validate-runtime "/$${SCENARIO_FILE}"
-        exec python3 -u ../additional-files/scenario_runner.py \
-          --host carla-server \
+        exec python3 -u "$${SCENARIO_RUNNER_PATH}/scenario_runner.py" \
+          --host "$${CARLA_HOST}" \
           --openscenario /$${SCENARIO_FILE} \
           --output \
           --rtFactor 1.0 \

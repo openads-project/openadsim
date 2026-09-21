@@ -30,7 +30,7 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `ORIGIN_LAT` | GPS origin latitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LON` or leave both empty. | `50.782329` |
 | `ORIGIN_LON` | GPS origin longitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LAT` or leave both empty. | `6.070377` |
 | `LANELET_RELOAD` | `true` derives the Lanelet2 map from the simulation map; `false` uses `CUSTOM_LANELET`. Set automatically by the Configuration GUI. | `true`, `false` |
-| `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map and can validate/import custom scenario bundles. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `carla-simulation/scenarios/scenario-generator/campus_following.xosc` |
+| `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map and can validate/import custom scenario bundles. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `scenarios/scenario-generator/campus_following.xosc` |
 | `USE_SIM_TIME` | Enables ROS simulated time across the stack. Must stay `true` in this setup. | `true` |
 | `ROS_TRACING` | Enables ROS 2 tracing for supported services. | `false`, `true` |
 
@@ -63,12 +63,12 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | `ros-middleware-bridge` | `carla` | DDS-to-Zenoh bridge for CARLA ROS topics |
 | `carla-ros-bridge` | `carla` | ROS 2 bridge; loads `MAP` or `CUSTOM_OPENDRIVE` |
 | `carla-spawn-objects` | `carla` | Spawns ego vehicle and sensors from `SENSORS`; optional `SPAWN_POINT` |
-| `carla-converter` | `carla` | Generates stack-relevant ego, object, and map topics |
-| `carla-simulation-adapter` | `carla` | Transforms CARLA data and coordinate frames for OpenADStack; optional Lanelet2 map selection via `LANELET_RELOAD` |
+| `carla.carla-converter` | `carla` | Generates stack-relevant ego, object, and map topics |
+| `carla.simulation-adapter` | `carla` | Transforms CARLA data and coordinate frames for OpenADStack; optional Lanelet2 map selection via `LANELET_RELOAD` |
 | `carla-ackermann-control` | `carla` | Applies Ackermann control commands to the ego vehicle |
 | `carla-manual-control` | `carla` | Manual keyboard control of the vehicle |
 | `carla-control-active-bridge` | `carla` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
-| `carla-environment` | `traffic` | Defines random traffic and environment variation |
+| `carla-client` | `traffic` | Defines random traffic and environment variation |
 | `carla-scenario-runner-ros-manual-testing` | `manual-testing` | Interactive scenario execution through RViz |
 | `carla-scenario-runner-ros-automated-testing` | `automated-testing` | Direct scenario execution from `SCENARIO_FILE` |
 
@@ -80,7 +80,7 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | Service | Profiles | Role |
 | ------- | -------- | ---- |
 | `sumo-interface` | `sumo` | Generates `EgoData`, `ObjectList`, and map information from SUMO |
-| `sumo-simulation-adapter` | `sumo` | Transforms SUMO data and coordinate frames for OpenADStack; optional Lanelet2 map selection via `LANELET_RELOAD` |
+| `sumo.simulation-adapter` | `sumo` | Transforms SUMO data and coordinate frames for OpenADStack; optional Lanelet2 map selection via `LANELET_RELOAD` |
 | `sumo-control-active-bridge` | `sumo` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
 
 </details>

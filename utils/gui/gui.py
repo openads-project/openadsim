@@ -880,7 +880,7 @@ def _render_scenario_import(config: SimulationConfig):
             return
 
         checker = REPO_ROOT / "utils/scenario-checker/scenario_checker.py"
-        output_root = REPO_ROOT / "carla-simulation/scenarios/custom-imports"
+        output_root = REPO_ROOT / "scenarios/custom-imports"
         if not checker.is_file():
             st.error(f"Scenario checker not found: {checker}")
             return

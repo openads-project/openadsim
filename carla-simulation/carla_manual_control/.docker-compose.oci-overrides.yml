@@ -1,0 +1,18 @@
+# Remote compose file with overrides defined here can be rendered by
+# `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
+
+include:
+  - oci://ghcr.io/openads-project/carla-ros-bridge/compose:v0.10.0-1.1.1-carla_manual_control
+
+services:
+
+  carla-manual-control:
+    profiles:
+      - carla
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-x11-service
+    privileged: true

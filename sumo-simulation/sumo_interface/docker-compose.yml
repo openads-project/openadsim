@@ -1,0 +1,42 @@
+services:
+
+  sumo-interface:
+    profiles:
+      - sumo
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-gpu-x11-service
+    image: ghcr.io/openads-project/sumo_interface:v1.1.0
+    ports:
+      - 8813:8813
+    environment:
+      NAMESPACE: /sumo
+      # params
+      MANUAL_CONTROL_ENABLED: true
+      MAP: ${MAP}
+      SPAWN_POINT: ${SPAWN_POINT}
+      # inputs
+      CONTROLS_TOPIC: /control/ackermann_trajectory_control/controls
+      # outputs
+      EGO_DATA_TOPIC: ~/ego_data
+      GLOBAL_OBJECT_LIST_TOPIC: ~/global_object_list
+      MAP_INFO_TOPIC: ~/map_info
+      OBJECT_LIST_TOPIC: ~/object_list
+      GNSS_TOPIC: ~/gnss
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch sumo_interface sumo_interface.launch.py \
+          namespace:=$${NAMESPACE} \
+          manual_control_enabled:=$${MANUAL_CONTROL_ENABLED} \
+          map:=$${MAP} \
+          ego_spawn_pose:=$${SPAWN_POINT} \
+          controls_automated_topic:=$${CONTROLS_TOPIC} \
+          ego_data_topic:=$${EGO_DATA_TOPIC} \
+          global_object_list_topic:=$${GLOBAL_OBJECT_LIST_TOPIC} \
+          object_list_topic:=$${OBJECT_LIST_TOPIC} \
+          map_info_topic:=$${MAP_INFO_TOPIC} \
+          gnss_topic:=$${GNSS_TOPIC}
+    volumes:
+      - ./params.yml:/docker-ros/ws/install/sumo_interface/share/sumo_interface/config/params.yml

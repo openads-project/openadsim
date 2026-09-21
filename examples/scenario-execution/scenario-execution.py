@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-DEFAULT_SCENARIO_FOLDER = "carla-simulation/scenarios"
+DEFAULT_SCENARIO_FOLDER = "scenarios"
 DEFAULT_SCENARIO_FILTER = "*.xosc"
 DEFAULT_WAIT_SECONDS = "5"
 PROGRESS_INTERVAL_SECONDS = 10
@@ -915,7 +915,7 @@ Scenario rules:
 Examples:
   %(prog)s -c examples/scenario-execution/example.json
   %(prog)s -b -c examples/scenario-execution/example.json
-  %(prog)s -c CONFIG -d carla-simulation/scenarios \\
+  %(prog)s -c CONFIG -d scenarios \\
     -f '*synthetic*.xosc'
   %(prog)s -o -t 0 -c CONFIG
 """,
