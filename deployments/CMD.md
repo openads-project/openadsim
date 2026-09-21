@@ -104,14 +104,14 @@ set `CARLA_HOST` explicitly to the prefixed service name: its default is
 set -a
 . ./.env
 set +a
-export DEPLOYMENT_PREFIX=sim2
+export DEPLOYMENT_PREFIX=sim1
 export CARLA_HOST=${DEPLOYMENT_PREFIX}-carla-server
 export CARLA_PORT=2000
 export NODE=i2200043.ika.rwth-aachen.de
 export OPENADSIM_PATH=/work/geller/openads-project/openadsim-k8s  # absolute checkout path on the selected node
 
-helmfile --file deployments/generated/.runtime/openadservice-1.2.0/deployment-helmfile.yaml --namespace dev template
 helmfile --file deployments/generated/.runtime/openadservice-1.2.0/deployment-helmfile.yaml --namespace dev sync
+helmfile --file deployments/generated/.runtime/openadservice-1.2.0/deployment-helmfile.yaml --namespace dev destroy
 ```
 
 Rerun preparation after changing the source Helmfile, the local base chart,
