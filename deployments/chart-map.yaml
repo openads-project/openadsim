@@ -2,6 +2,11 @@
 # normal OpenADServices use the generic GHCR image-to-chart convention.
 chart_version_suffix: -main
 values_root: openadservice
+parameter_file:
+  yaml_marker: ros__parameters
+  value_key: rosParamFileData
+  mount_path_value_key: rosParamFileMountPath
+  output_filename: params.yml
 excluded_profiles:
   - gui
   - sumo

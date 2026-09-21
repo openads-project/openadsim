@@ -1,12 +1,9 @@
 environments:
   default:
     values:
-      - environments/profiles.yaml.gotmpl
       - environments/services.yaml.gotmpl
-      - environments/overrides.yaml.gotmpl
 ---
 releases:
-# carla-simulation
 - name: '{{ printf "%s-carla-ackermann-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
   version: 0.10.0-1.1.0-carla-ackermann-control-update-deployment
@@ -67,7 +64,6 @@ releases:
   version: 1.4.2-main
   condition: serviceEnabled.carla-simulation-adapter.enabled
   values: [carla-simulation/simulation_adapter/values.yaml.gotmpl]
-# openadstack
 - name: '{{ printf "%s-ackermann-trajectory-control" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
   chart: oci://ghcr.io/openads-project/ackermann_trajectory_control/helm/ackermann-trajectory-control
   version: 1.5.0-main
