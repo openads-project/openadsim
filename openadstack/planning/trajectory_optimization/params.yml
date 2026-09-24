@@ -13,7 +13,7 @@
     consider_boundaries: 3          # consider route boundaries in optimization: 0 = no, 1 = suggested lane, 2 = including adjacent, 3 = drivable space
     verbose: False                  # print debug infromation and solver statistics
     performance_logging: False      # write one CSV record for each completed solver run
-    debug_visualization: True       # publish debug visualization markers (e.g. obstacle circles)
+    debug_visualization: True       # publish debug visualization markers for ego, objects and boundaries
     run_as_callback: False          # run OCP once for each received reference trajectory (true) or on a timer (false)
 
     #### thresholds for bi-level stabilization
@@ -22,9 +22,12 @@
     bi_level_dYaw: 89.0             # maximum yaw difference before bi-level stabilization hits [degree]
 
     ### general parameters defining the ocp
-    model_name: 'karl'              # name of the acados model
-    optimization_horizon: 5.0       # optimization horizon [s] (also used as build parameter in OCP)
-    n_shots: 50                     # number of shooting intervals in optimization horizon (also used as build parameter in OCP)
+    model_name: 'karl'                  # name of the acados model
+    optimization_horizon: 5.0           # optimization horizon [s] (also used as build parameter in OCP)
+    n_shots: 50                         # number of shooting intervals in optimization horizon (also used as build parameter in OCP)
+    two_stage_optimization: False       # initialize the constrained OCP with a solve without object and boundary constraints
+    relaxed_solve_timeout_ms: 100.0     # timeout of the relaxed initialization solve [ms]; 0 disables the timeout
+    constrained_solve_timeout_ms: 100.0 # timeout of the fully constrained solve [ms]; 0 disables the timeout
 
     #### cost weights
     cost_weights:
@@ -44,6 +47,6 @@
 
     # other cost params
     thw: 2.0                    # time headway [s]
-    d_min_obstacle_long: 1.0    # minimum distance to keep to obstacles in longitudinal direction [m]
-    d_min_obstacle_lat: 0.1     # minimum distance to keep to obstacles in lateral direction [m]
-    d_min_boundary_lat: -0.5     # minimum distance to keep to boundaries in lateral direction [m]
+    d_min_object_long: 3.0      # minimum distance to keep to objects in longitudinal direction [m]
+    d_min_object_lat: 0.1       # minimum distance to keep to objects in lateral direction [m]
+    d_min_boundary_lat: 0.0      # minimum distance to keep to boundaries in lateral direction [m]
