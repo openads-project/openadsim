@@ -1,4 +1,4 @@
-{{- $prefix := required "namePrefix is required" .Values.namePrefix -}}
+{{- $prefix := .Values.namePrefix | default "" -}}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -6,7 +6,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.middlewareBridgeName | quote }}
+      app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.middlewareBridgeName | trimPrefix "-" | quote }}
   policyTypes:
     - Ingress
     - Egress
@@ -14,16 +14,16 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.carlaServerName | quote }}
+              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.carlaServerName | trimPrefix "-" | quote }}
   egress:
     - to:
         - podSelector:
             matchLabels:
-              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.carlaServerName | quote }}
+              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.carlaServerName | trimPrefix "-" | quote }}
     - to:
         - podSelector:
             matchLabels:
-              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.zenohRouterName | quote }}
+              app.kubernetes.io/name: {{ printf "%s-%s" $prefix .Values.zenohRouterName | trimPrefix "-" | quote }}
       ports:
         - protocol: TCP
           port: {{ .Values.zenohPort }}

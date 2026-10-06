@@ -1,5 +1,5 @@
 releases:
-  - name: '{{ printf "%s-middleware-bridge-policy" (requiredEnv "DEPLOYMENT_PREFIX") }}'
+  - name: '{{ printf "%s-middleware-bridge-policy" (env "DEPLOYMENT_PREFIX") | trimPrefix "-" }}'
     chart: charts/middleware-bridge-network-policy
     values:
       - values.yaml.gotmpl
