@@ -11,7 +11,7 @@ This directory contains the OpenADSim-specific inputs and manually maintained ad
 
 ## CI
 
-The [`Helmfile` workflow](../.github/workflows/helmfile.yml) calls the reusable workflow from `openads-helm`. It generates `deployments/generated`, validates the root Helmfile with `helmfile build` and `helmfile template`, and packages the complete `deployments` directory.
+The [`Helmfile` workflow](../.github/workflows/helmfile.yml) calls the reusable workflow from `openads-helm`. It generates `deployment/generated`, validates the root Helmfile with `helmfile build` and `helmfile template`, and packages the complete `deployment` directory.
 
 Successful runs provide a seven-day Actions artifact. Builds from the default branch and semantic-version tags are additionally published as an OCI artifact.
 
@@ -25,8 +25,8 @@ export OPENADS_HELM_DIR=../openads-helm
 python3 "${OPENADS_HELM_DIR}/utils/helmfile-generator/helmfile_generator.py" \
   docker-compose.yml \
   --env-file .env \
-  --chart-map deployments/chart-map.yaml \
-  --output-dir deployments/generated
+  --chart-map deployment/chart-map.yaml \
+  --output-dir deployment/generated
 ```
 
 Load the runtime environment before validating or deploying. `OPENADSIM_PATH` is required by services that use Kubernetes `hostPath` volumes. For deployment, it must point to the absolute checkout path on the selected Kubernetes node.
@@ -37,25 +37,25 @@ set -a
 set +a
 export OPENADSIM_PATH="$(pwd)"
 
-helmfile --file deployments/helmfile.yaml build
-helmfile --file deployments/helmfile.yaml template --concurrency 1
+helmfile --file deployment/helmfile.yaml build
+helmfile --file deployment/helmfile.yaml template --concurrency 1
 ```
 
 `DEPLOYMENT_PREFIX` is optional for a single stack. Set it when multiple stacks share a namespace:
 
 ```sh
 export DEPLOYMENT_PREFIX=sim1
-helmfile --file deployments/helmfile.yaml --namespace dev sync
+helmfile --file deployment/helmfile.yaml --namespace dev sync
 ```
 
 ## Temporary workaround: test a local OpenADService chart
 
-`prepare_local_openadservice.py` rebuilds downloaded parent charts against a local `openadservice` base chart. This is a temporary development workaround and requires `deployments/generated` to exist first.
+`prepare_local_openadservice.py` rebuilds downloaded parent charts against a local `openadservice` base chart. This is a temporary development workaround and requires `deployment/generated` to exist first.
 
 With the standard sibling repository layout, run:
 
 ```sh
-python3 deployments/prepare_local_openadservice.py
+python3 deployment/prepare_local_openadservice.py
 ```
 
-For another checkout, pass `--base-chart /absolute/path/to/openads-helm/charts/openadservice`. The script prints a temporary root Helmfile below `deployments/generated/.runtime/`; use that path for `helmfile template`, `sync`, or `destroy`. Regenerate the overlay after changing the generated Helmfile, a parent chart reference, or the local base chart.
+For another checkout, pass `--base-chart /absolute/path/to/openads-helm/charts/openadservice`. The script prints a temporary root Helmfile below `deployment/generated/.runtime/`; use that path for `helmfile template`, `sync`, or `destroy`. Regenerate the overlay after changing the generated Helmfile, a parent chart reference, or the local base chart.

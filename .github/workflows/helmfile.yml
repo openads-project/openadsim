@@ -23,10 +23,10 @@ jobs:
     with:
       compose-file: docker-compose.yml
       env-file: .env
-      chart-map: deployments/chart-map.yaml
+      chart-map: deployment/chart-map.yaml
       profiles: carla,traffic,automated-testing,no-perception,planning
       active-profiles-only: false
-      output-dir: deployments/generated
-      helmfile-entrypoint: deployments/helmfile.yaml
-      bundle-dir: deployments
+      output-dir: deployment/generated
+      helmfile-entrypoint: deployment/helmfile.yaml
+      bundle-dir: deployment
       artifact-name: openadsim-helmfile
