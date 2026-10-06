@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - k8s # TODO: Remove when k8s branch is merged into main
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
   pull_request:
