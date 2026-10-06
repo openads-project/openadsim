@@ -1,0 +1,31 @@
+name: Helmfile
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  generate:
+    name: Generate Helmfile
+    uses: openads-project/openads-helm/.github/workflows/helmfile-oci.yml@feature/helmfile # TODO: Change to main branch when merged
+    with:
+      compose-file: docker-compose.yml
+      env-file: .env
+      chart-map: deployments/chart-map.yaml
+      profiles: carla,traffic,automated-testing,no-perception,planning
+      active-profiles-only: false
+      output-dir: deployments/generated
+      helmfile-entrypoint: deployments/helmfile.yaml
+      bundle-dir: deployments
+      artifact-name: openadsim-helmfile
