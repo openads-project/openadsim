@@ -47,21 +47,14 @@ services:
     chart: oci://ghcr.io/openads-project/openads-helm/triton-server
     version: "26.05"
 
-  # these assets are currently extracted on the node for Kubernetes mounts.
   robot-state-publisher:
     chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
     version: 26.9.4-main
-    values:
-      volumes:
-        - mountPath: /urdf
-          hostPath: .runtime/openads-assets-v1.0.0
+
+  # This asset is currently extracted on the node for a Kubernetes mount.
   localization.lanelet2-map-server:
     chart: oci://ghcr.io/openads-project/lanelet2_map_server/helm/lanelet2-map-server
     version: 1.2.2-main
-    values:
-      volumes:
-        - mountPath: /data/maps
-          hostPath: .runtime/lanelet2-maps-v1.0.4
 
   carla-server:
     chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-simulator
