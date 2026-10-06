@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   generate:
-    name: Generate Helmfile
+    name: Helmfile
     uses: openads-project/openads-helm/.github/workflows/helmfile-oci.yml@feature/helmfile # TODO: Change to main branch when merged
     with:
       compose-file: docker-compose.yml
