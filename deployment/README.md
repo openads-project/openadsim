@@ -45,7 +45,14 @@ helmfile --file deployment/helmfile.yaml template --concurrency 1
 
 ```sh
 export DEPLOYMENT_PREFIX=sim1
-helmfile --file deployment/helmfile.yaml --namespace dev sync
+helmfile --file deployment/helmfile.yaml sync
+```
+
+`NODE` is optional for a single-node cluster. Set it when using a multi-node cluster:
+
+```sh
+export NODE=i2200043.ika.rwth-aachen.de
+helmfile --file deployment/helmfile.yaml sync
 ```
 
 ## Temporary workaround: test a local OpenADService chart
