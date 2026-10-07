@@ -5,6 +5,7 @@
 import argparse
 import logging
 import math
+import os
 import signal
 import time
 
@@ -46,8 +47,14 @@ def install_signal_handlers():
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--host", default="carla-server", help="CARLA server host")
-    parser.add_argument("-p", "--port", default=2000, type=int, help="CARLA server port")
+    parser.add_argument(
+        "--host", default=os.environ.get("CARLA_HOST", "carla-server"),
+        help="CARLA server host",
+    )
+    parser.add_argument(
+        "-p", "--port", default=os.environ.get("CARLA_PORT", "2000"),
+        type=int, help="CARLA server port",
+    )
     parser.add_argument("--tm-port", default=8000, type=int, help="Traffic Manager port")
     parser.add_argument(
         "-n",

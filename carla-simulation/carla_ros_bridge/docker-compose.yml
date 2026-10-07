@@ -23,8 +23,8 @@ services:
       # --- other -----
       LOG_LEVEL: ${LOG_LEVEL:-info}
       USE_SIM_TIME: ${USE_SIM_TIME:-true}
-      HOST: carla-server
-      PORT: 2000
+      HOST: ${CARLA_HOST:-carla-server}
+      PORT: ${CARLA_PORT:-2000}
       TIMEOUT: 5000
       PASSIVE: false
       PUBLISH_CLOCK: true
