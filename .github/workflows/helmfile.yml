@@ -23,6 +23,7 @@ jobs:
     with:
       compose-file: docker-compose.yml
       env-file: .env
+      include-env-file-in-bundle: true
       chart-map: deployment/chart-map.yaml
       profiles: carla,traffic,automated-testing,no-perception,planning
       active-profiles-only: false
