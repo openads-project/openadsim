@@ -11,7 +11,7 @@ This directory contains the OpenADSim-specific inputs and manually maintained ad
 
 ## CI
 
-The [`Helmfile` workflow](../.github/workflows/helmfile.yml) calls the reusable workflow from `openads-helm`. It generates `deployment/generated`, validates the root Helmfile with `helmfile build` and `helmfile template`, and packages the complete `deployment` directory.
+The [`Helmfile` workflow](../.github/workflows/helmfile.yml) calls the reusable workflow from `openads-helm`. It generates `deployment/generated`, validates the root Helmfile with `helmfile build` and `helmfile template`, copies the repository-root `.env` into the ephemeral bundle, and packages the complete `deployment` directory. The source tree keeps only the root `.env`; the copy exists only in the CI artifact.
 
 Successful runs provide a seven-day Actions artifact. Builds from the default branch and semantic-version tags are additionally published as an OCI artifact.
 
@@ -29,7 +29,7 @@ python3 "${OPENADS_HELM_DIR}/utils/helmfile-generator/helmfile_generator.py" \
   --output-dir deployment/generated
 ```
 
-Load the runtime environment before validating or deploying. `OPENADSIM_PATH` is required by services that use Kubernetes `hostPath` volumes. For deployment, it must point to the absolute checkout path on the selected Kubernetes node.
+Load the runtime environment before validating or deploying. In an extracted CI bundle, source the `.env` included at the archive root. `OPENADSIM_PATH` is required by services that use Kubernetes `hostPath` volumes. For deployment, it must point to the absolute checkout path on the selected Kubernetes node.
 
 ```sh
 set -a
