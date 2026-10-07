@@ -14,7 +14,7 @@
     enrich_route_behind_ego_distance: 20.0
     route_undershoot_distance: 10.0
     route_overshoot_distance: 10.0
-    max_drivable_space_radius: 50.0
+    max_drivable_space_radius: 25.0
     max_num_threads: 8
     transform_timeout: 0.1
 

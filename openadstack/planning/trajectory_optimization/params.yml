@@ -31,7 +31,7 @@
 
     #### cost weights
     cost_weights:
-      - 0.1 # dlat (0)
+      - 0.1  # dlat (0)
       - 0.0  # psi (1)       (considered if RWS model is used)
       - 0.5  # overspeed (2)
       - 0.4  # underspeed (3)
@@ -48,5 +48,5 @@
     # other cost params
     thw: 2.0                    # time headway [s]
     d_min_object_long: 3.0      # minimum distance to keep to objects in longitudinal direction [m]
-    d_min_object_lat: 0.1       # minimum distance to keep to objects in lateral direction [m]
+    d_min_object_lat: 1.0       # minimum distance to keep to objects in lateral direction [m]
     d_min_boundary_lat: 0.0      # minimum distance to keep to boundaries in lateral direction [m]

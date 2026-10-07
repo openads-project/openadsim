@@ -7,6 +7,7 @@ services:
     extends:
       file: ../../openadstack/planning/lanelet2_route_planning/docker-compose.yml
       service: planning.lanelet2-route-planning
+    image: ghcr.io/openads-project/lanelet2_route_planning:latest_fix-right-of-way-regulatory-elements_ci
     environment:
       PARAMS: /params.yml
     volumes:
