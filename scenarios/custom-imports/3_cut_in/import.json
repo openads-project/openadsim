@@ -1,0 +1,19 @@
+{
+  "actions": [
+    "Normalized actor type properties",
+    "Added RosRouteController to ego_vehicle",
+    "Added rts-mode=rts to 1 non-ego trajectory/trajectories",
+    "Raised 2 initial teleport position(s) by 0.1 m",
+    "Added 6 ScenarioRunner criterion/criteria"
+  ],
+  "imported_at": "2026-10-09T09:33:53.428088+00:00",
+  "map": {
+    "lanelet": "",
+    "map_name": "campus",
+    "opendrive": "",
+    "type": "prebuilt"
+  },
+  "scenario": "3_cut_in.xosc",
+  "source": "/tmp/openadsim-scenario-import-u62hkwry/3_cut_in.xosc",
+  "teleport_z_adjusted": true
+}

@@ -1,0 +1,148 @@
+{
+  "version": 5,
+  "workspace": {
+    "frame": {
+      "crs": "+proj=tmerc +lat_0=50.785562924295 +lon_0=6.04648796549892 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +vunits=m +no_defs",
+      "x": 0.0,
+      "y": 0.0,
+      "heading": 0.0,
+      "z": 0.0
+    },
+    "lanelet_path": "3_cut_in.osm",
+    "settings": {
+      "time_step_s": 1.0,
+      "show_map": true,
+      "show_road_connections": false,
+      "show_road_points": false,
+      "show_lane_numbers": false,
+      "show_road_centerlines": true,
+      "show_map_helpers": false,
+      "show_lanelet": true,
+      "show_origins": false,
+      "show_xodr_origin": false,
+      "show_lanelet_origin": false,
+      "show_orthophoto": false,
+      "orthophoto_opacity": 1.0,
+      "map_opacity": 0.65,
+      "lanelet_opacity": 1.0
+    },
+    "actors": {}
+  },
+  "map_path": "3_cut_in.xodr",
+  "detection_gaps": [],
+  "additional_scenario_information": {
+    "file_header": {
+      "author": "Author",
+      "description": "Scenario created with scenario.generator",
+      "revMajor": 1,
+      "revMinor": 1
+    },
+    "xosc_map_path": "3_cut_in.xodr",
+    "simulation_time_condition_factor": 1,
+    "postprocessing_scripts": [],
+    "postprocessing_parameters": {
+      "constant_trajectory_offset": {
+        "x_offset_m": "0",
+        "y_offset_m": "0"
+      }
+    }
+  },
+  "vehicles": [
+    {
+      "name": "ego_vehicle",
+      "actor_type": "vehicle",
+      "dimensions": {
+        "length_m": 4.5,
+        "width_m": 1.8,
+        "height_m": 1.8,
+        "actor_type": "vehicle",
+        "carla_blueprint": "",
+        "xosc_export_mode": "trajectory",
+        "parameter_declarations": "",
+        "controller_name": "",
+        "controller_xml": "",
+        "parked_yaw_rad": 0.0
+      },
+      "waypoints": [
+        {
+          "time_s": 0.0,
+          "x_m": 293.8604578737434,
+          "y_m": -409.98019736332645,
+          "speed_mps": 0.0
+        },
+        {
+          "time_s": 9.238621190250155,
+          "x_m": 294.0326617269292,
+          "y_m": -470.0309198418234,
+          "speed_mps": 13.0
+        },
+        {
+          "time_s": 15.971551241082093,
+          "x_m": 293.7620260431604,
+          "y_m": -557.5585666628052,
+          "speed_mps": 13.0
+        }
+      ]
+    },
+    {
+      "name": "challenger",
+      "actor_type": "vehicle",
+      "dimensions": {
+        "length_m": 4.5,
+        "width_m": 1.8,
+        "height_m": 1.8,
+        "actor_type": "vehicle",
+        "carla_blueprint": "",
+        "xosc_export_mode": "trajectory",
+        "parameter_declarations": "",
+        "controller_name": "",
+        "controller_xml": "",
+        "parked_yaw_rad": 0.0
+      },
+      "waypoints": [
+        {
+          "time_s": 0.0,
+          "x_m": 297.44393897258715,
+          "y_m": -416.0090096978443,
+          "speed_mps": 5.0
+        },
+        {
+          "time_s": 4.1563755829508064,
+          "x_m": 297.44393897258715,
+          "y_m": -436.79088761259834,
+          "speed_mps": 5.0
+        },
+        {
+          "time_s": 7.749940071433756,
+          "x_m": 297.2789044617326,
+          "y_m": -463.7421057574734,
+          "speed_mps": 10.0
+        },
+        {
+          "time_s": 8.810994159834227,
+          "x_m": 296.7394383460629,
+          "y_m": -476.9873268223912,
+          "speed_mps": 15.0
+        },
+        {
+          "time_s": 9.967949823151521,
+          "x_m": 294.0202210606875,
+          "y_m": -494.1225109942886,
+          "speed_mps": 15.0
+        },
+        {
+          "time_s": 10.9561082795422,
+          "x_m": 293.82671222561686,
+          "y_m": -507.94488947415914,
+          "speed_mps": 13.0
+        },
+        {
+          "time_s": 16.166313673411207,
+          "x_m": 293.88823218763423,
+          "y_m": -567.8622055354057,
+          "speed_mps": 10.0
+        }
+      ]
+    }
+  ]
+}
