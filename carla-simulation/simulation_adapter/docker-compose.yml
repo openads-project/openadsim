@@ -27,7 +27,7 @@ services:
       # INPUT_EGO_DATA_TOPIC: ~/input_ego_data
       INPUT_EGO_DATA_TOPIC: /carla/carla_converter/ego_vehicle/ego_data
       # INPUT_OBJECT_LIST_TOPIC: ~/input_object_list
-      INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/ideal_objects
+      INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/object_list
       # INPUT_TRAJECTORY_TOPIC: ~/input_trajectory
       INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
       # --- outputs ---
