@@ -1,8 +1,39 @@
 /**/*:
   ros__parameters:
-    ll2_map_server_name: /localization/lanelet2_map_server
-    lanelet_match_max_distance_m: 0.2
-    lanelet_match_max_yaw_diff_rad: 1.047197551
-    prediction_horizon_s: 10.0
-    prediction_sample_interval_s: 0.5
-    unmatched_object_prediction_mode: static
+
+    input:
+      ego_data_timeout: 1.0                                     # timeout for considering ego vehicle data [s]
+
+    processing:
+      map_matching:
+        ll2_map_server_name: /localization/lanelet2_map_server  # name of lanelet2_map_server node
+        max_distance: 1.0                                       # max distance from a lanelet to consider it a match [m]
+        bicycle_max_distance: 1.0                               # max distance from a lanelet to consider it a match for bicycles, riding at lane edges [m]
+        max_delta_yaw_deg: 60.0                                 # max yaw difference from a lanelet direction to consider it a match [deg]
+        prefer_bicycle_lanes_for_motorcycles: true              # motorcycles use bicycle lanes exclusively when a valid bicycle lane match exists
+        fallback_mode: static                                   # fallback mode for objects not matched to map [kinematic|static]
+      map_following:
+        enforce_centerline: true                                # put matched prediction samples on the lane centerline
+        reset_detection_to_centerline: false                    # also put the first reported detection on the centerline
+      kinematic_limitations:
+        enable: true                                            # enable kinematic limitations
+        max_lateral_acceleration: 3.5                           # max lateral acceleration for predictions [m/s^2]
+        max_longitudinal_deceleration: 2.5                      # max longitudinal deceleration for predictions [m/s^2]
+        max_longitudinal_acceleration: 1.5                      # max longitudinal acceleration for predictions [m/s^2]
+      yielding:
+        enable: true                                            # enable yielding
+        clearance_distance: 0.5                                 # clearance between front and yield line [m]
+        clearance_time: 1.0                                     # time to wait after priority traffic has cleared [s]
+        ego_lookahead_time: 8.0                                 # time up to which ego's right of way is considered, extrapolating its planned trajectory [s]
+      following:
+        enable: true                                            # enable following, avoiding collisions with leading objects
+        headway_distance: 2.0                                   # min distance to the leading object [m]
+        headway_time: 1.0                                       # min time headway to the leading object [s]
+      roundabout:
+        enable: false                                           # enable special roundabout handling
+        initial_alignment_tolerance: 1.0                        # tolerance for initial alignment with roundabout centerline, not respecting kinematic limitations [m]
+
+    output:
+      prediction_horizon: 6.0                                   # prediction time horizon [s]
+      sample_interval: 0.5                                      # time interval between prediction samples [s]
+      infeasible_hypothesis_probability: 0.0                    # probability for infeasible hypotheses

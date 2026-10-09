@@ -15,7 +15,7 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
-    image: ghcr.io/openads-project/carla-ros-bridge:v0.10.0-1.1.1
+    image: ghcr.io/openads-project/carla-ros-bridge:latest_fix-ideal-object-sensor_ci # TODO merge and release
     environment:
       # --- name ------
       NAMESPACE: /

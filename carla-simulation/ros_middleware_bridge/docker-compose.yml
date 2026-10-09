@@ -15,7 +15,7 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
-    image: ghcr.io/openads-project/ros_middleware_bridge:v1.2.1
+    image: ghcr.io/openads-project/ros_middleware_bridge:latest
     environment:
       # --- name ------
       NAMESPACE: /
