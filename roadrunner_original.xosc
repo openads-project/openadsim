@@ -1,0 +1,2612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSCENARIO>
+    <FileHeader author="MathWorks RoadRunner" date="2026-08-21T11:19:31" description="Exported from RoadRunner version R2025a (1.10.0.5b5993cc9be)" revMajor="1" revMinor="1"/>
+    <ParameterDeclarations/>
+    <CatalogLocations/>
+    <RoadNetwork>
+        <LogicFile filepath="aldenhoven.xodr"/>
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="Ego">
+            <Vehicle mass="1000" model3d="Vehicles/ADT Vehicles/SK_SUV.fbx" name="Ego" vehicleCategory="car">
+                <ParameterDeclarations/>
+                <BoundingBox>
+                    <Center x="0" y="0" z="0.884328"/>
+                    <Dimensions height="1.77511" length="4.82642" width="2.26438"/>
+                </BoundingBox>
+                <Performance maxAcceleration="100" maxDeceleration="100" maxSpeed="100"/>
+                <Axles>
+                    <FrontAxle maxSteering="1.5708" positionX="1.42195" positionZ="0.398319" trackWidth="1.61074" wheelDiameter="0.796637"/>
+                    <RearAxle maxSteering="0" positionX="-1.47417" positionZ="0.398318" trackWidth="1.61074" wheelDiameter="0.796637"/>
+                </Axles>
+                <Properties/>
+            </Vehicle>
+        </ScenarioObject>
+        <ScenarioObject name="Target_Cyclist">
+            <Vehicle mass="90" model3d="NCAP Assets/NCAP_Bicycle_NoPlatform.fbx" name="Target_Cyclist" vehicleCategory="bicycle">
+                <ParameterDeclarations/>
+                <BoundingBox>
+                    <Center x="-0.0391777" y="-0.00120592" z="0.9"/>
+                    <Dimensions height="1.8" length="1.9" width="0.5"/>
+                </BoundingBox>
+                <Performance maxAcceleration="10" maxDeceleration="10" maxSpeed="40"/>
+                <Axles>
+                    <FrontAxle maxSteering="1.5708" positionX="1.35" positionZ="0.5" trackWidth="1.4" wheelDiameter="1"/>
+                    <RearAxle maxSteering="0" positionX="-1.45" positionZ="0.5" trackWidth="1.4" wheelDiameter="1"/>
+                </Axles>
+                <Properties/>
+            </Vehicle>
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <Private entityRef="Ego">
+                    <PrivateAction>
+                        <RoutingAction>
+                            <FollowTrajectoryAction>
+                                <TimeReference>
+                                    <None/>
+                                </TimeReference>
+                                <TrajectoryFollowingMode followingMode="position"/>
+                                <Trajectory closed="false" name="SK_SUV_Trajectory">
+                                    <Shape>
+                                        <Polyline>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1153" p="-0.00692509" r="-0.00115208" x="-10.134144" y="-241.322594" z="-0.637074"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1298" p="-0.00647499" r="-0.00207955" x="-10.320137" y="-241.624599" z="-0.637839"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13939" p="-0.00628096" r="-0.00243687" x="-10.904113" y="-242.548614" z="-0.639334"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14725" p="-0.00620659" r="-0.00252795" x="-11.313097" y="-243.178624" z="-0.640289"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14905" p="-0.00615642" r="-0.00258274" x="-11.580087" y="-243.588631" z="-0.640903"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14981" p="-0.00613856" r="-0.00276786" x="-12.536049" y="-245.052655" z="-0.642980"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.15009" p="-0.00617925" r="-0.00288756" x="-14.523972" y="-248.091706" z="-0.646511"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14874" p="-0.0060888" r="-0.00303025" x="-14.581969" y="-248.180707" z="-0.646594"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14796" p="-0.00616127" r="-0.00306805" x="-15.781923" y="-250.019738" z="-0.648327"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14591" p="-0.00623306" r="-0.00313134" x="-16.620890" y="-251.311759" z="-0.649550"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14549" p="-0.00650642" r="-0.00333103" x="-18.683808" y="-254.496812" z="-0.652398"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1464" p="-0.00648017" r="-0.00346335" x="-19.027795" y="-255.027821" z="-0.652831"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14689" p="-0.00657965" r="-0.00356358" x="-20.544735" y="-257.363860" z="-0.654525"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14959" p="-0.00649924" r="-0.00368976" x="-20.799725" y="-257.754866" z="-0.654769"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14979" p="-0.00649087" r="-0.00374181" x="-21.581695" y="-258.951886" z="-0.655410"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14926" p="-0.00646262" r="-0.00382667" x="-21.823685" y="-259.320892" z="-0.655571"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14803" p="-0.00647051" r="-0.00388956" x="-22.259668" y="-259.988903" z="-0.655818"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14681" p="-0.00646815" r="-0.0039772" x="-22.921642" y="-261.008920" z="-0.656103"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1467" p="-0.0065531" r="-0.00407227" x="-24.012599" y="-262.688948" z="-0.656423"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14815" p="-0.0065734" r="-0.00410452" x="-24.348586" y="-263.205957" z="-0.656505"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14832" p="-0.00671474" r="-0.00418453" x="-26.024521" y="-265.776999" z="-0.656972"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14802" p="-0.00676257" r="-0.00412985" x="-26.374507" y="-266.314008" z="-0.657100"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14794" p="-0.00682466" r="-0.00407902" x="-27.030481" y="-267.321025" z="-0.657395"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14793" p="-0.00690378" r="-0.00406214" x="-27.725454" y="-268.388043" z="-0.657857"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14775" p="-0.0070131" r="-0.00390842" x="-27.757453" y="-268.438044" z="-0.657887"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14782" p="-0.007424" r="-0.00415235" x="-29.433387" y="-271.013086" z="-0.659577"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14811" p="-0.0076512" r="-0.00423706" x="-30.047363" y="-271.956102" z="-0.660281"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14848" p="-0.00770498" r="-0.0042783" x="-30.210357" y="-272.206106" z="-0.660468"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14804" p="-0.00768652" r="-0.00440574" x="-30.341352" y="-272.407109" z="-0.660618"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1478" p="-0.00820778" r="-0.00478082" x="-32.367272" y="-275.518161" z="-0.662455"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14607" p="-0.00813859" r="-0.00496134" x="-32.602263" y="-275.881167" z="-0.662570"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14306" p="-0.00809884" r="-0.00508352" x="-32.879252" y="-276.309174" z="-0.662661"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14278" p="-0.00806141" r="-0.00517351" x="-33.254237" y="-276.893184" z="-0.662707"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14355" p="-0.00798871" r="-0.00527316" x="-33.502227" y="-277.277190" z="-0.662678"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14397" p="-0.00793148" r="-0.00533563" x="-33.631222" y="-277.476193" z="-0.662636"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14782" p="-0.00745315" r="-0.00553696" x="-34.811176" y="-279.292223" z="-0.661603"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14923" p="-0.0071362" r="-0.00563991" x="-35.343155" y="-280.107237" z="-0.660850"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14917" p="-0.00695871" r="-0.00560089" x="-35.721140" y="-280.687247" z="-0.660243"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14916" p="-0.00691821" r="-0.00557442" x="-35.829136" y="-280.852249" z="-0.660062"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14747" p="-0.00665371" r="-0.00547584" x="-36.405114" y="-281.736264" z="-0.659053"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14649" p="-0.00655153" r="-0.00541659" x="-36.648104" y="-282.111270" z="-0.658617"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14649" p="-0.0065289" r="-0.00540195" x="-36.704102" y="-282.197272" z="-0.658517"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14365" p="-0.00655685" r="-0.00501012" x="-37.108086" y="-282.820282" z="-0.657805"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1417" p="-0.00621001" r="-0.00434715" x="-39.462993" y="-286.474342" z="-0.655178"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13937" p="-0.00636596" r="-0.00403347" x="-41.806899" y="-290.135402" z="-0.655182"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13845" p="-0.006322" r="-0.00399366" x="-43.930814" y="-293.466456" z="-0.655420"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13856" p="-0.00626188" r="-0.00404644" x="-45.607747" y="-296.096499" z="-0.655409"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13907" p="-0.00622818" r="-0.004084" x="-47.284680" y="-298.725542" z="-0.655143"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13983" p="-0.00621569" r="-0.00409947" x="-47.916655" y="-299.712558" z="-0.655021"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.15116" p="-0.00615718" r="-0.00419242" x="-48.011651" y="-299.858560" z="-0.655004"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.16564" p="-0.00604685" r="-0.00434751" x="-48.086648" y="-299.971562" z="-0.654982"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.19072" p="-0.0058409" r="-0.00458278" x="-48.239643" y="-300.195566" z="-0.654918"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.22091" p="-0.00555045" r="-0.00482203" x="-48.558632" y="-300.633574" z="-0.654708"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.26129" p="-0.0051363" r="-0.00509566" x="-48.896621" y="-301.059583" z="-0.654398"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.30186" p="-0.00468189" r="-0.00530058" x="-49.250610" y="-301.470592" z="-0.653996"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.34261" p="-0.00421932" r="-0.00541611" x="-49.621600" y="-301.867601" z="-0.653508"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.38257" p="-0.00399155" r="-0.00520604" x="-50.008590" y="-302.249611" z="-0.652976"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.40406" p="-0.00394884" r="-0.0048891" x="-50.373582" y="-302.582620" z="-0.652777"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.46228" p="-0.00436543" r="-0.00412709" x="-50.828572" y="-302.964632" z="-0.653027"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.50006" p="-0.00464736" r="-0.00359506" x="-51.183565" y="-303.238641" z="-0.653575"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.53431" p="-0.00493572" r="-0.0031137" x="-51.546558" y="-303.500650" z="-0.654437"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.56869" p="-0.00526221" r="-0.00264147" x="-51.919552" y="-303.750660" z="-0.655618"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.58591" p="-0.00538267" r="-0.00232041" x="-52.301546" y="-303.987670" z="-0.657122"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.65324" p="-0.00622797" r="-0.00154788" x="-52.867538" y="-304.306684" z="-0.659874"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.70352" p="-0.00691024" r="-0.000963366" x="-53.448530" y="-304.596699" z="-0.663322"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.75406" p="-0.0076637" r="-0.000443595" x="-54.044524" y="-304.857714" z="-0.667479"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.7902" p="-0.00819999" r="-0.000086" x="-54.653518" y="-305.088730" z="-0.672340"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.83007" p="-0.00877414" r="0.000094" x="-54.913516" y="-305.176736" z="-0.674576"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.8751" p="-0.00910512" r="0.000149965" x="-55.168514" y="-305.254743" z="-0.676869"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.92089" p="-0.00935267" r="0.000110696" x="-55.684510" y="-305.386756" z="-0.681633"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.98208" p="-0.00970683" r="0.000043" x="-56.209508" y="-305.487769" z="-0.686635"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-3.03873" p="-0.0100649" r="-0.000069" x="-56.740506" y="-305.556783" z="-0.691883"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-3.09555" p="-0.0104485" r="-0.000232689" x="-57.192505" y="-305.589794" z="-0.696521"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="3.13539" p="-0.0108188" r="-0.000435509" x="-57.646505" y="-305.598806" z="-0.701341"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="3.083" p="-0.011202" r="-0.000673456" x="-58.100505" y="-305.583817" z="-0.706348"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="3.04218" p="-0.0114947" r="-0.000984472" x="-58.553506" y="-305.545829" z="-0.711543"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.99121" p="-0.0118841" r="-0.00122589" x="-58.804507" y="-305.513835" z="-0.714510"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.95183" p="-0.0121682" r="-0.00157383" x="-59.225509" y="-305.443846" z="-0.719655"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.9056" p="-0.0124915" r="-0.00200937" x="-59.643511" y="-305.352857" z="-0.724971"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.87748" p="-0.0126477" r="-0.00240366" x="-59.959513" y="-305.268865" z="-0.729148"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.83727" p="-0.0129871" r="-0.00255712" x="-60.056514" y="-305.240867" z="-0.730462"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.80283" p="-0.013074" r="-0.00304747" x="-60.463517" y="-305.108878" z="-0.736124"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.75292" p="-0.0131437" r="-0.00357815" x="-60.863521" y="-304.956888" z="-0.741883"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.70289" p="-0.013123" r="-0.00412517" x="-61.255526" y="-304.783898" z="-0.747701"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.65274" p="-0.013036" r="-0.00468872" x="-61.638531" y="-304.592908" z="-0.753563"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.60373" p="-0.0128772" r="-0.00526159" x="-62.012536" y="-304.381917" z="-0.759452"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.56658" p="-0.0126443" r="-0.00580141" x="-62.356541" y="-304.163926" z="-0.765061"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.53662" p="-0.0125118" r="-0.00610341" x="-62.525544" y="-304.049930" z="-0.767866"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.52059" p="-0.0116106" r="-0.00563836" x="-62.608546" y="-303.990932" z="-0.769267"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.51708" p="-0.0108832" r="-0.00513736" x="-62.704548" y="-303.920935" z="-0.770668"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.42054" p="-0.0109736" r="-0.00521334" x="-62.919553" y="-303.721940" z="-0.774055"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.44583" p="-0.0110092" r="-0.0052553" x="-63.142558" y="-303.535946" z="-0.777483"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.29161" p="-0.0119881" r="-0.00555177" x="-63.248560" y="-303.423949" z="-0.779409"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.26286" p="-0.0117138" r="-0.00509381" x="-63.350564" y="-303.298951" z="-0.781293"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.25062" p="-0.0114479" r="-0.00460791" x="-63.487568" y="-303.134955" z="-0.783678"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.24407" p="-0.0112249" r="-0.00406105" x="-63.624572" y="-302.959958" z="-0.785999"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.27791" p="-0.0109768" r="-0.003609" x="-63.768577" y="-302.781962" z="-0.788270"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.33736" p="-0.0108322" r="-0.00324645" x="-63.921581" y="-302.611966" z="-0.790512"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.41385" p="-0.0105025" r="-0.00282769" x="-64.045584" y="-302.494969" z="-0.792200"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.41332" p="-0.0104032" r="-0.00262952" x="-64.485594" y="-302.109980" z="-0.797856"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.37235" p="-0.0102238" r="-0.00248055" x="-64.700599" y="-301.910986" z="-0.800548"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.32302" p="-0.0101402" r="-0.00258145" x="-64.904604" y="-301.704991" z="-0.803142"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.26235" p="-0.0100685" r="-0.00280645" x="-65.095610" y="-301.488996" z="-0.805643"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.19534" p="-0.00998458" r="-0.00309769" x="-65.269615" y="-301.264000" z="-0.808051"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.12708" p="-0.00993487" r="-0.00336526" x="-65.425621" y="-301.030004" z="-0.810369"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.09305" p="-0.00974998" r="-0.00358688" x="-65.565628" y="-300.788008" z="-0.812599"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.00674" p="-0.00975153" r="-0.00391498" x="-65.659632" y="-300.599010" z="-0.814233"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.95311" p="-0.00964529" r="-0.00417256" x="-65.742637" y="-300.407012" z="-0.815819"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.89917" p="-0.0095783" r="-0.00441615" x="-65.815642" y="-300.211014" z="-0.817358"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.84601" p="-0.00941133" r="-0.00467893" x="-65.877647" y="-300.012016" z="-0.818849"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.79455" p="-0.00933443" r="-0.00489468" x="-65.928653" y="-299.811017" z="-0.820294"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.72294" p="-0.00903391" r="-0.00518683" x="-65.969658" y="-299.607018" z="-0.821693"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.67458" p="-0.00831189" r="-0.00541424" x="-66.023668" y="-299.194020" z="-0.824349"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.62369" p="-0.00828044" r="-0.00553196" x="-66.048677" y="-298.849020" z="-0.826456"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.58878" p="-0.00826127" r="-0.00557451" x="-66.059686" y="-298.500020" z="-0.828492"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.53858" p="-0.00825594" r="-0.00557481" x="-66.057690" y="-298.331020" z="-0.829420"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.50797" p="-0.00824891" r="-0.00553426" x="-66.045697" y="-298.050020" z="-0.830879"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.48384" p="-0.00824237" r="-0.00545353" x="-66.022705" y="-297.769020" z="-0.832237"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.44065" p="-0.00824209" r="-0.00533122" x="-66.000711" y="-297.532019" z="-0.833334"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.40431" p="-0.00823195" r="-0.00526178" x="-65.960717" y="-297.297018" z="-0.834244"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.44793" p="-0.00838766" r="-0.00502054" x="-65.887737" y="-296.513016" z="-0.837564"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.42916" p="-0.00841468" r="-0.0050275" x="-65.724765" y="-295.387012" z="-0.841855"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.44841" p="-0.00840694" r="-0.00503387" x="-65.709768" y="-295.270012" z="-0.842314"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.45889" p="-0.00837898" r="-0.00503668" x="-65.652780" y="-294.800010" z="-0.844203"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.47432" p="-0.00833791" r="-0.00504269" x="-65.609791" y="-294.378009" z="-0.845975"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.49287" p="-0.00832636" r="-0.00505774" x="-65.603793" y="-294.294009" z="-0.846346"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.50633" p="-0.00826594" r="-0.00506776" x="-65.569804" y="-293.854008" z="-0.848286"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.53328" p="-0.00817745" r="-0.00509176" x="-65.541818" y="-293.328007" z="-0.850724"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.56782" p="-0.00807392" r="-0.00512382" x="-65.529831" y="-292.802007" z="-0.853319"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.58934" p="-0.00795091" r="-0.00514629" x="-65.537845" y="-292.275007" z="-0.856094"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.62275" p="-0.00794112" r="-0.00517967" x="-65.540846" y="-292.209007" z="-0.856458"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.64309" p="-0.00784664" r="-0.00520928" x="-65.561856" y="-291.819008" z="-0.858645"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.66699" p="-0.00769288" r="-0.00525353" x="-65.612872" y="-291.213009" z="-0.862211"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.68845" p="-0.00759318" r="-0.00529532" x="-65.653881" y="-290.869010" z="-0.864344"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.71221" p="-0.00753622" r="-0.00533647" x="-65.683887" y="-290.609011" z="-0.865953"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.7396" p="-0.00737664" r="-0.00540106" x="-65.775903" y="-290.007013" z="-0.869864"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.76424" p="-0.00722055" r="-0.00546727" x="-65.888918" y="-289.409016" z="-0.873940"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.78816" p="-0.00715548" r="-0.00551755" x="-65.943924" y="-289.152018" z="-0.875747"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.80793" p="-0.0071006" r="-0.00556007" x="-65.994930" y="-288.927019" z="-0.877363"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.8264" p="-0.0070041" r="-0.00561311" x="-66.101941" y="-288.499022" z="-0.880498"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.85013" p="-0.00691492" r="-0.00567625" x="-66.217952" y="-288.075025" z="-0.883707"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.87324" p="-0.00684224" r="-0.00573728" x="-66.344963" y="-287.652028" z="-0.886986"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.90513" p="-0.00677781" r="-0.00581339" x="-66.480973" y="-287.233031" z="-0.890331"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.91754" p="-0.00668416" r="-0.00586883" x="-66.750993" y="-286.481038" z="-0.896554"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.9623" p="-0.00666883" r="-0.00595581" x="-66.935004" y="-286.020043" z="-0.900515"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.98626" p="-0.00666432" r="-0.00599866" x="-67.113015" y="-285.603047" z="-0.904188"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.01073" p="-0.00667993" r="-0.00603199" x="-67.300025" y="-285.191052" z="-0.907921"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.03307" p="-0.00671516" r="-0.00605106" x="-67.498036" y="-284.783057" z="-0.911711"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.04957" p="-0.00675452" r="-0.00605629" x="-67.661044" y="-284.467061" z="-0.914723"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.06002" p="-0.00677716" r="-0.00605856" x="-67.721047" y="-284.354063" z="-0.915818"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.09182" p="-0.00690068" r="-0.00603388" x="-68.030061" y="-283.806071" z="-0.921246"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.12542" p="-0.00694455" r="-0.00605555" x="-68.098064" y="-283.692072" z="-0.922405"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.11188" p="-0.00711805" r="-0.00596349" x="-68.471079" y="-283.094082" z="-0.928622"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.09357" p="-0.00729244" r="-0.00587437" x="-68.801093" y="-282.527090" z="-0.934363"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.10493" p="-0.00736216" r="-0.00581828" x="-68.915099" y="-282.323093" z="-0.936387"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.12675" p="-0.00744551" r="-0.00576066" x="-69.038104" y="-282.126096" z="-0.938443"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.16479" p="-0.00657204" r="-0.00406834" x="-69.529123" y="-281.353109" z="-0.945750"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.19811" p="-0.00542687" r="-0.0024673" x="-69.989140" y="-280.717121" z="-0.950421"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.19587" p="-0.00477953" r="-0.0016923" x="-70.438155" y="-280.099132" z="-0.953772"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.16253" p="-0.00425864" r="-0.000946994" x="-70.585161" y="-279.891136" z="-0.954669"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.11347" p="-0.00404762" r="-0.000650162" x="-70.838171" y="-279.503142" z="-0.956043"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.05988" p="-0.00404352" r="-0.000321443" x="-71.068181" y="-279.091148" z="-0.957143"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.01933" p="-0.00418872" r="-0.000074" x="-71.212188" y="-278.801152" z="-0.957780"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.98929" p="-0.00430912" r="0.000014" x="-71.351196" y="-278.502155" z="-0.958373"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.95244" p="-0.0044579" r="0.000028" x="-71.481204" y="-278.195159" z="-0.958933"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.90568" p="-0.00465605" r="-0.000238241" x="-71.601212" y="-277.879162" z="-0.959470"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.84399" p="-0.00498332" r="-0.0010092" x="-71.721221" y="-277.506165" z="-0.960214"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.78561" p="-0.00524314" r="-0.00190043" x="-71.858235" y="-276.961168" z="-0.961679"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.73855" p="-0.00542255" r="-0.00265193" x="-71.962250" y="-276.403171" z="-0.963570"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.69325" p="-0.00555807" r="-0.00329529" x="-72.011258" y="-276.059172" z="-0.964898"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.64399" p="-0.00568018" r="-0.00377096" x="-72.047267" y="-275.713173" z="-0.966319"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.61766" p="-0.00581725" r="-0.00398366" x="-72.072279" y="-275.231174" z="-0.968369"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.56066" p="-0.00585075" r="-0.00434962" x="-72.072281" y="-275.165174" z="-0.968648"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.54651" p="-0.00597144" r="-0.00447501" x="-72.067291" y="-274.787174" z="-0.970273"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.5152" p="-0.00635071" r="-0.00468221" x="-72.055299" y="-274.467173" z="-0.971672"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.41183" p="-0.0064405" r="-0.00481944" x="-72.032307" y="-274.148173" z="-0.973037"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.26387" p="-0.00645916" r="-0.00492118" x="-71.975312" y="-273.965171" z="-0.973573"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.26885" p="-0.00649218" r="-0.00492982" x="-71.953313" y="-273.901171" z="-0.973748"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.27833" p="-0.00659677" r="-0.00492838" x="-71.904318" y="-273.737170" z="-0.974237"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.27572" p="-0.00664912" r="-0.00487824" x="-71.882319" y="-273.665169" z="-0.974442"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.25247" p="-0.0068664" r="-0.00478704" x="-71.732332" y="-273.172165" z="-0.975850"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.2095" p="-0.00662345" r="-0.00606642" x="-71.537346" y="-272.618160" z="-0.977085"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.19706" p="-0.00646319" r="-0.00706571" x="-71.102375" y="-271.504149" z="-0.981795"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.17158" p="-0.00532039" r="-0.00991632" x="-71.041378" y="-271.352148" z="-0.982816"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.15389" p="-0.00490361" r="-0.0109023" x="-70.791393" y="-270.767141" z="-0.987450"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.12292" p="-0.00416835" r="-0.0124819" x="-70.526408" y="-270.189134" z="-0.992970"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.09652" p="-0.00351922" r="-0.0135124" x="-70.115429" y="-269.360124" z="-1.002190"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.07894" p="-0.00305166" r="-0.014031" x="-69.682450" y="-268.546113" z="-1.012210"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.05915" p="-0.00283361" r="-0.0142623" x="-69.533457" y="-268.273109" z="-1.015660"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.05166" p="-0.00273533" r="-0.014232" x="-69.309467" y="-267.882103" z="-1.020620"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.06421" p="-0.00261932" r="-0.0143429" x="-69.119475" y="-267.552099" z="-1.024900"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.08364" p="-0.00265347" r="-0.0142372" x="-68.939484" y="-267.214094" z="-1.029230"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.12329" p="-0.00275353" r="-0.0140083" x="-68.905486" y="-267.148093" z="-1.030080"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.14408" p="-0.00266695" r="-0.0137801" x="-68.593502" y="-266.494085" z="-1.038360"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.1762" p="-0.00273685" r="-0.0133388" x="-68.304519" y="-265.826078" z="-1.046690"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.18361" p="-0.00248604" r="-0.0130751" x="-67.786552" y="-264.555065" z="-1.062040"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.18361" p="-0.00246705" r="-0.0130668" x="-67.752554" y="-264.472064" z="-1.063020"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.16103" p="-0.0024363" r="-0.012531" x="-67.503569" y="-263.880057" z="-1.069890"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.13216" p="-0.00228809" r="-0.0123273" x="-67.241584" y="-263.297051" z="-1.076500"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.09464" p="-0.0021235" r="-0.0121882" x="-66.991597" y="-262.789044" z="-1.082170"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.05021" p="-0.00197107" r="-0.0121277" x="-66.755608" y="-262.354038" z="-1.086970"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.01988" p="-0.0017953" r="-0.0120756" x="-66.499619" y="-261.931032" z="-1.091600"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00077" p="-0.0016167" r="-0.0121973" x="-66.390623" y="-261.759029" z="-1.093490"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00095" p="-0.00127684" r="-0.0121329" x="-65.864644" y="-260.940016" z="-1.102670"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00328" p="-0.000929813" r="-0.0126147" x="-65.778647" y="-260.805013" z="-1.104290"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00374" p="-0.000572444" r="-0.0125371" x="-64.851685" y="-259.349990" z="-1.121780"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00623" p="-0.000187151" r="-0.0131026" x="-64.680691" y="-259.080985" z="-1.125280"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00672" p="-0.000163248" r="-0.0131232" x="-64.580695" y="-258.921983" z="-1.127340"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.0069" p="-0.000094" r="-0.0130927" x="-64.309706" y="-258.493976" z="-1.132920"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00728" p="-0.00161139" r="-0.0106464" x="-64.250709" y="-258.400974" z="-1.134100"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00729" p="-0.0011544" r="-0.0100708" x="-63.631734" y="-257.420959" z="-1.143250"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.0067" p="0.00198848" r="-0.0149119" x="-63.585736" y="-257.348957" z="-1.143920"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00606" p="0.00757861" r="-0.0223053" x="-63.243749" y="-256.807949" z="-1.153160"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00534" p="0.013681" r="-0.0304452" x="-62.958761" y="-256.357941" z="-1.170130"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00461" p="0.0158726" r="-0.0336167" x="-62.901763" y="-256.267940" z="-1.174310"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00403" p="0.0162045" r="-0.0335533" x="-62.780768" y="-256.077937" z="-1.183010"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00367" p="0.0152992" r="-0.0316744" x="-62.672772" y="-255.907934" z="-1.190110"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00356" p="0.015347" r="-0.0313586" x="-62.584776" y="-255.770932" z="-1.195750"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00347" p="0.015553" r="-0.0314966" x="-62.551777" y="-255.718931" z="-1.197910"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00349" p="0.0178846" r="-0.0319083" x="-61.901803" y="-254.696914" z="-1.241470"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00306" p="0.0192459" r="-0.0320876" x="-61.502819" y="-254.070904" z="-1.269250"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00294" p="0.020114" r="-0.0315851" x="-61.120834" y="-253.471895" z="-1.295860"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00086" p="0.0203284" r="-0.0316703" x="-61.071836" y="-253.395893" z="-1.299270"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00042" p="0.0204852" r="-0.0314918" x="-60.961841" y="-253.222890" z="-1.306970"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00043" p="0.0214431" r="-0.0308778" x="-60.404863" y="-252.354876" z="-1.345730"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00001" p="0.0213308" r="-0.0294942" x="-60.082876" y="-251.851868" z="-1.368180"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.999833" p="0.0215496" r="-0.0287278" x="-59.330906" y="-250.680849" z="-1.418040"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.999834" p="0.0216659" r="-0.0286526" x="-59.156913" y="-250.409844" z="-1.429600"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00076" p="0.0192751" r="-0.0248225" x="-59.124914" y="-250.359844" z="-1.431600"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00096" p="0.0176468" r="-0.0222907" x="-58.706930" y="-249.707833" z="-1.455680"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00112" p="0.0164325" r="-0.0199183" x="-58.267948" y="-249.021822" z="-1.476570"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00112" p="0.0166557" r="-0.0197713" x="-57.808966" y="-248.304810" z="-1.498390"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00083" p="0.0146506" r="-0.0165496" x="-57.736969" y="-248.192808" z="-1.501300"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00083" p="0.0146668" r="-0.0165409" x="-57.709970" y="-248.149808" z="-1.502410"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00108" p="0.0131885" r="-0.0136214" x="-57.169992" y="-247.307794" z="-1.521010"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00214" p="0.012274" r="-0.0120709" x="-57.052996" y="-247.124791" z="-1.525030"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00309" p="0.011425" r="-0.0106399" x="-56.922002" y="-246.918787" z="-1.528740"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00295" p="0.00891378" r="-0.0066035" x="-56.608014" y="-246.427779" z="-1.534860"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00294" p="0.00893772" r="-0.00658261" x="-56.463020" y="-246.199776" z="-1.537660"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00279" p="0.00650952" r="-0.00279476" x="-56.401022" y="-246.102774" z="-1.538330"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00352" p="0.0065718" r="-0.00279701" x="-56.122034" y="-245.665767" z="-1.541380"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00833" p="0.00677901" r="-0.00286451" x="-55.961040" y="-245.411763" z="-1.543180"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00833" p="0.00747813" r="-0.00242386" x="-55.026078" y="-243.927739" z="-1.553780"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00793" p="0.00744732" r="-0.0022726" x="-54.964080" y="-243.827737" z="-1.554490"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00283" p="0.00731123" r="-0.00183351" x="-54.809087" y="-243.583734" z="-1.556180"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00016" p="0.0072598" r="-0.00161954" x="-54.520098" y="-243.132726" z="-1.559010"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00017" p="0.00737892" r="-0.00154351" x="-53.954121" y="-242.250712" z="-1.564550"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.998313" p="0.00700709" r="-0.000920219" x="-53.858125" y="-242.100709" z="-1.565490"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.998231" p="0.00685797" r="-0.000475017" x="-53.559136" y="-241.637702" z="-1.567880"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.998943" p="0.00673529" r="-0.00019453" x="-53.341145" y="-241.299696" z="-1.569410"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00205" p="0.00695548" r="-0.000377019" x="-52.952160" y="-240.692686" z="-1.572360"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00452" p="0.00697866" r="-0.00028089" x="-52.863164" y="-240.551684" z="-1.573020"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00641" p="0.00691388" r="0.000109337" x="-52.676172" y="-240.257679" z="-1.574410"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00667" p="0.0075942" r="0.000601742" x="-51.331226" y="-238.131645" z="-1.583350"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00523" p="0.00765324" r="0.00170833" x="-50.518258" y="-236.850624" z="-1.587420"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00501" p="0.00739907" r="0.00216864" x="-50.473260" y="-236.780623" z="-1.587610"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00471" p="0.00719638" r="0.00266537" x="-50.332266" y="-236.557619" z="-1.588160"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00466" p="0.00747627" r="0.00295401" x="-49.571296" y="-235.360600" z="-1.590320"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00381" p="0.00671594" r="0.00429549" x="-48.677332" y="-233.957577" z="-1.590340"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.0036" p="0.00633092" r="0.00492808" x="-48.645334" y="-233.906576" z="-1.590290"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00394" p="0.0060601" r="0.00539128" x="-48.596336" y="-233.829575" z="-1.590220"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00398" p="0.00600403" r="0.00544393" x="-48.238350" y="-233.268566" z="-1.589540"/>
+                                                </Position>
+                                            </Vertex>
+                                        </Polyline>
+                                    </Shape>
+                                </Trajectory>
+                            </FollowTrajectoryAction>
+                        </RoutingAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+                <Private entityRef="Target_Cyclist">
+                    <PrivateAction>
+                        <RoutingAction>
+                            <FollowTrajectoryAction>
+                                <TimeReference>
+                                    <None/>
+                                </TimeReference>
+                                <TrajectoryFollowingMode followingMode="position"/>
+                                <Trajectory closed="false" name="NCAP_Bicycle_NoPlatform_Trajectory">
+                                    <Shape>
+                                        <Polyline>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14836" p="-0.00669094" r="-0.00417925" x="-25.788530" y="-265.413993" z="-0.656894"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.15305" p="-0.00670524" r="-0.00419871" x="-26.025521" y="-265.776999" z="-0.656972"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.15963" p="-0.00671148" r="-0.00420631" x="-26.379507" y="-266.310008" z="-0.657100"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.17119" p="-0.00672025" r="-0.00423139" x="-27.053482" y="-267.306026" z="-0.657395"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.18195" p="-0.00674738" r="-0.0042851" x="-27.778455" y="-268.353044" z="-0.657857"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.18224" p="-0.00685416" r="-0.00413426" x="-27.812454" y="-268.402045" z="-0.657887"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20153" p="-0.00715471" r="-0.00451984" x="-29.604390" y="-270.902091" z="-0.659577"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20655" p="-0.00734808" r="-0.00464619" x="-30.271367" y="-271.810108" z="-0.660281"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20794" p="-0.00739338" r="-0.00469757" x="-30.449361" y="-272.051112" z="-0.660468"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20819" p="-0.00736881" r="-0.00483292" x="-30.592356" y="-272.244116" z="-0.660618"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.21249" p="-0.00783927" r="-0.00527355" x="-32.816280" y="-275.225173" z="-0.662455"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.21063" p="-0.00777135" r="-0.00545467" x="-33.076271" y="-275.574179" z="-0.662570"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.207" p="-0.0077358" r="-0.00557507" x="-33.381260" y="-275.985187" z="-0.662661"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20572" p="-0.00770406" r="-0.00565854" x="-33.793246" y="-276.545197" z="-0.662707"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20531" p="-0.00763835" r="-0.00574897" x="-34.065237" y="-276.914204" z="-0.662678"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20507" p="-0.00758619" r="-0.00580637" x="-34.206232" y="-277.105208" z="-0.662636"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20435" p="-0.00725885" r="-0.0059239" x="-35.166198" y="-278.412232" z="-0.661863"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1944" p="-0.00758375" r="-0.00492231" x="-36.196162" y="-279.828259" z="-0.661917"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.1809" p="-0.00743972" r="-0.00433587" x="-37.209126" y="-281.255285" z="-0.663010"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.16382" p="-0.00696621" r="-0.00427101" x="-38.199089" y="-282.697310" z="-0.664030"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14315" p="-0.00628439" r="-0.00481027" x="-39.163052" y="-284.158334" z="-0.663871"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13855" p="-0.00637782" r="-0.00399694" x="-42.938901" y="-290.052431" z="-0.655215"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13845" p="-0.00632101" r="-0.00399303" x="-44.773828" y="-292.929478" z="-0.655420"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13856" p="-0.00626087" r="-0.00404698" x="-46.450761" y="-295.558520" z="-0.655409"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.13878" p="-0.00623527" r="-0.00408004" x="-47.216730" y="-296.759540" z="-0.655287"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.14625" p="-0.00638919" r="-0.00383477" x="-48.160693" y="-298.239564" z="-0.655449"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.16839" p="-0.0063895" r="-0.00384745" x="-48.647674" y="-298.973576" z="-0.655748"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.20303" p="-0.00626657" r="-0.00389786" x="-49.154656" y="-299.693589" z="-0.656177"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.25057" p="-0.00598128" r="-0.00394314" x="-49.688638" y="-300.388603" z="-0.656726"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.31142" p="-0.00556043" r="-0.00397653" x="-50.256621" y="-301.050617" z="-0.657386"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.38573" p="-0.00504277" r="-0.00399757" x="-50.865605" y="-301.669633" z="-0.658145"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.47309" p="-0.00444434" r="-0.00397997" x="-51.522591" y="-302.238650" z="-0.658993"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.51408" p="-0.00395917" r="-0.00397143" x="-51.922583" y="-302.541660" z="-0.659455"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.55522" p="-0.00375692" r="-0.0037196" x="-52.337576" y="-302.829670" z="-0.659931"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.59675" p="-0.00386063" r="-0.00325824" x="-52.763569" y="-303.099681" z="-0.660594"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.63884" p="-0.00431197" r="-0.00265535" x="-53.201562" y="-303.352693" z="-0.661619"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.68171" p="-0.00511962" r="-0.00192953" x="-53.649556" y="-303.586704" z="-0.663179"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.72556" p="-0.00630809" r="-0.00112906" x="-54.106551" y="-303.800716" z="-0.665447"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.77056" p="-0.00789495" r="-0.000294914" x="-54.571546" y="-303.993727" z="-0.668596"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.81692" p="-0.00991149" r="0.000482555" x="-55.043541" y="-304.165739" z="-0.672802"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.87036" p="-0.0100238" r="0.000369421" x="-55.524538" y="-304.317752" z="-0.677460"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-2.9383" p="-0.0107826" r="0.000351484" x="-56.017535" y="-304.436764" z="-0.682642"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-3.00443" p="-0.0114038" r="0.000206414" x="-56.519532" y="-304.522777" z="-0.688246"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-3.06947" p="-0.0118798" r="-0.000050" x="-57.027531" y="-304.575790" z="-0.694173"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="-3.13415" p="-0.0122017" r="-0.000390273" x="-57.538530" y="-304.596803" z="-0.700325"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="3.084" p="-0.012363" r="-0.000761235" x="-58.048531" y="-304.583816" z="-0.706601"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="3.01787" p="-0.012354" r="-0.00119735" x="-58.553532" y="-304.537829" z="-0.712902"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.9499" p="-0.0121705" r="-0.00161989" x="-59.051534" y="-304.458842" z="-0.719130"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.8973" p="-0.0143168" r="-0.00262778" x="-59.541537" y="-304.349854" z="-0.725886"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.83872" p="-0.0156934" r="-0.00375666" x="-60.032540" y="-304.212867" z="-0.733724"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.77252" p="-0.0163535" r="-0.00489868" x="-60.517545" y="-304.043879" z="-0.742251"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.69699" p="-0.0163085" r="-0.00595682" x="-60.988550" y="-303.841891" z="-0.751072"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.61027" p="-0.0155712" r="-0.00676856" x="-61.437556" y="-303.603903" z="-0.759792"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.51061" p="-0.0141622" r="-0.00715184" x="-61.859563" y="-303.327913" z="-0.768018"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.39669" p="-0.0124449" r="-0.0065706" x="-62.244571" y="-303.010923" z="-0.775356"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.32249" p="-0.0118384" r="-0.00528305" x="-62.587580" y="-302.652932" z="-0.781411"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.36013" p="-0.0100799" r="-0.00239157" x="-63.332599" y="-301.900951" z="-0.792243"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.3354" p="-0.00954629" r="-0.00175385" x="-63.711609" y="-301.516961" z="-0.796738"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.28109" p="-0.00916508" r="-0.0016291" x="-64.073619" y="-301.120970" z="-0.800768"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.19402" p="-0.0089702" r="-0.00192848" x="-64.399630" y="-300.708978" z="-0.804445"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.07024" p="-0.00900603" r="-0.00259534" x="-64.674641" y="-300.274985" z="-0.807881"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.9938" p="-0.00906984" r="-0.0030887" x="-64.787646" y="-300.047988" z="-0.809542"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.90796" p="-0.0090994" r="-0.0037056" x="-64.881652" y="-299.814990" z="-0.811185"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.81374" p="-0.00911254" r="-0.00441779" x="-64.953659" y="-299.572992" z="-0.812824"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.71289" p="-0.00899221" r="-0.00522394" x="-65.002665" y="-299.322994" z="-0.814471"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.63567" p="-0.00840587" r="-0.00716067" x="-65.047676" y="-298.881995" z="-0.817619"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.5702" p="-0.00826333" r="-0.00845863" x="-65.061687" y="-298.439995" z="-0.821210"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.51677" p="-0.00805315" r="-0.0091954" x="-65.048699" y="-297.995995" z="-0.825045"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.47526" p="-0.00786068" r="-0.00938294" x="-65.014710" y="-297.551994" z="-0.828926"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.42701" p="-0.00788826" r="-0.00819959" x="-64.904733" y="-296.663991" z="-0.836022"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.42218" p="-0.00820596" r="-0.00634115" x="-64.772755" y="-295.780988" z="-0.840901"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.45774" p="-0.00866494" r="-0.00260792" x="-64.655778" y="-294.895985" z="-0.843702"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.50053" p="-0.00857156" r="-0.00114222" x="-64.572801" y="-294.004983" z="-0.844488"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.55084" p="-0.00820745" r="-0.00198305" x="-64.531823" y="-293.112982" z="-0.845365"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.60888" p="-0.00794977" r="-0.00516453" x="-64.539846" y="-292.219982" z="-0.848439"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.64527" p="-0.00787761" r="-0.0061012" x="-64.573862" y="-291.610983" z="-0.852154"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.68016" p="-0.00782713" r="-0.00677202" x="-64.629877" y="-291.002984" z="-0.856521"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.7136" p="-0.00777918" r="-0.00717813" x="-64.706893" y="-290.396986" z="-0.861365"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.74567" p="-0.00770267" r="-0.0073235" x="-64.803908" y="-289.792988" z="-0.866507"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.806" p="-0.00738268" r="-0.0068468" x="-65.053939" y="-288.594995" z="-0.876982"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.83562" p="-0.00697255" r="-0.00617358" x="-65.370969" y="-287.416003" z="-0.886533"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.88054" p="-0.00664144" r="-0.0054211" x="-65.543984" y="-286.832007" z="-0.891085"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.9227" p="-0.00635128" r="-0.00490638" x="-65.742998" y="-286.254012" z="-0.895342"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.96218" p="-0.00612374" r="-0.00462044" x="-65.965013" y="-285.685018" z="-0.899428"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.99908" p="-0.00600014" r="-0.00454353" x="-66.209027" y="-285.124024" z="-0.903467"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.03351" p="-0.00600612" r="-0.00465919" x="-66.473041" y="-284.571031" z="-0.907583"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.06561" p="-0.00615678" r="-0.00495536" x="-66.755055" y="-284.027038" z="-0.911900"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.12331" p="-0.00699649" r="-0.00602017" x="-67.367082" y="-282.970054" z="-0.921635"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.16372" p="-0.00663927" r="-0.00500763" x="-67.842101" y="-282.235066" z="-0.928917"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.18161" p="-0.00637512" r="-0.00409369" x="-68.343119" y="-281.509079" z="-0.935469"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.15168" p="-0.00562835" r="-0.00290592" x="-69.345156" y="-280.054104" z="-0.946503"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.10319" p="-0.00518432" r="-0.00257071" x="-69.810175" y="-279.311116" z="-0.951045"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="2.03125" p="-0.00522475" r="-0.00209521" x="-70.225195" y="-278.547127" z="-0.954977"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.98632" p="-0.00525543" r="-0.00191979" x="-70.409205" y="-278.156131" z="-0.956723"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.9355" p="-0.00525081" r="-0.00180264" x="-70.573215" y="-277.756136" z="-0.958327"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.87901" p="-0.00521193" r="-0.00173549" x="-70.716225" y="-277.349139" z="-0.959794"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.81728" p="-0.00518956" r="-0.00169663" x="-70.835236" y="-276.932142" z="-0.961127"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.78561" p="-0.00535538" r="-0.00239406" x="-70.881241" y="-276.748143" z="-0.961679"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.7507" p="-0.005431" r="-0.00275398" x="-70.929247" y="-276.504145" z="-0.962586"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.73856" p="-0.00549613" r="-0.00301562" x="-70.976254" y="-276.236146" z="-0.963570"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.69325" p="-0.00561307" r="-0.00354596" x="-71.018261" y="-275.937147" z="-0.964898"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.67488" p="-0.00568609" r="-0.00417717" x="-71.022262" y="-275.900147" z="-0.965077"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.59957" p="-0.00575927" r="-0.0039267" x="-71.050273" y="-275.480148" z="-0.966934"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.52902" p="-0.00593213" r="-0.00380607" x="-71.047284" y="-275.060148" z="-0.968534"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.46379" p="-0.00634848" r="-0.00384964" x="-71.016295" y="-274.641147" z="-0.969936"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.40417" p="-0.00658435" r="-0.00402888" x="-70.958305" y="-274.224145" z="-0.971202"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.35025" p="-0.00677225" r="-0.00433868" x="-70.876316" y="-273.809143" z="-0.972390"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.30194" p="-0.0068555" r="-0.00475494" x="-70.773326" y="-273.395141" z="-0.973561"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.22143" p="-0.00674479" r="-0.00586525" x="-70.509347" y="-272.575134" z="-0.976092"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.16074" p="-0.00635517" r="-0.00733876" x="-70.185368" y="-271.766126" z="-0.979274"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.11803" p="-0.00573762" r="-0.00920476" x="-69.818388" y="-270.972116" z="-0.983588"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.09202" p="-0.00467147" r="-0.011405" x="-69.426408" y="-270.195106" z="-0.989514"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.0824" p="-0.00316997" r="-0.0140419" x="-69.027427" y="-269.438096" z="-0.997533"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.04569" p="-0.00169218" r="-0.016027" x="-68.420455" y="-268.349081" z="-1.012610"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.03138" p="-0.00104344" r="-0.0166338" x="-67.785482" y="-267.274065" z="-1.029450"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.03944" p="-0.00117787" r="-0.0158592" x="-67.146510" y="-266.202048" z="-1.046320"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.06988" p="-0.00208043" r="-0.0137148" x="-66.528537" y="-265.118032" z="-1.061510"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.01601" p="-0.0022793" r="-0.0127476" x="-66.210551" y="-264.582024" z="-1.068240"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.986714" p="-0.00293184" r="-0.0113225" x="-65.873564" y="-264.058016" z="-1.073650"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.955754" p="-0.00343843" r="-0.00989981" x="-65.166591" y="-263.029998" z="-1.082080"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.96149" p="-0.00264686" r="-0.0102594" x="-64.445617" y="-262.009979" z="-1.089930"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00394" p="-0.000731498" r="-0.0125764" x="-63.750643" y="-260.973962" z="-1.100350"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00727" p="0.0028406" r="-0.0171411" x="-62.470695" y="-258.952929" z="-1.129030"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00604" p="0.00980859" r="-0.0231627" x="-61.191746" y="-256.932896" z="-1.187640"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.999637" p="0.021649" r="-0.0301744" x="-58.619849" y="-252.904831" z="-1.368070"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00112" p="0.0164171" r="-0.0199195" x="-56.775922" y="-250.030784" z="-1.475420"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00232" p="0.0145316" r="-0.0159487" x="-55.856959" y="-248.592760" z="-1.521090"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00033" p="0.00644205" r="-0.00269359" x="-54.936996" y="-247.154737" z="-1.544920"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.0048" p="0.00671199" r="-0.000728143" x="-52.939076" y="-244.001686" z="-1.559660"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00667" p="0.00715321" r="-0.000001" x="-50.927156" y="-240.859635" z="-1.586940"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00524" p="0.00747685" r="0.00156123" x="-49.287222" y="-238.270593" z="-1.585970"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00377" p="0.00668767" r="0.00425772" x="-47.643288" y="-235.683551" z="-1.604970"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00381" p="0.00337276" r="0.0095256" x="-46.255344" y="-233.503515" z="-1.588130"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00445" p="0.00486279" r="0.00736019" x="-44.868399" y="-231.323480" z="-1.595700"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="0.99299" p="0.000528765" r="0.0137473" x="-43.763443" y="-229.629452" z="-1.572750"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition h="1.00246" p="0.0033796" r="0.00934104" x="-42.676486" y="-227.923424" z="-1.575750"/>
+                                                </Position>
+                                            </Vertex>
+                                        </Polyline>
+                                    </Shape>
+                                </Trajectory>
+                            </FollowTrajectoryAction>
+                        </RoutingAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="Story">
+            <Act name="Act">
+                <ManeuverGroup maximumExecutionCount="1" name="Act_SK_SUVGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego"/>
+                    </Actors>
+                    <Maneuver name="Act_SK_SUVGroup_Maneuver">
+                        <Event name="Drive_Away" priority="parallel">
+                            <Action name="Act_SK_SUVGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="1.5"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="13.4112"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act_GlobalGroup">
+                    <Actors selectTriggeringEntities="false"/>
+                    <Maneuver name="Act_GlobalGroup_Maneuver">
+                        <Event name="ForceActToExecuteUntilStopTrigger" priority="parallel">
+                            <Action name="NeverExecutedAction">
+                                <UserDefinedAction>
+                                    <CustomCommandAction type="MW_WaitAction"/>
+                                </UserDefinedAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="NeverSatisfiedCondition">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Story" storyboardElementType="story"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Simulation_Time">
+                            <ByValueCondition>
+                                <SimulationTimeCondition rule="greaterOrEqual" value="2"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Distance_To_Actor">
+                            <ByEntityCondition>
+                                <TriggeringEntities triggeringEntitiesRule="any">
+                                    <EntityRef entityRef="Ego"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <RelativeDistanceCondition coordinateSystem="entity" entityRef="Target_Cyclist" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="15"/>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+            <Act name="Act2">
+                <ManeuverGroup maximumExecutionCount="1" name="Act2_SK_SUVGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego"/>
+                    </Actors>
+                    <Maneuver name="Act2_SK_SUVGroup_Maneuver">
+                        <Event name="Maintain_Distance_to_Cyclist" priority="parallel">
+                            <Action name="Act2_SK_SUVGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="3"/>
+                                            <SpeedActionTarget>
+                                                <RelativeTargetSpeed continuous="true" entityRef="Target_Cyclist" speedTargetValueType="delta" value="0"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act2_GlobalGroup">
+                    <Actors selectTriggeringEntities="false"/>
+                    <Maneuver name="Act2_GlobalGroup_Maneuver">
+                        <Event name="ForceActToExecuteUntilStopTrigger2" priority="parallel">
+                            <Action name="NeverExecutedAction2">
+                                <UserDefinedAction>
+                                    <CustomCommandAction type="MW_WaitAction"/>
+                                </UserDefinedAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="NeverSatisfiedCondition2">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Story" storyboardElementType="story"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Phase_State">
+                            <ByValueCondition>
+                                <StoryboardElementStateCondition state="completeState" storyboardElementRef="Act" storyboardElementType="act"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Distance_To_Point">
+                            <ByEntityCondition>
+                                <TriggeringEntities triggeringEntitiesRule="any">
+                                    <EntityRef entityRef="Ego"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <DistanceCondition coordinateSystem="entity" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="0">
+                                        <Position>
+                                            <WorldPosition h="0.000026" p="0" r="0" x="-67.786552" y="-264.555065" z="-1.062040"/>
+                                        </Position>
+                                    </DistanceCondition>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+            <Act name="Act3">
+                <ManeuverGroup maximumExecutionCount="1" name="Act3_SK_SUVGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego"/>
+                    </Actors>
+                    <Maneuver name="Act3_SK_SUVGroup_Maneuver">
+                        <Event name="Accelerate" priority="parallel">
+                            <Action name="Act3_SK_SUVGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="1.5"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="13.4112"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act3_GlobalGroup">
+                    <Actors selectTriggeringEntities="false"/>
+                    <Maneuver name="Act3_GlobalGroup_Maneuver">
+                        <Event name="ForceActToExecuteUntilStopTrigger3" priority="parallel">
+                            <Action name="NeverExecutedAction3">
+                                <UserDefinedAction>
+                                    <CustomCommandAction type="MW_WaitAction"/>
+                                </UserDefinedAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="NeverSatisfiedCondition3">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Story" storyboardElementType="story"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Phase_State2">
+                            <ByValueCondition>
+                                <StoryboardElementStateCondition state="completeState" storyboardElementRef="Act2" storyboardElementType="act"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Distance_To_Point2">
+                            <ByEntityCondition>
+                                <TriggeringEntities triggeringEntitiesRule="any">
+                                    <EntityRef entityRef="Ego"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <DistanceCondition coordinateSystem="entity" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="0">
+                                        <Position>
+                                            <WorldPosition h="0.000026" p="0" r="0" x="-55.961040" y="-245.411763" z="-1.543180"/>
+                                        </Position>
+                                    </DistanceCondition>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+            <Act name="Act4">
+                <ManeuverGroup maximumExecutionCount="1" name="Act4_SK_SUVGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego"/>
+                    </Actors>
+                    <Maneuver name="Act4_SK_SUVGroup_Maneuver">
+                        <Event name="Halt" priority="parallel">
+                            <Action name="Act4_SK_SUVGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="2.5"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="Phase_State3">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Act3" storyboardElementType="act"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act4_NCAP_Bicycle_NoPlatformGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Target_Cyclist"/>
+                    </Actors>
+                    <Maneuver name="Act4_NCAP_Bicycle_NoPlatformGroup_Maneuver">
+                        <Event name="Halt2" priority="parallel">
+                            <Action name="Act4_NCAP_Bicycle_NoPlatformGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="0.5"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="Phase_State4">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Act7" storyboardElementType="act"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="SimulationStart">
+                            <ByValueCondition>
+                                <SimulationTimeCondition rule="greaterOrEqual" value="0"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+            </Act>
+            <Act name="Act5">
+                <ManeuverGroup maximumExecutionCount="1" name="Act5_NCAP_Bicycle_NoPlatformGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Target_Cyclist"/>
+                    </Actors>
+                    <Maneuver name="Act5_NCAP_Bicycle_NoPlatformGroup_Maneuver">
+                        <Event name="Drive_Away2" priority="parallel">
+                            <Action name="Act5_NCAP_Bicycle_NoPlatformGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="0.6"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="8.9408"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act5_GlobalGroup">
+                    <Actors selectTriggeringEntities="false"/>
+                    <Maneuver name="Act5_GlobalGroup_Maneuver">
+                        <Event name="ForceActToExecuteUntilStopTrigger4" priority="parallel">
+                            <Action name="NeverExecutedAction4">
+                                <UserDefinedAction>
+                                    <CustomCommandAction type="MW_WaitAction"/>
+                                </UserDefinedAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="NeverSatisfiedCondition4">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Story" storyboardElementType="story"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Simulation_Time2">
+                            <ByValueCondition>
+                                <SimulationTimeCondition rule="greaterOrEqual" value="1"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Distance_To_Point3">
+                            <ByEntityCondition>
+                                <TriggeringEntities triggeringEntitiesRule="any">
+                                    <EntityRef entityRef="Target_Cyclist"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <DistanceCondition coordinateSystem="entity" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="0">
+                                        <Position>
+                                            <WorldPosition h="0.000026" p="0" r="0" x="-59.051534" y="-304.458842" z="-0.719130"/>
+                                        </Position>
+                                    </DistanceCondition>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+            <Act name="Act6">
+                <ManeuverGroup maximumExecutionCount="1" name="Act6_NCAP_Bicycle_NoPlatformGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Target_Cyclist"/>
+                    </Actors>
+                    <Maneuver name="Act6_NCAP_Bicycle_NoPlatformGroup_Maneuver">
+                        <Event name="Decelerate" priority="parallel">
+                            <Action name="Act6_NCAP_Bicycle_NoPlatformGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="0.5"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="6.7056"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act6_GlobalGroup">
+                    <Actors selectTriggeringEntities="false"/>
+                    <Maneuver name="Act6_GlobalGroup_Maneuver">
+                        <Event name="ForceActToExecuteUntilStopTrigger5" priority="parallel">
+                            <Action name="NeverExecutedAction5">
+                                <UserDefinedAction>
+                                    <CustomCommandAction type="MW_WaitAction"/>
+                                </UserDefinedAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="NeverSatisfiedCondition5">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Story" storyboardElementType="story"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Phase_State5">
+                            <ByValueCondition>
+                                <StoryboardElementStateCondition state="completeState" storyboardElementRef="Act5" storyboardElementType="act"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Distance_To_Point4">
+                            <ByEntityCondition>
+                                <TriggeringEntities triggeringEntitiesRule="any">
+                                    <EntityRef entityRef="Target_Cyclist"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <DistanceCondition coordinateSystem="entity" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="0">
+                                        <Position>
+                                            <WorldPosition h="0.000026" p="0" r="0" x="-69.027427" y="-269.438096" z="-0.997533"/>
+                                        </Position>
+                                    </DistanceCondition>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+            <Act name="Act7">
+                <ManeuverGroup maximumExecutionCount="1" name="Act7_NCAP_Bicycle_NoPlatformGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Target_Cyclist"/>
+                    </Actors>
+                    <Maneuver name="Act7_NCAP_Bicycle_NoPlatformGroup_Maneuver">
+                        <Event name="Accelerate2" priority="parallel">
+                            <Action name="Act7_NCAP_Bicycle_NoPlatformGroup_Change_Speed">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="linear" value="1"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="8.9408"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="Act7_GlobalGroup">
+                    <Actors selectTriggeringEntities="false"/>
+                    <Maneuver name="Act7_GlobalGroup_Maneuver">
+                        <Event name="ForceActToExecuteUntilStopTrigger6" priority="parallel">
+                            <Action name="NeverExecutedAction6">
+                                <UserDefinedAction>
+                                    <CustomCommandAction type="MW_WaitAction"/>
+                                </UserDefinedAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition conditionEdge="none" delay="0" name="NeverSatisfiedCondition6">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition state="completeState" storyboardElementRef="Story" storyboardElementType="story"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Phase_State6">
+                            <ByValueCondition>
+                                <StoryboardElementStateCondition state="completeState" storyboardElementRef="Act6" storyboardElementType="act"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger>
+                    <ConditionGroup>
+                        <Condition conditionEdge="none" delay="0" name="Distance_To_Point5">
+                            <ByEntityCondition>
+                                <TriggeringEntities triggeringEntitiesRule="any">
+                                    <EntityRef entityRef="Target_Cyclist"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <DistanceCondition coordinateSystem="entity" freespace="true" relativeDistanceType="euclidianDistance" rule="lessOrEqual" value="0">
+                                        <Position>
+                                            <WorldPosition h="0.000026" p="0" r="0" x="-47.643288" y="-235.683551" z="-1.604970"/>
+                                        </Position>
+                                    </DistanceCondition>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StopTrigger>
+            </Act>
+        </Story>
+        <StopTrigger>
+            <ConditionGroup>
+                <Condition conditionEdge="none" delay="0" name="">
+                    <ByValueCondition>
+                        <SimulationTimeCondition rule="greaterOrEqual" value="60"/>
+                    </ByValueCondition>
+                </Condition>
+            </ConditionGroup>
+            <ConditionGroup>
+                <Condition conditionEdge="none" delay="0" name="">
+                    <ByEntityCondition>
+                        <TriggeringEntities triggeringEntitiesRule="any">
+                            <EntityRef entityRef="Ego"/>
+                            <EntityRef entityRef="Target_Cyclist"/>
+                        </TriggeringEntities>
+                        <EntityCondition>
+                            <CollisionCondition>
+                                <ByType type="vehicle"/>
+                            </CollisionCondition>
+                        </EntityCondition>
+                    </ByEntityCondition>
+                </Condition>
+            </ConditionGroup>
+        </StopTrigger>
+    </Storyboard>
+</OpenSCENARIO>
