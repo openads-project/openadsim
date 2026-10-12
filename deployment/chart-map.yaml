@@ -57,8 +57,8 @@ services:
     version: 1.2.2-main
 
   carla-server:
-    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-simulator
-    version: 0.1.0-helm
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-server
+    version: 0.10.0-1.1.1-fix-opendrive-sky
     dependency_port_env: CARLA_PORT
     values:
       # Compose publishes the port on the local host.  In Kubernetes the
@@ -96,10 +96,10 @@ services:
 
   carla-scenario-runner-ros-manual-testing:
     chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
-    version: 0.10.0-1.1.0-helm
+    version: 0.10.0-1.1.1-filter-waypoints
   carla-scenario-runner-ros-automated-testing:
     chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
-    version: 0.10.0-1.1.0-helm
+    version: 0.10.0-1.1.1-filter-waypoints
     value_replacements:
       args:
         - find: '--host carla-server'
