@@ -15,15 +15,14 @@ Use a separate `Story` placed before the existing one, starting at `SimulationTi
 
 ## Spatial trajectories
 
-A timeless `FollowTrajectoryAction` is valid OpenSCENARIO 1.1 and would be preferred. It must use `TrajectoryRef`. The current ScenarioRunner parser still requires a `time` attribute on every `Vertex`. Until this is fixed, use a timeless `AssignRouteAction` with `Waypoint routeStrategy="shortest"`. Artificial timestamps would conflict with the scenario's `SpeedAction`s.
+Convert each timeless `FollowTrajectoryAction` into an `AssignRouteAction`: one `<Waypoint routeStrategy="shortest">` per `Vertex`, same `WorldPosition`. ScenarioRunner supports `FollowTrajectoryAction` only with a `time` attribute on every `Vertex`, and timestamps would conflict with the scenario's `SpeedAction`s. That is why `AssignRouteAction` is used.
 
 ## Controllers
 
-- Ego: `ros_vehicle_control_route_action.py`. (added automatically by importer)
-- Cyclist option 1: omit `ControllerAction` to use the default `NpcVehicleControl`
-  (CARLA physics enabled; route points are projected onto the road).
-- Cyclist option 2: assign `simple_vehicle_control`
-  (more deterministic path and speed tracking; reduced vehicle physics).
+- Ego: do not add a `ControllerAction`. The importer assigns `ros_vehicle_control_route_action.py`.
+- Cyclist: choose one of the following options:
+  - Add no `ControllerAction`. The default `NpcVehicleControl` is used (CARLA physics; route points are projected onto the road).
+  - Add a `ControllerAction` in `Init` with `<Property name="module" value="simple_vehicle_control"/>` (follows path and speed more precisely; reduced vehicle physics).
 
 ## Known limitation
 
