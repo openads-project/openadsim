@@ -18,4 +18,4 @@ include:
 
 stages:
   - build
-  - OpenADScale
+  - testing
