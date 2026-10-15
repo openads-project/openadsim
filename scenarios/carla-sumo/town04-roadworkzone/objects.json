@@ -1,0 +1,394 @@
+{
+    "objects": [
+        {
+            "type": "blueprint.warningconstruction",
+            "id": "warningconstruction1",
+            "spawn_point": {"x": -4.3, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+        },
+        {
+            "type": "blueprint.warningconstruction",
+            "id": "warningconstruction2",
+            "spawn_point": {"x": -19.0, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight_warn1",
+            "spawn_point": {"x": -3.3, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight_warn2",
+            "spawn_point": {"x": -20.0, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier1",
+            "spawn_point": {"x": -5.5, "y": 139.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 40.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier2",
+            "spawn_point": {"x": -2.8, "y": 140.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier3",
+            "spawn_point": {"x": -1.0, "y": 138.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier4",
+            "spawn_point": {"x": -1.0, "y": 135.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier5",
+            "spawn_point": {"x": -1.0, "y": 132.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier6",
+            "spawn_point": {"x": -1.0, "y": 129.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier7",
+            "spawn_point": {"x": -1.0, "y": 126.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier8",
+            "spawn_point": {"x": -1.0, "y": 123.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier9",
+            "spawn_point": {"x": -1.0, "y": 120.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier10",
+            "spawn_point": {"x": -1.0, "y": 117.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier11",
+            "spawn_point": {"x": -1.0, "y": 114.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier12",
+            "spawn_point": {"x": -1.0, "y": 109.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier13",
+            "spawn_point": {"x": -1.0, "y": 106.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier14",
+            "spawn_point": {"x": -1.0, "y": 103.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier15",
+            "spawn_point": {"x": -1.0, "y": 100.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier16",
+            "spawn_point": {"x": -1.0, "y": 97.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier17",
+            "spawn_point": {"x": -1.0, "y": 94.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier18",
+            "spawn_point": {"x": -1.0, "y": 91.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier19",
+            "spawn_point": {"x": -2.8, "y": 89.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.roadworkbarrier",
+            "id": "roadworkbarrier20",
+            "spawn_point": {"x": -5.5, "y": 90.0, "z": 0.71, "roll": 0.0, "pitch": 0.0, "yaw": -40.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight1",
+            "spawn_point": {"x": -7.3, "y": 137.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight2",
+            "spawn_point": {"x": -8.3, "y": 135.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight3",
+            "spawn_point": {"x": -9.3, "y": 133.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight4",
+            "spawn_point": {"x": -10.3, "y": 131.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight5",
+            "spawn_point": {"x": -11.0, "y": 129.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight6",
+            "spawn_point": {"x": -11.0, "y": 124.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight7",
+            "spawn_point": {"x": -11.0, "y": 119.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight8",
+            "spawn_point": {"x": -11.0, "y": 114.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight9",
+            "spawn_point": {"x": -11.0, "y": 109.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight10",
+            "spawn_point": {"x": -11.0, "y": 104.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight11",
+            "spawn_point": {"x": -11.0, "y": 99.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight12",
+            "spawn_point": {"x": -10.35, "y": 97.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight13",
+            "spawn_point": {"x": -9.35, "y": 95.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beaconwithlight",
+            "id": "beaconwithlight14",
+            "spawn_point": {"x": -8.35, "y": 93.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.beacon",
+            "id": "beaconwithlight15",
+            "spawn_point": {"x": -7.35, "y": 91.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.skipcontainer",
+            "id": "skipcontainer1",
+            "spawn_point": {"x": -4.5, "y": 100.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 89.0}
+        },
+        {
+            "type": "blueprint.skipcontainersand",
+            "id": "skipcontainer2",
+            "spawn_point": {"x": -7.5, "y": 100.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 91.0}
+        },
+        {
+            "type": "blueprint.skipcontainersand",
+            "id": "skipcontainer3",
+            "spawn_point": {"x": -4.5, "y": 110.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 92.0}
+        },
+        {
+            "type": "blueprint.concretepipestack",
+            "id": "concretepipestack1",
+            "spawn_point": {"x": -4.0, "y": 135.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.cementbagstack",
+            "id": "cementbagstack1",
+            "spawn_point": {"x": -6.0, "y": 131.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.cementbagstack",
+            "id": "cementbagstack2",
+            "spawn_point": {"x": -6.0, "y": 130.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.cementbagstack",
+            "id": "cementbagstack3",
+            "spawn_point": {"x": -4.7, "y": 131.0, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet_under1",
+            "spawn_point": {"x": -4.7, "y": 131.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.cementbagstack",
+            "id": "cementbagstack4",
+            "spawn_point": {"x": -4.7, "y": 130.0, "z": 0.3, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet_under2",
+            "spawn_point": {"x": -4.7, "y": 130.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet_under3",
+            "spawn_point": {"x": -4.7, "y": 130.0, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet1",
+            "spawn_point": {"x": -7.3, "y": 130.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet2",
+            "spawn_point": {"x": -7.3, "y": 131.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.cementbag",
+            "id": "cementbag1",
+            "spawn_point": {"x": -7.1, "y": 129.8, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 30.0}
+        },
+        {
+            "type": "blueprint.cementbag",
+            "id": "cementbag2",
+            "spawn_point": {"x": -7.2, "y": 130.0, "z": 0.21, "roll": -25.0, "pitch": 0.0, "yaw": 30.0}
+        },
+        {
+            "type": "blueprint.cementbag",
+            "id": "cementbag3",
+            "spawn_point": {"x": -7.5, "y": 131.52, "z": 0.15, "roll": 130.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.concretering",
+            "id": "concretering1",
+            "spawn_point": {"x": -8.0, "y": 112.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 45.0}
+        },
+        {
+            "type": "blueprint.concreteringsmall",
+            "id": "concreteringsmall1",
+            "spawn_point": {"x": -9.5, "y": 113.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.concretepipe",
+            "id": "concretepipe1",
+            "spawn_point": {"x": -8.0, "y": 108.0, "z": -0.05, "roll": 0.0, "pitch": 2.0, "yaw": 5.0}
+        },
+        {
+            "type": "blueprint.concretepipe",
+            "id": "concretepipe2",
+            "spawn_point": {"x": -8.0, "y": 109.0, "z": -0.05, "roll": 0.0, "pitch": 2.0, "yaw": 185.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet3",
+            "spawn_point": {"x": -4.0, "y": 92.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet3_1",
+            "spawn_point": {"x": -4.0, "y": 92.0, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet3_2",
+            "spawn_point": {"x": -4.0, "y": 92.0, "z": 0.3, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet3_3",
+            "spawn_point": {"x": -4.0, "y": 92.0, "z": 0.45, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet4",
+            "spawn_point": {"x": -4.0, "y": 93.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet4_1",
+            "spawn_point": {"x": -4.0, "y": 93.0, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet4_2",
+            "spawn_point": {"x": -4.0, "y": 93.0, "z": 0.3, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet5",
+            "spawn_point": {"x": -5.3, "y": 92.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet5_1",
+            "spawn_point": {"x": -5.3, "y": 92.0, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet5_2",
+            "spawn_point": {"x": -5.3, "y": 92.0, "z": 0.3, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet5_3",
+            "spawn_point": {"x": -5.3, "y": 92.0, "z": 0.45, "roll": 0.0, "pitch": 0.0, "yaw": 2.0}
+        },
+        {
+            "type": "blueprint.pallet",
+            "id": "pallet6",
+            "spawn_point": {"x": -5.5, "y": 93.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": -10.0}
+        },
+        {
+            "type": "blueprint.concreteblock",
+            "id": "concreteblock1",
+            "spawn_point": {"x": -6.8, "y": 134.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        },
+        {
+            "type": "blueprint.concreteblock",
+            "id": "concreteblock2",
+            "spawn_point": {"x": -7.4, "y": 134.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 45.0}
+        },
+        {
+            "type": "blueprint.concreteblock",
+            "id": "concreteblock3",
+            "spawn_point": {"x": -7.1, "y": 134.0, "z": 0.24, "roll": 0.0, "pitch": 0.0, "yaw": 15.0}
+        },
+        {
+            "type": "blueprint.concreteblock",
+            "id": "concreteblock4",
+            "spawn_point": {"x": -7.0, "y": 133.5, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.concreteblock",
+            "id": "concreteblock5",
+            "spawn_point": {"x": -6.7, "y": 133.4, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 90.0}
+        },
+        {
+            "type": "blueprint.wheelloader",
+            "id": "wheelloader_parked",
+            "spawn_point": {"x": -6.0, "y": 122.0, "z_above_ground": 0.1, "roll": 0.0, "pitch": 0.0, "yaw": -89.0}
+        },
+        { 
+            "type": "blueprint.mrisu",
+            "id": "mrisu1",
+            "spawn_point": {"x": -15.0, "y": 122.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+        }
+    ]
+}

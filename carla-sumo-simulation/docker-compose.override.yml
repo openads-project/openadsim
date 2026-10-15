@@ -20,6 +20,12 @@ services:
     volumes:
       - ./carla-sumo-simulation/carla_converter/params.yml:/docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
 
+  carla-spawn-objects:
+    environment:
+      OBJECTS_DEFINITION_FILE: ${SENSORS:-objects.json}${COSIM_SCENARIO:+,/scenarios/carla-sumo/${COSIM_SCENARIO}/objects.json}
+    volumes:
+      - ./scenarios/carla-sumo:/scenarios/carla-sumo:ro
+
   carla-sumo-coordinator:
     environment:
       COSIM_OVERRIDE: "1"
