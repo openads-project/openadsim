@@ -1,0 +1,67 @@
+# ============================================================================
+# Connection parameters
+# ============================================================================
+
+# CARLA server hostname and RPC port.
+carla_host: carla-server
+carla_port: 2000
+
+# SUMO TraCI server hostname/port. Leave sumo_host null to have the coordinator
+# start SUMO in-process instead of connecting to an already-running server.
+sumo_host: null
+sumo_port: 8813
+
+# Path (inside the container) to the SUMO configuration file to load.
+sumo_cfg: null
+
+# CARLA map name to load if it differs from the currently loaded map.
+carla_map: Town04
+
+# Simulation step length in seconds (applied to both CARLA's fixed_delta_seconds
+# and SUMO's --step-length).
+step_length: 0.05
+
+# Connection timeout in seconds when talking to the CARLA server.
+timeout: 10.0
+
+# Launch sumo-gui instead of headless sumo when SUMO is started internally. Previously this
+# was silently forced on by --debug; it's now independent, so set this to false to test
+# whether sumo-gui's own rendering (vs. something in SUMO/CARLA stepping itself) is the
+# source of any startup lag.
+sumo_gui: true
+
+# ============================================================================
+# Functional parameters
+# ============================================================================
+
+# Traffic light authority: 'none', 'sumo', or 'carla'.
+tls_manager: none
+
+# Synchronize vehicle color / light state between CARLA and SUMO.
+sync_vehicle_color: false
+sync_vehicle_lights: false
+
+# role_name attribute of the ego vehicle actor in CARLA. The coordinator finds this actor and
+# mirrors its position into SUMO every tick so SUMO traffic reacts to it.
+ego_role_name: ego_vehicle
+
+# CARLA blueprint id used when spawning the ego vehicle (only used together with ego_sumo_id).
+ego_carla_blueprint: vehicle.ika.karl
+
+# Optional SUMO vehicle id to treat as the ego vehicle instead of spawning a SUMO shadow for a
+# CARLA-side ego actor. Leave null to use the normal CARLA-ego / SUMO-shadow flow.
+ego_sumo_id: null
+
+# Minimum distance (metres) new SUMO vehicles must keep from the ego vehicle before being
+# mirrored into CARLA, and inside which vehicles are kept driving/standing rather than
+# despawning abruptly. 0 disables the feature.
+ego_spawn_exclusion_radius: 80.0
+
+# Z elevation offset (metres) from SUMO ground (z=0) to the CARLA map surface.
+# Leave null to auto-detect from the loaded CARLA map.
+map_z_offset: null
+
+# Override the SUMO-to-CARLA XY coordinate offset. Leave both null to use the SUMO net's
+# own netOffset. Set both together if vehicles appear at the wrong XY position in CARLA.
+sumo_carla_offset_x: null
+sumo_carla_offset_y: null

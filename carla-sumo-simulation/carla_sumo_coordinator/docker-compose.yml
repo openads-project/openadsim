@@ -1,0 +1,28 @@
+services:
+
+  carla-sumo-coordinator:
+    profiles:
+      - carla-sumo
+    depends_on:
+      carla-server:
+        condition: service_healthy
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-gpu-x11-service
+    image: gitlab.ika.rwth-aachen.de:5050/fb-fi/simulation/sumo/sumo_carla_coordinator:main
+    environment:
+      # environment variables take precedence over params.yml
+      CARLA_MAP: ${MAP}
+      SUMO_CFG: ${SUMO_CFG:-/sumo-config/campus.sumocfg}
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        if [ "$${COSIM_OVERRIDE}" != "1" ]; then
+          echo "ERROR: co-simulation overrides not loaded, set COMPOSE_FILE=docker-compose.yml:carla-sumo-simulation/docker-compose.override.yml" >&2
+          exit 1
+        fi
+        sleep 10
+        exec python3 coordinator.py --debug
+    volumes:
+      - ./params.yml:/config/params.yml

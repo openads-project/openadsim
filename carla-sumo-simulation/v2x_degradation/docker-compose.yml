@@ -1,0 +1,25 @@
+services:
+
+  carla-sumo-v2x-degradation:
+    profiles:
+      - carla-sumo
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    image: gitlab.ika.rwth-aachen.de:5050/fb-fi/its-modules/communication/v2x_degradation:latest_feature-rsu_ci-amd64
+    environment:
+      NAMESPACE: /carla
+      NAME: v2x_degradation
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      USE_SIM_TIME: ${USE_SIM_TIME:-true}
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch v2x_degradation v2x_degradation.launch.py \
+          namespace:=$${NAMESPACE} \
+          name:=$${NAME} \
+          log_level:=$${LOG_LEVEL} \
+          use_sim_time:=$${USE_SIM_TIME}
+    volumes:
+      - ./params.yml:/docker-ros/ws/install/v2x_degradation/share/v2x_degradation/config/params.yml

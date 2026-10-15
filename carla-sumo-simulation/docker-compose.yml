@@ -1,0 +1,8 @@
+# docker compose --profile $COMPOSE_PROFILES config --services | sort
+include:
+
+  # simulation
+  - carla_sumo_coordinator/docker-compose.yml
+
+  # v2x
+  - v2x_degradation/docker-compose.yml

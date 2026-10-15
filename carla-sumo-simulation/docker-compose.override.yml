@@ -19,3 +19,7 @@ services:
     image: gitlab.ika.rwth-aachen.de:5050/fb-fi/simulation/carla/carla_converter:latest_v2x-revision_ci-amd64
     volumes:
       - ./carla-sumo-simulation/carla_converter/params.yml:/docker-ros/ws/install/carla_converter/share/carla_converter/config/params.yml
+
+  carla-sumo-coordinator:
+    environment:
+      COSIM_OVERRIDE: "1"

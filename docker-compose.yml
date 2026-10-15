@@ -4,6 +4,7 @@ include:
   # simulation
   - carla-simulation/docker-compose.yml
   - sumo-simulation/docker-compose.yml
+  - carla-sumo-simulation/docker-compose.yml
 
   # stack
   - openadstack/docker-compose.yml

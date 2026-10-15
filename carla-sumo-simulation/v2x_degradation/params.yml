@@ -1,0 +1,41 @@
+/**/*:
+  ros__parameters:
+    discovery_rate_hz: 1.0
+    stats_report_period_s: 5.0   # <= 0 for disable
+
+    cam_topic_prefix: "/carla/carla_converter"
+    cam_topic_name: "etsi_cam"
+    cam_type_allowlist: ["etsi_its_cam_msgs/msg/CAM", "etsi_its_cam_ts_msgs/msg/CAM"]
+    output_topic_namespace: "/v2x_degradation"
+    ego_data_topic_name: "ego_data"
+
+    ego_actor_name: "ego_vehicle"
+    rsu_actor_name: "mrisu1"
+    tf_reference_frame: "carla_map"
+
+    # Receiver under test and reference for distance-based degradation
+    reference_point: "rsu"
+    reference_pose_staleness_timeout_s: 2.0
+
+    # RNG seed: >= 0 replays bit-for-bit, < 0 is non-deterministic (different every run)
+    seed: 42
+
+    # Selects which degradation model is active at runtime
+    degradation_model: "distance"  # "static" or "distance"
+
+    # "static" - identical fixed distribution for every link.
+    static_model:
+      latency_mean_ms: 20.0
+      jitter_stddev_ms: 5.0
+      dropout_probability: 0.02
+      preserve_order: false
+
+    # "distance" - latency/dropout scale linearly with each link's distance to the reference point.
+    distance_model:
+      base_latency_ms: 20.0
+      latency_per_meter_ms: 0.05
+      jitter_stddev_ms: 5.0
+      base_dropout_probability: 0.0
+      dropout_probability_per_meter: 0.0005
+      max_range_m: 300.0
+      preserve_order: false
