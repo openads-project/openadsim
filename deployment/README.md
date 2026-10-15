@@ -29,13 +29,13 @@ python3 "${OPENADS_HELM_DIR}/utils/helmfile-generator/helmfile_generator.py" \
   --output-dir deployment/generated
 ```
 
-Load the runtime environment before validating or deploying. In an extracted CI bundle, source the `.env` included at the archive root. `OPENADSIM_PATH` is required by services that use Kubernetes `hostPath` volumes. For deployment, it must point to the absolute checkout path on the selected Kubernetes node.
+Load the runtime environment before validating or deploying. In an extracted CI bundle, source the `.env` included at the archive root. `PROJECT_PATH` is required by services that use Kubernetes `hostPath` volumes. For deployment, it must point to the absolute checkout path on the selected Kubernetes node.
 
 ```sh
 set -a
 . ./.env
 set +a
-export OPENADSIM_PATH="$(pwd)"
+export PROJECT_PATH="$(pwd)"
 
 helmfile --file deployment/helmfile.yaml build
 helmfile --file deployment/helmfile.yaml template --concurrency 1

@@ -5,15 +5,6 @@
 # oci://ghcr.io/<owner>/<repo>/helm/<repo> at version <X.Y.Z>. An image tagged
 # latest (or latest-slim, ...) uses the newest <X.Y.Z>-main chart instead.
 
-# Environment variables read when Helmfile runs; each is optional at deploy time.
-runtime_env:
-  # Prefix for release and resource names, so several stacks share a namespace.
-  name_prefix: DEPLOYMENT_PREFIX
-  # Kubernetes node (kubernetes.io/hostname) that runs all pods.
-  node: NODE
-  # Absolute path of this checkout on the node; root of all hostPath mounts.
-  host_path_root: OPENADSIM_PATH
-
 # Services in these Compose profiles are not exported.
 excluded_profiles:
   - gui       # local desktop GUI
@@ -24,7 +15,7 @@ excluded_profiles:
 #   copy (default)  The generator copies the file or directory into the bundle
 #                   (small text files become a ConfigMap), so the deployment
 #                   does not depend on a checkout on the node.
-#   hostPath        The pod mounts ${OPENADSIM_PATH}/<source> from the node.
+#   hostPath        The pod mounts ${PROJECT_PATH}/<source> from the node.
 #                   Required when the container writes to the mount or several
 #                   services must see the same files, since copies are per service.
 #   omit            The mount is dropped.
