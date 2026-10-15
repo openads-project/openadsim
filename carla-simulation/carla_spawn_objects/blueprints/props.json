@@ -17,6 +17,102 @@
             "type": "group",
             "physical_object": "static.prop.roadworkbarrier",
             "children": []
+        },
+        {
+            "id": "constructioncone",
+            "type": "group",
+            "physical_object": "static.prop.constructioncone",
+            "children": []
+        },
+        {
+            "id": "trafficcone",
+            "type": "group",
+            "physical_object": "static.prop.trafficcone01",
+            "children": []
+        },
+        {
+            "id": "warningaccident",
+            "type": "group",
+            "physical_object": "static.prop.warningaccident",
+            "children": []
+        },
+        {
+            "id": "warningconstruction",
+            "type": "group",
+            "physical_object": "static.prop.warningconstruction",
+            "children": []
+        },
+        {
+            "id": "trafficwarning",
+            "type": "group",
+            "physical_object": "static.prop.trafficwarning",
+            "children": []
+        },
+        {
+            "id": "skipcontainer",
+            "type": "group",
+            "physical_object": "static.prop.skipcontainer",
+            "children": []
+        },
+        {
+            "id": "skipcontainersand",
+            "type": "group",
+            "physical_object": "static.prop.skipcontainersand",
+            "children": []
+        },
+        {
+            "id": "concreteblock",
+            "type": "group",
+            "physical_object": "static.prop.concreteblock",
+            "children": []
+        },
+        {
+            "id": "concretering",
+            "type": "group",
+            "physical_object": "static.prop.concretering",
+            "children": []
+        },
+        {
+            "id": "concreteringsmall",
+            "type": "group",
+            "physical_object": "static.prop.concreteringsmall",
+            "children": []
+        },
+        {
+            "id": "concretepipe",
+            "type": "group",
+            "physical_object": "static.prop.concretepipe",
+            "children": []
+        },
+        {
+            "id": "concretepipestack",
+            "type": "group",
+            "physical_object": "static.prop.concretepipestack",
+            "children": []
+        },
+        {
+            "id": "cementbag",
+            "type": "group",
+            "physical_object": "static.prop.cementbag",
+            "children": []
+        },
+        {
+            "id": "cementbagstack",
+            "type": "group",
+            "physical_object": "static.prop.cementbagstack",
+            "children": []
+        },
+        {
+            "id": "pallet",
+            "type": "group",
+            "physical_object": "static.prop.pallet",
+            "children": []
+        },
+        {
+            "id": "wheelloader",
+            "type": "group",
+            "physical_object": "vehicle.ika.wheelloader",
+            "children": []
         }
     ]
 }

@@ -76,8 +76,14 @@
                     "type": "sensor.pseudo.ideal_objects",
                     "id": "v2x_objectlist",
                     "spawn_point": {"x": 0.0, "y": 0.0, "z": 1.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0},
-                    "range": 50,
-                    "hit_point_blanking_radius": 1.0
+                    "range": 75.0,
+                    "hit_point_blanking_radius": 1.0,
+                    "enable_occlusion_filter": false
+                },
+                {
+                    "type": "sensor.other.gnss",
+                    "id": "gnss",
+                    "spawn_point": {"x": 0.0, "y": 0.0, "z": 1.69, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
                 }
             ]
         },
@@ -99,7 +105,8 @@
                 {
                     "type": "blueprint.lidar_ouster_os1_128",
                     "id": "lidar",
-                    "spawn_point": {"x": 0.001, "y": 0.0, "z": 0.161, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+                    "spawn_point": {"x": 0.001, "y": 0.0, "z": 0.161, "roll": 0.0, "pitch": 0.0, "yaw": 180.0},
+                    "range": 75.0
                 }
             ]
         }

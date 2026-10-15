@@ -1,0 +1,28 @@
+{
+    "blueprints": [
+        {
+            "id": "ambulance",
+            "type": "group",
+            "physical_object": "vehicle.ambulance.ford",
+            "children": []
+        },
+        {
+            "id": "policecar",
+            "type": "group",
+            "physical_object": "vehicle.dodgecop.charger",
+            "children": []
+        },
+        {
+            "id": "firetruck",
+            "type": "group",
+            "physical_object": "vehicle.firetruck.actors",
+            "children": []
+        },
+        {
+            "id": "incidentcar",
+            "type": "group",
+            "physical_object": "vehicle.mini.cooper",
+            "children": []
+        }
+    ]
+}
