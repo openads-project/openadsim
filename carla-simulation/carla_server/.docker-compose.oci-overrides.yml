@@ -21,6 +21,8 @@ services:
           -RenderOffScreen \
           --ros2 \
           -carla-rpc-port=$${CARLA_PORT}
+    environment:
+      CARLA_PORT: ${CARLA_PORT:-2000}
     ipc: service:zenoh-router
     volumes:
       - ./DefaultEngine.ini:/workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
