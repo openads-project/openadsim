@@ -9,6 +9,7 @@ services:
   monitoring:
     profiles:
       - carla
+      - carla-sumo
     depends_on:
       - carla-manual-control
     restart: unless-stopped # requires incoming topic

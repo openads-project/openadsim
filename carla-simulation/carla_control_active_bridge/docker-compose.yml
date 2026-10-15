@@ -9,6 +9,7 @@ services:
   carla-control-active-bridge:
     profiles:
       - carla
+      - carla-sumo
     depends_on:
       - carla-manual-control
     extends:

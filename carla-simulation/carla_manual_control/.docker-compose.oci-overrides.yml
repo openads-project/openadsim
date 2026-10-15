@@ -9,6 +9,7 @@ services:
   carla-manual-control:
     profiles:
       - carla
+      - carla-sumo
     depends_on:
       carla-server:
         condition: service_healthy

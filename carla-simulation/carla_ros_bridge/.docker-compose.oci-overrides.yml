@@ -9,6 +9,7 @@ services:
   carla-ros-bridge:
     profiles:
       - carla
+      - carla-sumo
     depends_on:
       carla-server:
         condition: service_healthy

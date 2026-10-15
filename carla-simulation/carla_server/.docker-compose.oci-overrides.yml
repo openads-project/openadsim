@@ -9,6 +9,7 @@ services:
   carla-server:
     profiles:
       - carla
+      - carla-sumo
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
