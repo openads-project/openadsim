@@ -1,0 +1,7 @@
+services:
+
+  carla-server:
+    image: gitlab.ika.rwth-aachen.de:5050/fb-fi/simulation/carla/carla-simulator/carla-0.10.0:release_fix-cyclists_3e8a75ab
+
+  carla.carla-converter:
+    image: gitlab.ika.rwth-aachen.de:5050/fb-fi/simulation/carla/carla_converter:latest_v2x-revision_ci-amd64
