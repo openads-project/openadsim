@@ -19,7 +19,7 @@ services:
       NAMESPACE: /carla
       INPUT_MAP_INFO_TOPIC: /carla/carla_converter/map_info
       INPUT_EGO_DATA_TOPIC: /carla/carla_converter/ego_vehicle/ego_data
-      INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/object_list
+      INPUT_OBJECT_LIST_TOPIC: /carla/carla_converter/ego_vehicle/ideal_objects
       INPUT_TRAJECTORY_TOPIC: /planning/trajectory_optimization/trajectory
       OUTPUT_EGO_DATA_TOPIC: /localization/ego_state_estimation/ego_data
       OUTPUT_OBJECT_LIST_TOPIC: /simulation/object_list

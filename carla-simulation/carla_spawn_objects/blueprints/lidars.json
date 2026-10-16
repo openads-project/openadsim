@@ -3,7 +3,7 @@
         {
             "id": "lidar_ouster_os1_128",
             "type": "sensor.lidar.ray_cast",
-            "range": 75,
+            "range": 75.0,
             "channels": 128,
             "points_per_second": 2621440,
             "upper_fov": 22.5,
@@ -14,7 +14,7 @@
         {
             "id": "lidar_ouster_os1_64",
             "type": "sensor.lidar.ray_cast",
-            "range": 75,
+            "range": 75.0,
             "channels": 64,
             "points_per_second": 1310720,
             "upper_fov": 22.5,
