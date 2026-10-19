@@ -15,27 +15,24 @@ excluded_profiles:
 #   copy (default)  The generator copies the file or directory into the bundle
 #                   (small text files become a ConfigMap), so the deployment
 #                   does not depend on a checkout on the node.
-#   hostPath        The pod mounts ${PROJECT_PATH}/<source> from the node.
+#   bind            The pod mounts ${PROJECT_PATH}/<source> from the node.
 #                   Required when the container writes to the mount or several
 #                   services must see the same files, since copies are per service.
-#   omit            The mount is dropped.
 # Sources built from variables (CUSTOM_OPENDRIVE, CUSTOM_LANELET, BAG_DIRECTORY)
 # always stay hostPath and need no entry.
 volume_policies:
   # Writable scenario directory shared with the host.
   carla-scenario-runner-ros-manual-testing:
-    /scenarios: hostPath
+    /scenarios: bind
   carla-scenario-runner-ros-automated-testing:
-    /scenarios: hostPath
+    /scenarios: bind
   # Shared with monitoring.bag-recorder, which writes its bags there.
   monitoring.rviz-carla:
-    /docker-ros/ws/monitoring-volume: hostPath
+    /docker-ros/ws/monitoring-volume: bind
 
 # Per-service settings, keyed by full Compose service name.
 #   chart, version       Explicit chart; replaces the default derivation.
 #   values               Merged over the generated chart values.
-#   dependency_port_env  Port variable dependent services wait for.
-#   value_replacements   find/replace in generated list values (e.g. args).
 #   param_replacements   find/replace in the mounted ROS parameter file.
 services:
   # Third-party images; charts are maintained in openads-helm.
@@ -51,22 +48,20 @@ services:
   carla-server:
     chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-server
     version: 0.10.0-1.1.1
-    # Dependent services wait for the configured CARLA port, not the default.
-    dependency_port_env: CARLA_PORT
     values:
       # Compose publishes the port on the host. In Kubernetes the ClusterIP
       # service is sufficient and must not get a fixed NodePort.
       ports: []
-      # CARLA uses CARLA_PORT and the two following ports.
+      # CARLA uses the fixed port 2000 and the two following ports.
       expose:
-        - port: ${CARLA_PORT:-2000}
-          targetPort: ${CARLA_PORT:-2000}
+        - port: 2000
+          targetPort: 2000
           protocol: TCP
-        - port: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 1 }}'
-          targetPort: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 1 }}'
+        - port: 2001
+          targetPort: 2001
           protocol: TCP
-        - port: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 2 }}'
-          targetPort: '{{ add ((default "2000" (env "CARLA_PORT")) | int) 2 }}'
+        - port: 2002
+          targetPort: 2002
           protocol: TCP
   carla-client:
     chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
@@ -79,11 +74,6 @@ services:
   carla-scenario-runner-ros-automated-testing:
     chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
     version: 0.10.0-1.1.1-filter-waypoints
-    value_replacements:
-      # The CARLA service name carries the deployment prefix in Kubernetes.
-      args:
-        - find: '--host carla-server'
-          replace: '--host "${CARLA_HOST}"'
 
   perception.point-cloud-object-detection:
     # Temporary, see below: no release chart for v3.0.0.
