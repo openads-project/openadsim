@@ -54,15 +54,3 @@ helmfile --file deployment/helmfile.yaml sync
 export NODE=i2200043.ika.rwth-aachen.de
 helmfile --file deployment/helmfile.yaml sync
 ```
-
-## Temporary workaround: test a local OpenADService chart
-
-`prepare_local_openadservice.py` rebuilds downloaded parent charts against a local `openadservice` base chart. This is a temporary development workaround and requires `deployment/generated` to exist first.
-
-With the standard sibling repository layout, run:
-
-```sh
-python3 deployment/prepare_local_openadservice.py
-```
-
-For another checkout, pass `--base-chart /absolute/path/to/openads-helm/charts/openadservice`. The script prints a temporary root Helmfile below `deployment/generated/.runtime/`; use that path for `helmfile template`, `sync`, or `destroy`. Regenerate the overlay after changing the generated Helmfile, a parent chart reference, or the local base chart.

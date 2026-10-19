@@ -50,7 +50,7 @@ services:
   # client_v…) and one chart per variant.
   carla-server:
     chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-server
-    version: 0.10.0-1.1.1-fix-opendrive-sky
+    version: 0.10.0-1.1.1
     # Dependent services wait for the configured CARLA port, not the default.
     dependency_port_env: CARLA_PORT
     values:
@@ -70,22 +70,7 @@ services:
           protocol: TCP
   carla-client:
     chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
-    version: 0.1.0-helm
-
-  # One carla-ros-bridge image with one chart per ROS node; charts from
-  # feature branches.
-  carla-ros-bridge:
-    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
-    version: 0.10.0-1.1.0-carla-ros-bridge-update-deployment
-  carla-spawn-objects:
-    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
-    version: 0.10.0-1.1.0-carla-spawn-objects-update-deployment
-  carla-ackermann-control:
-    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
-    version: 0.10.0-1.1.0-carla-ackermann-control-update-deployment
-  carla-manual-control:
-    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
-    version: 0.10.0-1.1.0-carla-manual-control-update-deployment
+    version: 0.10.0-1.1.1
 
   # Nested image path carla-scenario-runner/ros.
   carla-scenario-runner-ros-manual-testing:
@@ -109,7 +94,7 @@ services:
       - find: 'triton-server:8001'
         replace: '{{ include "openadservice.prefixedHost" (dict "host" "triton-server" "namePrefix" .Values.namePrefix) }}:8001'
 
-  # --- Temporary: default-branch charts for tagged images ----------------------
+  # --- TODO: default-branch charts until releases use openadservice >= 1.2.0 ---
   # The release charts of these images are missing or built on openadservice
   # < 1.2.0, which lacks namePrefix, nodeSelector and rmw. Remove an entry once
   # the image is bumped to a release whose chart uses openadservice >= 1.2.0.
@@ -119,6 +104,19 @@ services:
   monitoring.bag-recorder: *monitoring-main
   monitoring.rviz-carla: *monitoring-main
   carla-control-active-bridge: *monitoring-main
+  # One carla-ros-bridge image with one chart per ROS node.
+  carla-ros-bridge:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
+    version: 0.10.0-1.1.1-carla-ros-bridge-main
+  carla-spawn-objects:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
+    version: 0.10.0-1.1.1-carla-spawn-objects-main
+  carla-ackermann-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
+    version: 0.10.0-1.1.1-carla-ackermann-control-main
+  carla-manual-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
+    version: 0.10.0-1.1.1-carla-manual-control-main
   carla.carla-converter:
     chart: oci://ghcr.io/openads-project/carla_converter/helm/carla-converter
     version: 1.3.2-main
@@ -141,11 +139,13 @@ services:
     chart: oci://ghcr.io/openads-project/lanelet2_object_list_prediction/helm/lanelet2-object-list-prediction
     version: 1.0.3-main  # 1.0.2-main still uses openadservice 1.1.0
   understanding.lanelet2-object-list-prediction-perception: *object-list-prediction-main
-  # No release chart for these image versions, and no chart on openadservice
-  # >= 1.2.0 exists yet; namePrefix and NODE do not apply to them.
+  # Only the default-branch chart of a newer version uses openadservice 1.2.0
+  # (1.4.0-main: 1.1.0, 1.5.0: 1.1.0).
   perception.point-cloud-fusion:
     chart: oci://ghcr.io/openads-project/point_cloud_fusion/helm/point-cloud-fusion
-    version: 1.4.0-main
+    version: 1.5.0-main
+  # Only the default-branch chart of a newer version uses openadservice 1.2.0
+  # (1.2.0-main: 1.0.0, 2.0.0: 1.1.0).
   planning.lanelet2-route-planning:
     chart: oci://ghcr.io/openads-project/lanelet2_route_planning/helm/lanelet2-route-planning
-    version: 1.2.0-main
+    version: 2.0.0-main
