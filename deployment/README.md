@@ -45,6 +45,7 @@ helmfile --file deployment/helmfile.yaml template --concurrency 1
 
 ```sh
 export DEPLOYMENT_PREFIX=sim1
+export CARLA_HOST=sim1-carla-server
 helmfile --file deployment/helmfile.yaml sync
 ```
 
