@@ -2,7 +2,6 @@
   ros__parameters:
 
     # Core node configuration
-    prediction.server_url: "triton-server:8001"
     prediction.model_repository: "point-cloud-object-detection"
     prediction.model_version: "1"
     preprocessing.backend: "cuda"
