@@ -1,4 +1,4 @@
-# Chart map for the Helmfile generator (openads-helm/utils/helmfile-generator).
+# Chart map for the Helmfile generator (openads-helm/utils/generate_helmfile_from_compose).
 #
 # Only what cannot be derived from docker-compose.yml belongs here. By default
 # the image ghcr.io/<owner>/<repo>:v<X.Y.Z> is deployed with the release chart
@@ -33,7 +33,6 @@ volume_policies:
 # Per-service settings, keyed by full Compose service name.
 #   chart, version       Explicit chart; replaces the default derivation.
 #   values               Merged over the generated chart values.
-#   param_replacements   find/replace in the mounted ROS parameter file.
 services:
   # Third-party images; charts are maintained in openads-helm.
   zenoh-router:
@@ -79,10 +78,6 @@ services:
     # Temporary, see below: no release chart for v3.0.0.
     chart: oci://ghcr.io/openads-project/point_cloud_object_detection/helm/point-cloud-object-detection
     version: 3.0.0-main
-    # Triton's service name carries the deployment prefix in Kubernetes.
-    param_replacements:
-      - find: 'triton-server:8001'
-        replace: '{{ include "openadservice.prefixedHost" (dict "host" "triton-server" "namePrefix" .Values.namePrefix) }}:8001'
 
   # --- TODO: default-branch charts until releases use openadservice >= 1.2.0 ---
   # The release charts of these images are missing or built on openadservice

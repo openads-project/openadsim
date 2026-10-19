@@ -1,6 +1,6 @@
 # Helmfile deployment
 
-This directory contains the OpenADSim-specific inputs and manually maintained additions for the generic [Helmfile generator](https://github.com/openads-project/openads-helm/tree/main/utils/helmfile-generator).
+This directory contains the OpenADSim-specific inputs and manually maintained additions for the generic [Helmfile generator](https://github.com/openads-project/openads-helm/tree/main/utils/generate_helmfile_from_compose).
 
 ## Layout
 
@@ -22,7 +22,7 @@ Use a sibling checkout of `openads-helm`, or point `OPENADS_HELM_DIR` at another
 ```sh
 export OPENADS_HELM_DIR=../openads-helm
 
-python3 "${OPENADS_HELM_DIR}/utils/helmfile-generator/helmfile_generator.py" \
+python3 "${OPENADS_HELM_DIR}/utils/generate_helmfile_from_compose/scripts/generate_helmfile_from_compose.py" \
   docker-compose.yml \
   --env-file .env \
   --chart-map deployment/chart-map.yaml \
@@ -46,6 +46,7 @@ helmfile --file deployment/helmfile.yaml template --concurrency 1
 ```sh
 export DEPLOYMENT_PREFIX=sim1
 export CARLA_HOST=sim1-carla-server
+export TRITON_HOST=sim1-triton-server
 helmfile --file deployment/helmfile.yaml sync
 ```
 
