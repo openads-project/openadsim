@@ -1,5 +1,5 @@
 include:
-  - remote: https://raw.githubusercontent.com/openads-project/openads-helm/feature/helmfile/templates/helmfile-oci.yml # TODO: Change to main branch when merged
+  - remote: https://raw.githubusercontent.com/openads-project/openads-helm/feature/helmfile/.gitlab-ci/reusable-helmfile-oci.yml # TODO: Change to main branch when merged
     inputs:
       compose-file: docker-compose.yml
       env-file: .env
