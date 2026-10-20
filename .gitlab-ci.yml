@@ -11,7 +11,6 @@ include:
       helmfile-entrypoint: deployment/helmfile.yaml
       bundle-dir: deployment
       artifact-name: openadsim-helmfile
-      openads-helm-ref: feature/helmfile # TODO: Change to main branch when merged
   - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/distributed-testing/openadscale@openads
     inputs:
       scenario-search-pattern: scenario.generator/**/*.xosc
