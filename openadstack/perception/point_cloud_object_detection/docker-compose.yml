@@ -4,12 +4,39 @@ services:
     extends:
       file: ../../openadstack/perception/point_cloud_object_detection/docker-compose.yml
       service: perception.point-cloud-object-detection
+    # TODO: temporary feature branch image and command with triton_server_url,
+    # remove once a release of point_cloud_object_detection includes it.
+    image: ghcr.io/openads-project/point_cloud_object_detection:latest-slim_update-launch-args_ci
     profiles:
       - perception
     depends_on: 
       - triton-server
     environment:
       PARAMS: /params.yml
+      ROS_TRACING: ${ROS_TRACING:-false}
+      TRITON_SERVER_URL: ${TRITON_HOST:-triton-server}:8001
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ros2 launch point_cloud_object_detection point_cloud_object_detection.launch.py \
+          namespace:=$${NAMESPACE} \
+          name:=$${NAME} \
+          log_level:=$${LOG_LEVEL} \
+          use_sim_time:=$${USE_SIM_TIME} \
+          params:=$${PARAMS} \
+          ros_tracing:=$${ROS_TRACING} \
+          triton_server_url:=$${TRITON_SERVER_URL} \
+          point_cloud_topic:=$${POINT_CLOUD_TOPIC} \
+          object_list_topic:=$${OBJECT_LIST_TOPIC} \
+          no_detection_zone_topic:=$${NO_DETECTION_ZONE_TOPIC} \
+          no_detection_zone_points_topic:=$${NO_DETECTION_ZONE_POINTS_TOPIC} \
+          detection_area_topic:=$${DETECTION_AREA_TOPIC} \
+          model_bounds_topic:=$${MODEL_BOUNDS_TOPIC} \
+          density_grid_map_topic:=$${DENSITY_GRID_MAP_TOPIC} \
+          dynamic_grid_map_topic:=$${DYNAMIC_GRID_MAP_TOPIC} \
+          combined_grid_map_topic:=$${COMBINED_GRID_MAP_TOPIC} \
+          static_grid_map_topic:=$${STATIC_GRID_MAP_TOPIC}
     volumes:
       - ./params.yml:/params.yml
       - type: image

@@ -1,0 +1,136 @@
+# Chart map for the Helmfile generator (openads-helm/utils/generate_helmfile_from_compose).
+#
+# Only what cannot be derived from docker-compose.yml belongs here. By default
+# the image ghcr.io/<owner>/<repo>:v<X.Y.Z> is deployed with the release chart
+# oci://ghcr.io/<owner>/<repo>/helm/<repo> at version <X.Y.Z>. An image tagged
+# latest (or latest-slim, ...) uses the newest <X.Y.Z>-main chart instead.
+
+# Services in these Compose profiles are not exported.
+excluded_profiles:
+  - gui       # local desktop GUI
+  - sumo      # no Helm charts available yet
+  - donotuse  # Compose templates and disabled services
+
+# Deployment of bind mounts with a fixed source, per service and mount target.
+#   copy (default)  The generator copies the file or directory into the bundle
+#                   (small text files become a ConfigMap), so the deployment
+#                   does not depend on a checkout on the node.
+#   bind            The pod mounts ${PROJECT_PATH}/<source> from the node.
+#                   Required when the container writes to the mount or several
+#                   services must see the same files, since copies are per service.
+# Sources built from variables (CUSTOM_OPENDRIVE, CUSTOM_LANELET, BAG_DIRECTORY)
+# always stay hostPath and need no entry.
+volume_policies:
+  # Writable scenario directory shared with the host.
+  carla-scenario-runner-ros-manual-testing:
+    /scenarios: bind
+  carla-scenario-runner-ros-automated-testing:
+    /scenarios: bind
+  # Shared with monitoring.bag-recorder, which writes its bags there.
+  monitoring.rviz-carla:
+    /docker-ros/ws/monitoring-volume: bind
+
+# Per-service settings, keyed by full Compose service name.
+#   chart, version       Explicit chart; replaces the default derivation.
+#   values               Merged over the generated chart values.
+services:
+  # Third-party images; charts are maintained in openads-helm.
+  zenoh-router:
+    chart: oci://ghcr.io/openads-project/openads-helm/zenoh-router
+    version: 0.2.10
+  triton-server:
+    chart: oci://ghcr.io/openads-project/openads-helm/triton-server
+    version: "26.05"
+
+  # One carla-simulator image repository with variant tags (server-slim_v…,
+  # client_v…) and one chart per variant.
+  carla-server:
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-server
+    version: 0.10.0-1.1.1
+    values:
+      # Compose publishes the port on the host. In Kubernetes the ClusterIP
+      # service is sufficient and must not get a fixed NodePort.
+      ports: []
+      # CARLA uses the fixed port 2000 and the two following ports.
+      expose:
+        - port: 2000
+          targetPort: 2000
+          protocol: TCP
+        - port: 2001
+          targetPort: 2001
+          protocol: TCP
+        - port: 2002
+          targetPort: 2002
+          protocol: TCP
+  carla-client:
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
+    version: 0.10.0-1.1.1
+
+  # Nested image path carla-scenario-runner/ros.
+  carla-scenario-runner-ros-manual-testing:
+    chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
+    version: 0.10.0-1.1.1-filter-waypoints
+  carla-scenario-runner-ros-automated-testing:
+    chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
+    version: 0.10.0-1.1.1-filter-waypoints
+
+  perception.point-cloud-object-detection:
+    # Temporary, see below: no release chart for v3.0.0.
+    chart: oci://ghcr.io/openads-project/point_cloud_object_detection/helm/point-cloud-object-detection
+    version: 3.0.0-main
+
+  # --- TODO: default-branch charts until releases use openadservice >= 1.2.0 ---
+  # The release charts of these images are missing or built on openadservice
+  # < 1.2.0, which lacks namePrefix, nodeSelector and rmw. Remove an entry once
+  # the image is bumped to a release whose chart uses openadservice >= 1.2.0.
+  robot-state-publisher: &monitoring-main
+    chart: oci://ghcr.io/openads-project/monitoring/helm/monitoring
+    version: 26.9.4-main
+  monitoring.bag-recorder: *monitoring-main
+  monitoring.rviz-carla: *monitoring-main
+  carla-control-active-bridge: *monitoring-main
+  # One carla-ros-bridge image with one chart per ROS node.
+  carla-ros-bridge:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
+    version: 0.10.0-1.1.1-carla-ros-bridge-main
+  carla-spawn-objects:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
+    version: 0.10.0-1.1.1-carla-spawn-objects-main
+  carla-ackermann-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
+    version: 0.10.0-1.1.1-carla-ackermann-control-main
+  carla-manual-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
+    version: 0.10.0-1.1.1-carla-manual-control-main
+  carla.carla-converter:
+    chart: oci://ghcr.io/openads-project/carla_converter/helm/carla-converter
+    version: 1.3.2-main
+  carla.simulation-adapter:
+    chart: oci://ghcr.io/openads-project/simulation_adapter/helm/simulation-adapter
+    version: 1.4.2-main
+  ros-middleware-bridge:
+    chart: oci://ghcr.io/openads-project/ros_middleware_bridge/helm/ros-middleware-bridge
+    version: 1.2.1-main
+  localization.lanelet2-map-server:
+    chart: oci://ghcr.io/openads-project/lanelet2_map_server/helm/lanelet2-map-server
+    version: 1.2.3-main  # 1.2.2-main still uses openadservice 1.0.0
+  planning.simple-planner:
+    chart: oci://ghcr.io/openads-project/simple_planner/helm/simple-planner
+    version: 1.4.0-main
+  planning.trajectory-optimization:
+    chart: oci://ghcr.io/openads-project/trajectory_optimization/helm/trajectory-optimization
+    version: 1.4.0-main
+  understanding.lanelet2-object-list-prediction-no-perception: &object-list-prediction-main
+    chart: oci://ghcr.io/openads-project/lanelet2_object_list_prediction/helm/lanelet2-object-list-prediction
+    version: 1.0.3-main  # 1.0.2-main still uses openadservice 1.1.0
+  understanding.lanelet2-object-list-prediction-perception: *object-list-prediction-main
+  # Only the default-branch chart of a newer version uses openadservice 1.2.0
+  # (1.4.0-main: 1.1.0, 1.5.0: 1.1.0).
+  perception.point-cloud-fusion:
+    chart: oci://ghcr.io/openads-project/point_cloud_fusion/helm/point-cloud-fusion
+    version: 1.5.0-main
+  # Only the default-branch chart of a newer version uses openadservice 1.2.0
+  # (1.2.0-main: 1.0.0, 2.0.0: 1.1.0).
+  planning.lanelet2-route-planning:
+    chart: oci://ghcr.io/openads-project/lanelet2_route_planning/helm/lanelet2-route-planning
+    version: 2.0.0-main
