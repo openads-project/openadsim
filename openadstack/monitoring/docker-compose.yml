@@ -6,6 +6,7 @@ services:
     extends:
       file: ../openadstack/monitoring/monitoring/docker-compose.yml
       service: monitoring.monitoring
+    image: ghcr.io/openads-project/monitoring:v26.10.20
     command: bash -ic "rviz2 -d /conf.rviz --ros-args -p use_sim_time:=true"
     volumes:
       - ./volume:/docker-ros/ws/monitoring-volume
@@ -38,7 +39,7 @@ services:
     extends:
       file: ../openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
-    image: ghcr.io/openads-project/monitoring:v26.9.4
+    image: ghcr.io/openads-project/monitoring:v26.10.20
     command:
       - /bin/bash
       - -ic

@@ -20,6 +20,11 @@
                     "id": "objects"
                 },
                 {
+                    "type": "sensor.pseudo.ideal_objects",
+                    "id": "ideal_objects",
+                    "range": 75.0
+                },
+                {
                     "type": "sensor.other.odometry",
                     "id": "odometry",
                     "ignore_tilt": true,
