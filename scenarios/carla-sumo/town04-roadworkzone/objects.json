@@ -388,7 +388,17 @@
         { 
             "type": "blueprint.mrisu",
             "id": "mrisu1",
-            "spawn_point": {"x": -15.0, "y": 122.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+            "spawn_point": {"x": -20.5, "y": 145.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+        },
+        { 
+            "type": "blueprint.mrisu",
+            "id": "mrisu2",
+            "spawn_point": {"x": -20.5, "y": 115.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+        },
+        { 
+            "type": "blueprint.mrisu",
+            "id": "mrisu3",
+            "spawn_point": {"x": -20.5, "y": 85.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
         }
     ]
 }
