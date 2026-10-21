@@ -7,5 +7,5 @@ SENSORS=global-sensors.json,karl-minimal.json
 COSIM_SCENARIO=town10-incident
 MAP=Town10HD_Opt
 SPAWN_POINT=-11.4,-127.2,0.2,180.0
-SUMO_CFG=/sumo-config/town10_incident.sumocfg
+SUMO_CFG=
 ```

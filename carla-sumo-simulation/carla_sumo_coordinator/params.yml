@@ -11,8 +11,14 @@ carla_port: 2000
 sumo_host: null
 sumo_port: 8813
 
-# Path (inside the container) to the SUMO configuration file to load.
+# Path (inside the container) to the SUMO configuration file to load. Takes precedence over
+# scenario; leave null to use the scenario's scenario.sumocfg or, without one, the standard
+# campus traffic (/sumo-config/campus.sumocfg).
 sumo_cfg: null
+
+# Scenario folder in scenarios_dir whose scenario.sumocfg is loaded when sumo_cfg is not set.
+scenario: null
+scenarios_dir: /scenarios
 
 # CARLA map name to load if it differs from the currently loaded map.
 carla_map: Town04
