@@ -1,0 +1,19 @@
+{
+    "objects": [
+    { 
+        "type": "blueprint.mrisu",
+        "id": "mrisu1",
+        "spawn_point": {"x": 165.0, "y": 188.5, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 90.0} 
+    },
+    { 
+        "type": "blueprint.mrisu",
+        "id": "mrisu2",
+        "spawn_point": {"x": 180.0, "y": 188.5, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 90.0} 
+    },
+    { 
+        "type": "blueprint.mrisu",
+        "id": "mrisu3",
+        "spawn_point": {"x": 195.0, "y": 188.5, "z": 0.15, "roll": 0.0, "pitch": 0.0, "yaw": 90.0} 
+    }
+    ]
+}
