@@ -13,7 +13,7 @@ sumo_port: 8813
 
 # Path (inside the container) to the SUMO configuration file to load. Takes precedence over
 # scenario; leave null to use the scenario's scenario.sumocfg or, without one, the standard
-# campus traffic (/sumo-config/campus.sumocfg).
+# traffic of carla_map (/sumo-config/<map>.sumocfg, e.g. town03.sumocfg for Town03_Opt).
 sumo_cfg: null
 
 # Scenario folder in scenarios_dir whose scenario.sumocfg is loaded when sumo_cfg is not set.
