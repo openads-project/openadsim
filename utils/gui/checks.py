@@ -426,6 +426,18 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
 def _validate_cosim(config: SimulationConfig, result: ValidationResult, repo_root: Optional[Path]):
     scenario = config.cosim.cosim_scenario.strip()
 
+    sumo_cfg = config.cosim.sumo_cfg.strip()
+    if sumo_cfg and not sumo_cfg.endswith(".sumocfg"):
+        result.errors.append(
+            ValidationIssue(
+                path="cosim.sumo_cfg",
+                message=(
+                    f"SUMO_CFG must be a .sumocfg path in the coordinator container, got '{sumo_cfg}'; "
+                    "leave it empty for the scenario's or the map's traffic"
+                ),
+            )
+        )
+
     if scenario and repo_root is not None:
         scenario_dir = repo_root / "scenarios" / "carla-sumo" / scenario
         if not (scenario_dir / "objects.json").is_file():

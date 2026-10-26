@@ -601,6 +601,14 @@ def render_field(
             **selectbox_kwargs,
             accept_new_options=not field.strict_options,
         )
+        if (
+            field.empty_option_label
+            and isinstance(new_value, str)
+            and new_value not in options
+            and field.empty_option_label.lower().startswith(new_value.strip().lower())
+        ):
+            # text typed into the box that matches the empty option's label selects the empty option
+            new_value = ""
 
     elif field.control == "multiselect":
         options = list(field.options)
