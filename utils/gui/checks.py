@@ -8,16 +8,19 @@ from typing import Optional
 
 from models import (
     GLOBAL_SENSOR_FILE,
+    LANELET_PREBUILT_MAPS,
     PerceptionProfile,
     PlanningProfile,
     PREBUILT_MAP_DEFAULTS,
-    SUMO_PREBUILT_MAPS,
+    RESTRICTED_PREBUILT_MAPS,
     SimulationProfile,
     TestingProfile,
+    TrafficProfile,
     SimulationConfig,
     Vehicle,
     is_vehicle_sensor_entry,
 )
+from presets import cosim_scenario_map
 
 
 @dataclass(frozen=True)
@@ -110,7 +113,9 @@ def _vehicle_sensor_entries_from_env(sensors_env: str) -> list[str]:
 def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) -> ValidationResult:
     result = ValidationResult()
     sumo_selected = config.additional.simulation == SimulationProfile.SUMO
-    sumo_map_values = ", ".join(prebuilt_map.value for prebuilt_map in SUMO_PREBUILT_MAPS)
+    cosim_selected = config.additional.simulation == SimulationProfile.CARLA_SUMO
+    simulation_label = "CARLA-SUMO" if cosim_selected else "SUMO"
+    restricted_maps = RESTRICTED_PREBUILT_MAPS.get(config.additional.simulation)
 
     # Vehicle dependencies
     prefix = f"{config.vehicle.vehicle.value}-"
@@ -144,19 +149,20 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
     # Map dependencies
     expected_town = ""
 
-    if sumo_selected and config.map.uses_custom_opendrive:
+    if restricted_maps is not None and config.map.uses_custom_opendrive:
         result.errors.append(
             ValidationIssue(
                 path="map.custom_opendrive",
-                message="CUSTOM_OPENDRIVE is currently not supported for SUMO",
+                message=f"CUSTOM_OPENDRIVE is currently not supported for {simulation_label}",
             )
         )
 
-    if sumo_selected and config.map.prebuilt_map not in SUMO_PREBUILT_MAPS:
+    if restricted_maps is not None and config.map.prebuilt_map not in restricted_maps:
+        map_values = ", ".join(prebuilt_map.value for prebuilt_map in restricted_maps)
         result.errors.append(
             ValidationIssue(
                 path="map.prebuilt_map",
-                message=f"SUMO MAP must be one of: {sumo_map_values}",
+                message=f"{simulation_label} MAP must be one of: {map_values}",
             )
         )
 
@@ -369,6 +375,10 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
                         )
                     )
 
+    # Co-simulation
+    if cosim_selected:
+        _validate_cosim(config, result, repo_root)
+
     # Additional options
     if sumo_selected and config.additional.perception_profile != PerceptionProfile.DISABLED:
         result.errors.append(
@@ -378,11 +388,27 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
             )
         )
 
-    if sumo_selected and config.additional.planning_profile != PlanningProfile.CLASSIC:
+    if (sumo_selected or cosim_selected) and config.additional.planning_profile != PlanningProfile.CLASSIC:
         result.errors.append(
             ValidationIssue(
                 path="additional.planning_profile",
-                message="Planning profile must be planning for SUMO",
+                message=f"Planning profile must be planning for {simulation_label}",
+            )
+        )
+
+    if cosim_selected and config.additional.traffic_profile != TrafficProfile.DISABLED:
+        result.errors.append(
+            ValidationIssue(
+                path="additional.traffic_profile",
+                message="Traffic profile must be no-traffic for CARLA-SUMO, SUMO provides the traffic",
+            )
+        )
+
+    if cosim_selected and config.additional.testing_profile != TestingProfile.DISABLED:
+        result.errors.append(
+            ValidationIssue(
+                path="additional.testing_profile",
+                message="Testing profile must be no-testing for CARLA-SUMO",
             )
         )
 
@@ -395,6 +421,42 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
         )
 
     return result
+
+
+def _validate_cosim(config: SimulationConfig, result: ValidationResult, repo_root: Optional[Path]):
+    scenario = config.cosim.cosim_scenario.strip()
+
+    if scenario and repo_root is not None:
+        scenario_dir = repo_root / "scenarios" / "carla-sumo" / scenario
+        if not (scenario_dir / "objects.json").is_file():
+            result.errors.append(
+                ValidationIssue(
+                    path="cosim.cosim_scenario",
+                    message=f"COSIM_SCENARIO has no objects.json: {scenario_dir}",
+                )
+            )
+
+    expected_map = cosim_scenario_map(scenario) if scenario else None
+    if expected_map is not None and config.map.prebuilt_map != expected_map:
+        result.warnings.append(
+            ValidationIssue(
+                path="map.prebuilt_map",
+                message=f"Scenario {scenario} is made for MAP={PREBUILT_MAP_DEFAULTS[expected_map].map_name}",
+                level="warning",
+            )
+        )
+
+    if config.map.prebuilt_map not in LANELET_PREBUILT_MAPS and not config.map.uses_custom_lanelet:
+        result.warnings.append(
+            ValidationIssue(
+                path="map.prebuilt_map",
+                message=(
+                    f"No Lanelet2 map for MAP={config.map.export_map()}; planning will not work "
+                    "unless CUSTOM_LANELET is set"
+                ),
+                level="warning",
+            )
+        )
 
 
 def validate_env_file(filepath: Path, repo_root: Optional[Path] = None) -> EnvValidationResult:

@@ -11,6 +11,7 @@ from typing import Any, Callable, ClassVar, Optional
 
 from pydantic import BaseModel, Field
 from utils import (
+    discover_cosim_scenarios,
     discover_files_with_suffix,
     filter_files_by_directory,
     filter_xosc_files_by_map,
@@ -26,7 +27,8 @@ class PrebuiltMap(str, Enum):
     ALDENHOVEN = "aldenhoven"
     CAMPUS = "campus"
     TOWN01 = "town01"
-    TOWN04 = "town04"
+    TOWN03 = "Town03_Opt"
+    TOWN04 = "Town04_Opt"
     TOWN05 = "town05"
     TOWN10 = "Town10HD_Opt"
 
@@ -39,6 +41,7 @@ class Rmw(str, Enum):
 class SimulationProfile(str, Enum):
     CARLA = "carla"
     SUMO = "sumo"
+    CARLA_SUMO = "carla-sumo"
 
 
 class TrafficProfile(str, Enum):
@@ -62,6 +65,15 @@ class PlanningProfile(str, Enum):
 
 
 GLOBAL_SENSOR_FILE = "global-sensors.json"
+
+COSIM_OVERRIDE_FILE = "carla-sumo-simulation/docker-compose.override.yml"
+# Standard per-map traffic shipped in the sumo_carla_coordinator image.
+STANDARD_SUMO_CFGS: tuple[str, ...] = (
+    "/sumo-config/campus.sumocfg",
+    "/sumo-config/town03.sumocfg",
+    "/sumo-config/town04.sumocfg",
+    "/sumo-config/town10.sumocfg",
+)
 
 
 def env_export(env_name: str):
@@ -89,6 +101,16 @@ PREBUILT_MAP_DEFAULTS: dict[PrebuiltMap, PrebuiltMapDefaults] = {
         description="Aachen Campus Melaten",
         default_spawn_point="50.787510,6.045938,260.0,90.0,wgs84",
     ),
+    PrebuiltMap.TOWN03: PrebuiltMapDefaults(
+        map_name="Town03_Opt",
+        description="CARLA Town03",
+        default_spawn_point="34.0,4.5,0.2,-179.1",
+    ),
+    PrebuiltMap.TOWN04: PrebuiltMapDefaults(
+        map_name="Town04_Opt",
+        description="CARLA Town04",
+        default_spawn_point="186.5,169.7,0.2,0.0",
+    ),
     PrebuiltMap.TOWN10: PrebuiltMapDefaults(
         map_name="Town10HD_Opt",
         description="CARLA Town10",
@@ -105,6 +127,26 @@ CARLA_PREBUILT_MAPS: tuple[PrebuiltMap, ...] = (
 SUMO_PREBUILT_MAPS: tuple[PrebuiltMap, ...] = (
     PrebuiltMap.CAMPUS,
 )
+
+# CARLA maps with standard SUMO traffic.
+CARLA_SUMO_PREBUILT_MAPS: tuple[PrebuiltMap, ...] = (
+    PrebuiltMap.CAMPUS,
+    PrebuiltMap.TOWN03,
+    PrebuiltMap.TOWN04,
+    PrebuiltMap.TOWN10,
+)
+
+# Prebuilt maps with a Lanelet2 map in the simulation adapter params (needed for planning).
+LANELET_PREBUILT_MAPS: tuple[PrebuiltMap, ...] = (
+    PrebuiltMap.ALDENHOVEN,
+    PrebuiltMap.CAMPUS,
+    PrebuiltMap.TOWN10,
+)
+
+RESTRICTED_PREBUILT_MAPS: dict["SimulationProfile", tuple[PrebuiltMap, ...]] = {
+    SimulationProfile.SUMO: SUMO_PREBUILT_MAPS,
+    SimulationProfile.CARLA_SUMO: CARLA_SUMO_PREBUILT_MAPS,
+}
 
 CARLA_VEHICLES: tuple[Vehicle, ...] = (
     Vehicle.KARL,
@@ -274,7 +316,11 @@ class MapConfig(BaseModel):
 
     @property
     def effective_lanelet_reload(self) -> bool:
-        return not self.uses_custom_opendrive and not self.uses_custom_lanelet
+        return (
+            not self.uses_custom_opendrive
+            and not self.uses_custom_lanelet
+            and self.prebuilt_map in LANELET_PREBUILT_MAPS
+        )
 
     @env_export("LANELET_RELOAD")
     def export_lanelet_reload(self) -> str:
@@ -330,8 +376,9 @@ class MapConfig(BaseModel):
                 self.map_name = ""
 
     def align_to_simulation(self, simulation: SimulationProfile):
-        if simulation == SimulationProfile.SUMO:
-            if self.prebuilt_map not in SUMO_PREBUILT_MAPS:
+        restricted_maps = RESTRICTED_PREBUILT_MAPS.get(simulation)
+        if restricted_maps is not None:
+            if self.prebuilt_map not in restricted_maps:
                 self.prebuilt_map = PrebuiltMap.CAMPUS
                 self.apply_ui_constraints("map.prebuilt_map")
             self.custom_opendrive = ""
@@ -369,6 +416,8 @@ class MapConfig(BaseModel):
             return PrebuiltMap.CAMPUS
         if "town01" in town:
             return PrebuiltMap.TOWN01
+        if "town03" in town:
+            return PrebuiltMap.TOWN03
         if "town04" in town:
             return PrebuiltMap.TOWN04
         if "town05" in town:
@@ -385,6 +434,19 @@ class ScenarioConfig(BaseModel):
         self.scenario_file = self.scenario_file.strip()
 
 
+class CosimConfig(BaseModel):
+    cosim_scenario: str = ""
+    sumo_cfg: str = ""
+
+    def normalize(self):
+        self.cosim_scenario = self.cosim_scenario.strip()
+        self.sumo_cfg = self.sumo_cfg.strip()
+
+    def clear(self):
+        self.cosim_scenario = ""
+        self.sumo_cfg = ""
+
+
 class AdditionalOptionsConfig(BaseModel):
     ENV_EXCLUDE: ClassVar[set[str]] = {
         "rmw",
@@ -397,6 +459,7 @@ class AdditionalOptionsConfig(BaseModel):
     }
 
     use_sim_time: bool = True
+    carla_start_time: str = ""
     ros_tracing: bool = False
     rmw: Rmw = Rmw.ZENOH
     simulation: SimulationProfile = SimulationProfile.CARLA
@@ -408,6 +471,7 @@ class AdditionalOptionsConfig(BaseModel):
 
     def normalize(self):
         self.use_sim_time = True
+        self.carla_start_time = self.carla_start_time.strip()
         self.rmw = Rmw.ZENOH
         self.example_overlay = self.example_overlay.strip()
 
@@ -422,7 +486,7 @@ class AdditionalOptionsConfig(BaseModel):
     @env_export("COMPOSE_PROFILES")
     def export_compose_profiles(self) -> str:
         parts = [self.simulation.value]
-        if self.simulation == SimulationProfile.CARLA:
+        if self.simulation in {SimulationProfile.CARLA, SimulationProfile.CARLA_SUMO}:
             parts.extend(
                 [
                     self.traffic_profile.value,
@@ -434,6 +498,8 @@ class AdditionalOptionsConfig(BaseModel):
 
     @env_export("COMPOSE_FILE")
     def export_compose_file(self) -> str:
+        if self.simulation == SimulationProfile.CARLA_SUMO:
+            return f"docker-compose.yml:{COSIM_OVERRIDE_FILE}"
         example_prefix = self._example_prefix()
         if not example_prefix:
             return ""
@@ -444,6 +510,7 @@ class SimulationConfig(BaseModel):
     vehicle: VehicleConfig = Field(default_factory=VehicleConfig)
     map: MapConfig = Field(default_factory=MapConfig)
     scenario: ScenarioConfig = Field(default_factory=ScenarioConfig)
+    cosim: CosimConfig = Field(default_factory=CosimConfig)
     additional: AdditionalOptionsConfig = Field(default_factory=AdditionalOptionsConfig)
 
     ENV_LAYOUT: ClassVar[list[tuple[str, list[str]]]] = [
@@ -465,7 +532,8 @@ class SimulationConfig(BaseModel):
             ],
         ),
         ("### Scenario Configuration", ["SCENARIO_FILE"]),
-        ("### Additional Options", ["USE_SIM_TIME", "ROS_TRACING"]),
+        ("### Co-Simulation Configuration", ["COSIM_SCENARIO", "SUMO_CFG"]),
+        ("### Additional Options", ["USE_SIM_TIME", "CARLA_START_TIME", "ROS_TRACING"]),
     ]
     OPTIONAL_EMPTY_ENV_KEYS: ClassVar[set[str]] = {"COMPOSE_FILE"}
 
@@ -480,12 +548,23 @@ class SimulationConfig(BaseModel):
             self.vehicle.vehicle_sensor_file = ""
             self.vehicle.custom_sensor_file = ""
             self.scenario.scenario_file = ""
+            self.additional.carla_start_time = ""
             self.additional.perception_profile = PerceptionProfile.DISABLED
             self.additional.planning_profile = PlanningProfile.CLASSIC
         else:
             self.vehicle.normalize()
+            if self.additional.simulation == SimulationProfile.CARLA_SUMO:
+                # the coordinator drives the traffic; the scenario runner is not supported
+                self.scenario.scenario_file = ""
+                self.additional.traffic_profile = TrafficProfile.DISABLED
+                self.additional.testing_profile = TestingProfile.DISABLED
+                self.additional.planning_profile = PlanningProfile.CLASSIC
             if self.additional.perception_profile == PerceptionProfile.ENABLED:
                 self.vehicle.ensure_perception_sensor_file()
+        if self.additional.simulation == SimulationProfile.CARLA_SUMO:
+            self.cosim.normalize()
+        else:
+            self.cosim.clear()
         self.map.normalize()
         self.map.align_to_simulation(self.additional.simulation)
         self.scenario.normalize()
@@ -719,6 +798,10 @@ class SimulationConfig(BaseModel):
         )
 
         scenario = ScenarioConfig(scenario_file=env_vars.get("SCENARIO_FILE", ""))
+        cosim = CosimConfig(
+            cosim_scenario=env_vars.get("COSIM_SCENARIO", ""),
+            sumo_cfg=env_vars.get("SUMO_CFG", ""),
+        )
 
         compose_profiles = [
             profile.strip()
@@ -777,6 +860,7 @@ class SimulationConfig(BaseModel):
                 env_vars.get("USE_SIM_TIME", "true"),
                 default=True,
             ),
+            carla_start_time=env_vars.get("CARLA_START_TIME", ""),
             ros_tracing=cls._parse_bool(
                 env_vars.get("ROS_TRACING", "false"),
                 default=False,
@@ -795,6 +879,7 @@ class SimulationConfig(BaseModel):
             vehicle=vehicle_config,
             map=map_config,
             scenario=scenario,
+            cosim=cosim,
             additional=additional,
         )
 
@@ -912,6 +997,8 @@ class SimulationConfig(BaseModel):
             ):
                 scenario_options = [current_scenario] + scenario_options
         sumo_selected = self.additional.simulation == SimulationProfile.SUMO
+        cosim_selected = self.additional.simulation == SimulationProfile.CARLA_SUMO
+        restricted_maps = RESTRICTED_PREBUILT_MAPS.get(self.additional.simulation)
         scenario_enabled = (
             not sumo_selected
             and self.additional.testing_profile != TestingProfile.DISABLED
@@ -926,15 +1013,16 @@ class SimulationConfig(BaseModel):
         lanelet_select_options = [""] + lanelet_options
         opendrive_select_options = [""] + opendrive_options
         map_select_options = (
-            [prebuilt_map.value for prebuilt_map in SUMO_PREBUILT_MAPS]
-            if sumo_selected
+            [prebuilt_map.value for prebuilt_map in restricted_maps]
+            if restricted_maps is not None
             else [""] + [prebuilt_map.value for prebuilt_map in CARLA_PREBUILT_MAPS]
         )
-        map_section_description = (
-            "SUMO map selection."
-            if sumo_selected
-            else "Definition of a prebuilt or custom map."
-        )
+        if sumo_selected:
+            map_section_description = "SUMO map selection."
+        elif cosim_selected:
+            map_section_description = "Co-simulation map selection."
+        else:
+            map_section_description = "Definition of a prebuilt or custom map."
         directory_filter_description = (
             " Scenarios and Lanelet2 files are shown only from the OpenDRIVE file’s directory."
             " You can select a different OpenDRIVE map at any time."
@@ -942,15 +1030,21 @@ class SimulationConfig(BaseModel):
             else ""
         )
         map_section_description += directory_filter_description
-        map_source_description = (
-            "Choose a SUMO map. Available maps: campus."
-            "CUSTOM_LANELET can still be used optionally."
-            if sumo_selected
-            else (
+        if sumo_selected:
+            map_source_description = (
+                "Choose a SUMO map. Available maps: campus."
+                "CUSTOM_LANELET can still be used optionally."
+            )
+        elif cosim_selected:
+            map_source_description = (
+                "Choose a map with standard SUMO traffic in the coordinator image. "
+                "CUSTOM_LANELET can still be used optionally."
+            )
+        else:
+            map_source_description = (
                 "Choose a prebuilt map or 'Custom OpenDRIVE'. Switching to prebuilt clears "
                 "CUSTOM_OPENDRIVE and CUSTOM_LANELET."
             )
-        )
         scenario_control = (
             "select_or_text"
             if scenario_options or current_opendrive
@@ -1019,8 +1113,8 @@ class SimulationConfig(BaseModel):
                     description=map_source_description,
                     control="select",
                     options=tuple(map_select_options),
-                    none_as_empty=not sumo_selected,
-                    empty_option_label="" if sumo_selected else "Custom OpenDRIVE",
+                    none_as_empty=restricted_maps is None,
+                    empty_option_label="" if restricted_maps is not None else "Custom OpenDRIVE",
                 ),
                 UiField(
                     path="map.custom_opendrive",
@@ -1032,7 +1126,7 @@ class SimulationConfig(BaseModel):
                     ),
                     control="select_or_text",
                     options=tuple(opendrive_select_options),
-                    disabled=sumo_selected or self.map.prebuilt_map is not None,
+                    disabled=restricted_maps is not None or self.map.prebuilt_map is not None,
                 ),
                 UiField(
                     path="map.custom_lanelet",
@@ -1066,7 +1160,7 @@ class SimulationConfig(BaseModel):
                     path="map.effective_lanelet_reload",
                     env_name="LANELET_RELOAD",
                     label="Lanelet2 Reload (derived)",
-                    description="Disabled when custom Lanelet2 map is used.",
+                    description="Disabled when a custom Lanelet2 map is used or the map has no Lanelet2 map.",
                     control="bool",
                     disabled=True,
                 ),
@@ -1102,6 +1196,7 @@ class SimulationConfig(BaseModel):
                     disabled=not scenario_enabled,
                     strict_options=bool(current_opendrive),
                 ),
+                *(self._cosim_ui_fields(repo_root) if cosim_selected else ()),
             ),
         )
 
@@ -1115,7 +1210,7 @@ class SimulationConfig(BaseModel):
                     label="Simulation",
                     description="Selected simulation core.",
                     control="select",
-                    options=(SimulationProfile.CARLA.value, SimulationProfile.SUMO.value),
+                    options=tuple(profile.value for profile in SimulationProfile),
                 ),
                 UiField(
                     path="additional.traffic_profile",
@@ -1142,7 +1237,7 @@ class SimulationConfig(BaseModel):
                     description="Selected compose perception profile. Fixed to no-perception for SUMO.",
                     control="select",
                     options=tuple(profile.value for profile in PerceptionProfile),
-                    disabled=self.additional.simulation != SimulationProfile.CARLA,
+                    disabled=self.additional.simulation == SimulationProfile.SUMO,
                 ),
                 UiField(
                     path="additional.planning_profile",
@@ -1183,6 +1278,17 @@ class SimulationConfig(BaseModel):
                     disabled=True,
                 ),
                 UiField(
+                    path="additional.carla_start_time",
+                    env_name="CARLA_START_TIME",
+                    label="CARLA Start Time",
+                    description=(
+                        "Unix time the simulation clock starts at; -1 for the time the server starts. "
+                        "Leave empty for CARLA's default clock. Not used for SUMO."
+                    ),
+                    control="text",
+                    disabled=self.additional.simulation == SimulationProfile.SUMO,
+                ),
+                UiField(
                     path="additional.ros_tracing",
                     env_name="ROS_TRACING",
                     label="Enable ROS Tracing",
@@ -1193,3 +1299,32 @@ class SimulationConfig(BaseModel):
         )
 
         return [profiles_section, vehicle_section, map_section, scenario_section, additional_section]
+
+    def _cosim_ui_fields(self, repo_root: Path) -> tuple[UiField, ...]:
+        cosim_scenarios = discover_cosim_scenarios(repo_root)
+        return (
+            UiField(
+                path="cosim.cosim_scenario",
+                env_name="COSIM_SCENARIO",
+                label="Co-Simulation Scenario",
+                description=(
+                    "Scenario folder in scenarios/carla-sumo/. Its objects.json is spawned in CARLA; "
+                    "its scenario.sumocfg, if present, defines the SUMO traffic."
+                ),
+                control="select",
+                options=("",) + tuple(cosim_scenarios),
+                empty_option_label="No scenario",
+            ),
+            UiField(
+                path="cosim.sumo_cfg",
+                env_name="SUMO_CFG",
+                label="SUMO Configuration",
+                description=(
+                    "Empty: the scenario's scenario.sumocfg, otherwise the standard traffic of the map. "
+                    "Select standard traffic of the coordinator image or enter a path in the container."
+                ),
+                control="select_or_text",
+                options=("",) + STANDARD_SUMO_CFGS,
+                empty_option_label="From scenario or map",
+            ),
+        )

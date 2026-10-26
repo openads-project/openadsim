@@ -13,6 +13,8 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
+    environment:
+      CARLA_START_TIME: ${CARLA_START_TIME:-}
     command:
       - /bin/bash
       - -ic
@@ -21,7 +23,8 @@ services:
           -nosound \
           -RenderOffScreen \
           --ros2 \
-          -carla-rpc-port=$${CARLA_PORT}
+          -carla-rpc-port=$${CARLA_PORT} \
+          $${CARLA_START_TIME:+-carla-start-time=$${CARLA_START_TIME}}
     ipc: service:zenoh-router
     volumes:
       - ./DefaultEngine.ini:/workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini

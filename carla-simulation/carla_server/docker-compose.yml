@@ -23,6 +23,7 @@ services:
     image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
     environment:
       CARLA_PORT: 2000
+      CARLA_START_TIME: ${CARLA_START_TIME:-}
     # command:
     #   - /bin/bash
     #   - -ic
@@ -39,7 +40,8 @@ services:
           -nosound \
           -RenderOffScreen \
           --ros2 \
-          -carla-rpc-port=$${CARLA_PORT}
+          -carla-rpc-port=$${CARLA_PORT} \
+          $${CARLA_START_TIME:+-carla-start-time=$${CARLA_START_TIME}}
     volumes:
       - ./DefaultEngine.ini:/workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
     expose:

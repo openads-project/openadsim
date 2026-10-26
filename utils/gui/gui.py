@@ -793,17 +793,20 @@ def _render_profiles_section(
         changed = _render_profile_field(config, simulation_field) or changed
         changed = _render_profile_field(config, traffic_field) or changed
         changed = _render_profile_field(config, testing_field) or changed
-        if config.additional.simulation.value != "carla":
+        if config.additional.simulation.value == "carla-sumo":
+            st.caption("Traffic and testing profiles are fixed for CARLA-SUMO; SUMO provides the traffic.")
+        elif config.additional.simulation.value != "carla":
             st.caption("Traffic and testing profiles are only available for CARLA.")
 
     with right_col:
         changed = _render_profile_field(config, perception_field) or changed
         changed = _render_profile_field(config, planning_field) or changed
-        if config.additional.simulation.value != "carla":
-            st.caption("The perception profile is only available for CARLA.")
+        if config.additional.simulation.value == "sumo":
+            st.caption("The perception profile is only available for CARLA and CARLA-SUMO.")
             if config.additional.perception_profile.value != "no-perception":
                 config.set_value("additional.perception_profile", "no-perception")
                 changed = True
+        if config.additional.simulation.value != "carla":
             if config.additional.planning_profile.value != "planning":
                 config.set_value("additional.planning_profile", "planning")
                 changed = True
@@ -1037,7 +1040,12 @@ def _render_configuration_tab(config: SimulationConfig):
             if scenario_enabled:
                 _render_scenario_import(config)
 
-            if not scenario_enabled:
+            if config.additional.simulation.value == "carla-sumo":
+                st.caption(
+                    "OpenSCENARIO files are not used for CARLA-SUMO; "
+                    "co-simulation scenarios come from `scenarios/carla-sumo/`."
+                )
+            elif not scenario_enabled:
                 st.caption("Scenario file is only configurable for manual or automated testing.")
 
         st.markdown("---")

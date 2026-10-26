@@ -1,12 +1,16 @@
 """Predefined preset configurations for common scenarios."""
 
+from typing import Optional
+
 from models import (
     AdditionalOptionsConfig,
+    CosimConfig,
     MapConfig,
     PrebuiltMap,
     PerceptionProfile,
     ScenarioConfig,
     SimulationConfig,
+    SimulationProfile,
     Vehicle,
     VehicleConfig,
     TrafficProfile,
@@ -19,7 +23,24 @@ PRESET_NAMES = {
     DEFAULT_PRESET_NAME,
     "scenario-execution",
     "cooperative-perception",
+    "carla-sumo-town10-incident",
+    "carla-sumo-town04-roadworkzone",
+    "carla-sumo-town03-tunnel",
 }
+
+
+def _cosim_preset(prebuilt_map: PrebuiltMap, spawn_point: str, scenario: str, sumo_cfg: str = "") -> SimulationConfig:
+    """Co-simulation preset with the settings from scenarios/carla-sumo/<scenario>/README.md."""
+    return SimulationConfig(
+        vehicle=VehicleConfig(
+            vehicle=Vehicle.KARL,
+            global_sensors_enabled=True,
+            vehicle_sensor_file="karl-minimal.json",
+        ),
+        map=MapConfig(prebuilt_map=prebuilt_map, spawn_point=spawn_point),
+        cosim=CosimConfig(cosim_scenario=scenario, sumo_cfg=sumo_cfg),
+        additional=AdditionalOptionsConfig(simulation=SimulationProfile.CARLA_SUMO),
+    )
 
 
 PRESETS = {
@@ -60,7 +81,24 @@ PRESETS = {
             perception_profile=PerceptionProfile.ENABLED,
         ),
     ),
+    "carla-sumo-town10-incident": _cosim_preset(
+        PrebuiltMap.TOWN10, "-11.4,-127.2,0.2,180.0", "town10-incident",
+    ),
+    "carla-sumo-town04-roadworkzone": _cosim_preset(
+        PrebuiltMap.TOWN04, "62.0,190.0,2.5,90.0", "town04-roadworkzone",
+    ),
+    "carla-sumo-town03-tunnel": _cosim_preset(
+        PrebuiltMap.TOWN03, "34.0,4.5,0.2,-179.1", "town03-tunnel",
+    ),
 }
+
+
+def cosim_scenario_map(scenario: str) -> Optional[PrebuiltMap]:
+    """Map of a co-simulation scenario according to its preset, if it has one."""
+    for preset in PRESETS.values():
+        if preset.cosim.cosim_scenario == scenario:
+            return preset.map.prebuilt_map
+    return None
 
 
 def get_preset_names() -> list[str]:

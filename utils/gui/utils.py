@@ -166,3 +166,15 @@ def discover_example_overlays(repo_root: Path) -> list[str]:
         if (example_dir / "docker-compose.override.yml").exists():
             discovered.append(example_dir.name)
     return discovered
+
+
+def discover_cosim_scenarios(repo_root: Path) -> list[str]:
+    scenarios_root = repo_root / "scenarios" / "carla-sumo"
+    if not scenarios_root.exists():
+        return []
+
+    return [
+        scenario_dir.name
+        for scenario_dir in sorted(scenarios_root.iterdir())
+        if scenario_dir.is_dir() and (scenario_dir / "objects.json").exists()
+    ]
