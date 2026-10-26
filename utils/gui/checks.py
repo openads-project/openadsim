@@ -7,6 +7,7 @@ import sys
 from typing import Optional
 
 from models import (
+    COSIM_SCENARIO_MAPS,
     GLOBAL_SENSOR_FILE,
     LANELET_PREBUILT_MAPS,
     PerceptionProfile,
@@ -18,9 +19,9 @@ from models import (
     TrafficProfile,
     SimulationConfig,
     Vehicle,
+    cosim_scenario_fits_map,
     is_vehicle_sensor_entry,
 )
-from presets import cosim_scenario_map
 
 
 @dataclass(frozen=True)
@@ -448,13 +449,12 @@ def _validate_cosim(config: SimulationConfig, result: ValidationResult, repo_roo
                 )
             )
 
-    expected_map = cosim_scenario_map(scenario) if scenario else None
-    if expected_map is not None and config.map.prebuilt_map != expected_map:
-        result.warnings.append(
+    if not cosim_scenario_fits_map(scenario, config.map.prebuilt_map):
+        expected_map = PREBUILT_MAP_DEFAULTS[COSIM_SCENARIO_MAPS[scenario]].map_name
+        result.errors.append(
             ValidationIssue(
-                path="map.prebuilt_map",
-                message=f"Scenario {scenario} is made for MAP={PREBUILT_MAP_DEFAULTS[expected_map].map_name}",
-                level="warning",
+                path="cosim.cosim_scenario",
+                message=f"COSIM_SCENARIO={scenario} is made for MAP={expected_map}",
             )
         )
 

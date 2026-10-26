@@ -1,8 +1,7 @@
 """Predefined preset configurations for common scenarios."""
 
-from typing import Optional
-
 from models import (
+    COSIM_SCENARIO_MAPS,
     AdditionalOptionsConfig,
     CosimConfig,
     MapConfig,
@@ -29,8 +28,9 @@ PRESET_NAMES = {
 }
 
 
-def _cosim_preset(prebuilt_map: PrebuiltMap, spawn_point: str, scenario: str, sumo_cfg: str = "") -> SimulationConfig:
+def _cosim_preset(scenario: str, spawn_point: str, sumo_cfg: str = "") -> SimulationConfig:
     """Co-simulation preset with the settings from scenarios/carla-sumo/<scenario>/README.md."""
+    prebuilt_map = COSIM_SCENARIO_MAPS[scenario]
     return SimulationConfig(
         vehicle=VehicleConfig(
             vehicle=Vehicle.KARL,
@@ -81,24 +81,10 @@ PRESETS = {
             perception_profile=PerceptionProfile.ENABLED,
         ),
     ),
-    "carla-sumo-town10-incident": _cosim_preset(
-        PrebuiltMap.TOWN10, "-11.4,-127.2,0.2,180.0", "town10-incident",
-    ),
-    "carla-sumo-town04-roadworkzone": _cosim_preset(
-        PrebuiltMap.TOWN04, "62.0,190.0,2.5,90.0", "town04-roadworkzone",
-    ),
-    "carla-sumo-town03-tunnel": _cosim_preset(
-        PrebuiltMap.TOWN03, "34.0,4.5,0.2,-179.1", "town03-tunnel",
-    ),
+    "carla-sumo-town10-incident": _cosim_preset("town10-incident", "-11.4,-127.2,0.2,180.0"),
+    "carla-sumo-town04-roadworkzone": _cosim_preset("town04-roadworkzone", "62.0,190.0,2.5,90.0"),
+    "carla-sumo-town03-tunnel": _cosim_preset("town03-tunnel", "34.0,4.5,0.2,-179.1"),
 }
-
-
-def cosim_scenario_map(scenario: str) -> Optional[PrebuiltMap]:
-    """Map of a co-simulation scenario according to its preset, if it has one."""
-    for preset in PRESETS.values():
-        if preset.cosim.cosim_scenario == scenario:
-            return preset.map.prebuilt_map
-    return None
 
 
 def get_preset_names() -> list[str]:

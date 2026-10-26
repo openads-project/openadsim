@@ -143,6 +143,19 @@ LANELET_PREBUILT_MAPS: tuple[PrebuiltMap, ...] = (
     PrebuiltMap.TOWN10,
 )
 
+# Map each co-simulation scenario in scenarios/carla-sumo/ is made for. Only the scenarios of the
+# selected map can be selected; scenarios not listed here can be used on every map.
+COSIM_SCENARIO_MAPS: dict[str, PrebuiltMap] = {
+    "town03-tunnel": PrebuiltMap.TOWN03,
+    "town04-roadworkzone": PrebuiltMap.TOWN04,
+    "town10-incident": PrebuiltMap.TOWN10,
+}
+
+
+def cosim_scenario_fits_map(scenario: str, prebuilt_map: Optional[PrebuiltMap]) -> bool:
+    return COSIM_SCENARIO_MAPS.get(scenario, prebuilt_map) == prebuilt_map
+
+
 RESTRICTED_PREBUILT_MAPS: dict["SimulationProfile", tuple[PrebuiltMap, ...]] = {
     SimulationProfile.SUMO: SUMO_PREBUILT_MAPS,
     SimulationProfile.CARLA_SUMO: CARLA_SUMO_PREBUILT_MAPS,
@@ -446,6 +459,10 @@ class CosimConfig(BaseModel):
         self.cosim_scenario = ""
         self.sumo_cfg = ""
 
+    def align_to_map(self, prebuilt_map: Optional[PrebuiltMap]):
+        if not cosim_scenario_fits_map(self.cosim_scenario, prebuilt_map):
+            self.cosim_scenario = ""
+
 
 class AdditionalOptionsConfig(BaseModel):
     ENV_EXCLUDE: ClassVar[set[str]] = {
@@ -567,6 +584,8 @@ class SimulationConfig(BaseModel):
             self.cosim.clear()
         self.map.normalize()
         self.map.align_to_simulation(self.additional.simulation)
+        if self.additional.simulation == SimulationProfile.CARLA_SUMO:
+            self.cosim.align_to_map(self.map.prebuilt_map)
         self.scenario.normalize()
 
     def apply_ui_constraints(self, trigger_path: str):
@@ -1301,7 +1320,11 @@ class SimulationConfig(BaseModel):
         return [profiles_section, vehicle_section, map_section, scenario_section, additional_section]
 
     def _cosim_ui_fields(self, repo_root: Path) -> tuple[UiField, ...]:
-        cosim_scenarios = discover_cosim_scenarios(repo_root)
+        cosim_scenarios = [
+            scenario
+            for scenario in discover_cosim_scenarios(repo_root)
+            if cosim_scenario_fits_map(scenario, self.map.prebuilt_map)
+        ]
         return (
             UiField(
                 path="cosim.cosim_scenario",
@@ -1309,7 +1332,8 @@ class SimulationConfig(BaseModel):
                 label="Co-Simulation Scenario",
                 description=(
                     "Scenario folder in scenarios/carla-sumo/. Its objects.json is spawned in CARLA; "
-                    "its scenario.sumocfg, if present, defines the SUMO traffic."
+                    "its scenario.sumocfg, if present, defines the SUMO traffic. "
+                    "Only the scenarios made for the selected map are listed."
                 ),
                 control="select",
                 options=("",) + tuple(cosim_scenarios),
