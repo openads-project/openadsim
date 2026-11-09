@@ -12,10 +12,7 @@ include:
       output-dir: deployment/generated
       helmfile-entrypoint: deployment/helmfile.yaml
       bundle-dir: deployment
-  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/simulation@feature/evaluation-dataset
+  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/simulation@main
     inputs:
       scenario-search-pattern: scenario.generator/**/*.xosc
-      openadscale-ref: feature/evaluation-dataset
-  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/evaluation@feature/evaluation-dataset
-    inputs:
-      openadscale-ref: feature/evaluation-dataset
+  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/evaluation@main
