@@ -12,6 +12,7 @@ include:
       output-dir: deployment/generated
       helmfile-entrypoint: deployment/helmfile.yaml
       bundle-dir: deployment
-  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/openadscale@main
+  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/simulation@main
     inputs:
       scenario-search-pattern: scenario.generator/**/*.xosc
+  - component: gitlab.ika.rwth-aachen.de/fb-fi/ops/openadscale/evaluation@main
