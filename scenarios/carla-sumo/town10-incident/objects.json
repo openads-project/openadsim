@@ -15,7 +15,7 @@
         {
             "type": "blueprint.constructioncone",
             "id": "cone1",
-            "spawn_point": {"x": 107.65, "y": -73.0, "z_above_ground": 0.02, "roll": 0.0, "pitch": 0.0, "yaw": -5.0}
+            "spawn_point": {"x": 107.15, "y": -73.0, "z_above_ground": 0.02, "roll": 0.0, "pitch": 0.0, "yaw": -5.0}
         },
         {
             "type": "blueprint.constructioncone",
@@ -25,17 +25,17 @@
         {
             "type": "blueprint.constructioncone",
             "id": "cone3",
-            "spawn_point": {"x": 100.6, "y": -73.0, "z_above_ground": -0.02, "roll": 0.0, "pitch": 0.0, "yaw": -20.0}
+            "spawn_point": {"x": 101.1, "y": -73.0, "z_above_ground": -0.02, "roll": 0.0, "pitch": 0.0, "yaw": -20.0}
         },
         {
             "type": "blueprint.constructioncone",
             "id": "cone4",
-            "spawn_point": {"x": 100.6, "y": -66.75, "z_above_ground": 0.02, "roll": 0.0, "pitch": 0.0, "yaw": -15.0}
+            "spawn_point": {"x": 101.1, "y": -66.75, "z_above_ground": 0.02, "roll": 0.0, "pitch": 0.0, "yaw": -15.0}
         },
         {
             "type": "blueprint.constructioncone",
             "id": "cone5",
-            "spawn_point": {"x": 100.6, "y": -60.5, "z_above_ground": 0.03, "roll": 0.0, "pitch": 0.0, "yaw": 5.0}
+            "spawn_point": {"x": 101.1, "y": -60.5, "z_above_ground": 0.03, "roll": 0.0, "pitch": 0.0, "yaw": 5.0}
         },
         {
             "type": "blueprint.constructioncone",
@@ -45,12 +45,12 @@
         {
             "type": "blueprint.constructioncone",
             "id": "cone7",
-            "spawn_point": {"x": 107.65, "y": -60.5, "z_above_ground": 0.05, "roll": 0.0, "pitch": 0.0, "yaw": -55.0}
+            "spawn_point": {"x": 107.15, "y": -60.5, "z_above_ground": 0.05, "roll": 0.0, "pitch": 0.0, "yaw": -55.0}
         },
         {
             "type": "blueprint.constructioncone",
             "id": "cone8",
-            "spawn_point": {"x": 107.65, "y": -66.75, "z_above_ground": 0.02, "roll": 0.0, "pitch": 0.0, "yaw": 30.0}
+            "spawn_point": {"x": 107.15, "y": -66.75, "z_above_ground": 0.02, "roll": 0.0, "pitch": 0.0, "yaw": 30.0}
         },
         {
             "type": "blueprint.warningaccident",

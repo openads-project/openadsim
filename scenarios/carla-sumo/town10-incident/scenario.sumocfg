@@ -3,7 +3,7 @@
 
     <input>
         <net-file value="net/town10_incident.net.xml"/>
-        <route-files value="rou/town10_incident.rou.xml,/sumo-config/carlavtypes.rou.xml"/>
+        <route-files value="/sumo-config/carlavtypes.rou.xml,rou/town10_incident.rou.xml"/>
     </input>
 
     <processing>

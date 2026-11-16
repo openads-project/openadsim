@@ -3,22 +3,22 @@
         {
             "type": "blueprint.warningconstruction",
             "id": "warningconstruction1",
-            "spawn_point": {"x": -4.3, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+            "spawn_point": {"x": -3.3, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
         },
         {
             "type": "blueprint.warningconstruction",
             "id": "warningconstruction2",
-            "spawn_point": {"x": -19.0, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+            "spawn_point": {"x": -20.0, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
         },
         {
             "type": "blueprint.beaconwithlight",
             "id": "beaconwithlight_warn1",
-            "spawn_point": {"x": -3.3, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+            "spawn_point": {"x": -2.3, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
         },
         {
             "type": "blueprint.beaconwithlight",
             "id": "beaconwithlight_warn2",
-            "spawn_point": {"x": -20.0, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+            "spawn_point": {"x": -21.0, "y": 200.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
         },
         {
             "type": "blueprint.roadworkbarrier",

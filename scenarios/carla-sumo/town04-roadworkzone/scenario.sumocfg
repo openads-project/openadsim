@@ -3,7 +3,7 @@
 
     <input>
         <net-file value="net/town04_rwz.net.xml"/>
-        <route-files value="rou/town04_rwz.rou.xml,/sumo-config/carlavtypes.rou.xml"/>
+        <route-files value="/sumo-config/carlavtypes.rou.xml,rou/town04_rwz.rou.xml"/>
     </input>
 
 </configuration>
