@@ -11,6 +11,7 @@ services:
     chart: oci://ghcr.io/openads-project/openads-helm/triton-server
     version: "26.05"
   # nested charts in https://github.com/openads-project/carla-simulator/tree/main/deployment/helm
+  # TODO(carla-1.0): bump to the CARLA 1.0 chart versions once openads-project/carla-simulator publishes them.
   carla-server:
     chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-server
     version: 0.10.0-1.1.1

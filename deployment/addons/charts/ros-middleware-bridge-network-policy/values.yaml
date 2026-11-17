@@ -1,5 +1,0 @@
-namePrefix: ""
-middlewareBridgeName: ros-middleware-bridge
-carlaServerName: carla-server
-zenohRouterName: zenoh-router
-zenohPort: 7447

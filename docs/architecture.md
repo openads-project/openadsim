@@ -41,7 +41,6 @@ For scenario execution, support for ASAM standards such as *OpenSCENARIO* and *O
 | [carla-ros-bridge](https://github.com/openads-project/carla-ros-bridge) | ROS 2 connection to CARLA topics and services, exposing simulator state and controls to the OpenADS ecosystem. |
 | [carla-scenario-runner](https://github.com/openads-project/carla-scenario-runner) | Execution of OpenSCENARIO scenarios in CARLA for repeatable scenario-based simulation and testing. |
 | [carla_converter](https://github.com/openads-project/carla_converter) | Conversion of CARLA-specific simulation outputs into OpenADS-compatible ego, object, map, and V2X topics. |
-| [ros_middleware_bridge](https://github.com/openads-project/ros_middleware_bridge) | DDS-to-Zenoh bridge that connects CARLA's native ROS/DDS interface with the OpenADStack middleware. |
 
 ### SUMO: Lightweight Planning Simulation
 

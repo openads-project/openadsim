@@ -59,8 +59,7 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 
 | Service | Profiles | Role |
 | ------- | -------- | ---- |
-| `carla-server` | `carla` | Offscreen CARLA backend with custom `DefaultEngine.ini` |
-| `ros-middleware-bridge` | `carla` | DDS-to-Zenoh bridge for CARLA ROS topics |
+| `carla-server` | `carla` | Offscreen CARLA backend; its native ROS 2 interface connects to the `zenoh-router` |
 | `carla-ros-bridge` | `carla` | ROS 2 bridge; loads `MAP` or `CUSTOM_OPENDRIVE` |
 | `carla-spawn-objects` | `carla` | Spawns ego vehicle and sensors from `SENSORS`; optional `SPAWN_POINT` |
 | `carla.carla-converter` | `carla` | Generates stack-relevant ego, object, and map topics |

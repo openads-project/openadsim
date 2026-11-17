@@ -15,7 +15,8 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
-    image: ghcr.io/openads-project/carla-simulator:client_v0.10.0-1.1.1
+    # image: ghcr.io/openads-project/carla-simulator:client_v0.10.0-1.1.1
+    image: ghcr.io/openads-project/carla-simulator:client_feature-carla-1.0_ci
     environment:
       CARLA_HOST: carla-server
       CARLA_PORT: 2000

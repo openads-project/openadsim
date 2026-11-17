@@ -57,8 +57,8 @@ For CARLA:
 
 ```bash
 COMPOSE_PROFILES=carla,traffic,manual-testing,no-perception,planning
-MAP=campus
-SPAWN_POINT=50.787510,6.045938,260.0,90.0,wgs84 # lat, lon, altitude, heading, coord.
+MAP=Town10HD_Opt
+SPAWN_POINT=-18.4,-130.2,0.2,180.0 # x, y, z, yaw in CARLA coordinates
 VEHICLE=karl
 SENSORS=global-sensors.json,karl-minimal.json
 USE_SIM_TIME=true

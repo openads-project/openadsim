@@ -9,9 +9,13 @@ services:
   carla-server:
     profiles:
       - carla
+    depends_on:
+      zenoh-router:
+        condition: service_healthy
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
+    # TODO(carla-1.0): use the slim release image once it is published.
     healthcheck:
       test: ["CMD", "bash", "-c", "</dev/tcp/127.0.0.1/2000"]
       start_period: 30s
@@ -19,9 +23,13 @@ services:
       interval: 2s
       timeout: 1s
       retries: 3
-    image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
+    # image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
+    image: ghcr.io/openads-project/carla-simulator:server_feature-carla-1.0_ci
     environment:
       CARLA_PORT: 2000
+      ZENOH_CONFIG_OVERRIDE: >-
+        connect/endpoints=["tcp/zenoh-router:7447"]
+    # CARLA 1.0 cooks its config into the pak; the saved-config layer overrides it.
     # command:
     #   - /bin/bash
     #   - -ic
@@ -34,30 +42,42 @@ services:
       - /bin/bash
       - -ic
       - |
-        ./Linux/CarlaUnreal.sh \
+        mkdir -p "$${HOME}/.config/Epic/CarlaUnreal/Saved/Config/Linux"
+        cp /openadsim/DefaultEngine.ini "$${HOME}/.config/Epic/CarlaUnreal/Saved/Config/Linux/Engine.ini"
+        exec ./CarlaUnreal.sh \
           -nosound \
           -RenderOffScreen \
           --ros2 \
+          --rmw=zenoh \
           -carla-rpc-port=$${CARLA_PORT}
     volumes:
-      - ./DefaultEngine.ini:/workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
+      - ./DefaultEngine.ini:/openadsim/DefaultEngine.ini:ro
     expose:
       - "2000"
       - "2001"
       - "2002"
-    ipc: service:zenoh-router
 
   carla-server-offscreen:
     profiles: !override
       - donotuse
     extends:
       service: carla-server
+    # command:
+    #   - /bin/bash
+    #   - -ic
+    #   - |
+    #     ./Linux/CarlaUnreal.sh \
+    #       -nosound \
+    #       -RenderOffScreen \
+    #       --ros2 \
+    #       -carla-rpc-port=$${CARLA_PORT}
     command:
       - /bin/bash
       - -ic
       - |
-        ./Linux/CarlaUnreal.sh \
+        exec ./CarlaUnreal.sh \
           -nosound \
           -RenderOffScreen \
           --ros2 \
+          --rmw=zenoh \
           -carla-rpc-port=$${CARLA_PORT}
