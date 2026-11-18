@@ -31,6 +31,7 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `ORIGIN_LON` | GPS origin longitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LAT` or leave both empty. | `6.070377` |
 | `LANELET_RELOAD` | `true` derives the Lanelet2 map from the simulation map; `false` uses `CUSTOM_LANELET`. Set automatically by the Configuration GUI. | `true`, `false` |
 | `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map and can validate/import custom scenario bundles. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `scenarios/scenario-generator/campus_following.xosc` |
+| `WEATHER` | CARLA weather, applied by `carla-client` as part of the `environment` profile. `Cycle` (default) runs a day/night cycle with passing storms. A fixed weather is `OpenADSAfternoon` or a [CARLA weather preset](https://carla.readthedocs.io/en/latest/python_api/#carlaweatherparameters). `MapDefault` leaves the weather alone, e.g. to keep the weather a scenario sets. | `Cycle`, `OpenADSAfternoon`, `ClearNoon`, `WetCloudySunset`, `MapDefault` |
 | `USE_SIM_TIME` | Enables ROS simulated time across the stack. Must stay `true` in this setup. | `true` |
 | `ROS_TRACING` | Enables ROS 2 tracing for supported services. | `false`, `true` |
 
@@ -67,7 +68,7 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | `carla-ackermann-control` | `carla` | Applies Ackermann control commands to the ego vehicle |
 | `carla-manual-control` | `carla` | Manual keyboard control of the vehicle |
 | `carla-control-active-bridge` | `carla` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
-| `carla-client` | `environment` | Defines random traffic and environment variation |
+| `carla-client` | `environment` | Defines random traffic and sets the weather from `WEATHER` |
 | `carla-scenario-runner-ros-manual-testing` | `manual-testing` | Interactive scenario execution through RViz |
 | `carla-scenario-runner-ros-automated-testing` | `automated-testing` | Direct scenario execution from `SCENARIO_FILE` |
 

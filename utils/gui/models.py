@@ -65,6 +65,23 @@ class PlanningProfile(str, Enum):
 
 GLOBAL_SENSOR_FILE = "global-sensors.json"
 
+# WEATHER of carla-client (carla-simulation/carla_client/set_environment.py): the day/night cycle,
+# OpenADSim's own fixed weather, the map's weather left untouched, or a CARLA preset.
+WEATHER_CYCLE = "Cycle"
+WEATHER_MAP_DEFAULT = "MapDefault"
+CARLA_WEATHER_PRESETS: tuple[str, ...] = (
+    "ClearNoon", "CloudyNoon", "WetNoon", "WetCloudyNoon",
+    "SoftRainNoon", "MidRainyNoon", "HardRainNoon",
+    "ClearSunset", "CloudySunset", "WetSunset", "WetCloudySunset",
+    "SoftRainSunset", "MidRainSunset", "HardRainSunset",
+    "ClearNight", "CloudyNight", "WetNight", "WetCloudyNight",
+    "SoftRainNight", "MidRainyNight", "HardRainNight",
+    "DustStorm",
+)
+WEATHER_OPTIONS: tuple[str, ...] = (
+    WEATHER_CYCLE, "OpenADSAfternoon", WEATHER_MAP_DEFAULT, *CARLA_WEATHER_PRESETS,
+)
+
 
 def env_export(env_name: str):
     def decorator(func: Callable[..., Any]):
@@ -382,9 +399,11 @@ class MapConfig(BaseModel):
 
 class ScenarioConfig(BaseModel):
     scenario_file: str = ""
+    weather: str = WEATHER_CYCLE
 
     def normalize(self):
         self.scenario_file = self.scenario_file.strip()
+        self.weather = self.weather.strip() or WEATHER_CYCLE
 
 
 class AdditionalOptionsConfig(BaseModel):
@@ -466,7 +485,7 @@ class SimulationConfig(BaseModel):
                 "LANELET_RELOAD",
             ],
         ),
-        ("### Scenario Configuration", ["SCENARIO_FILE"]),
+        ("### Scenario Configuration", ["SCENARIO_FILE", "WEATHER"]),
         ("### Additional Options", ["USE_SIM_TIME", "ROS_TRACING"]),
     ]
     OPTIONAL_EMPTY_ENV_KEYS: ClassVar[set[str]] = {"COMPOSE_FILE"}
@@ -720,7 +739,10 @@ class SimulationConfig(BaseModel):
             origin_lon=cls._parse_optional_float(env_vars.get("ORIGIN_LON")),
         )
 
-        scenario = ScenarioConfig(scenario_file=env_vars.get("SCENARIO_FILE", ""))
+        scenario = ScenarioConfig(
+            scenario_file=env_vars.get("SCENARIO_FILE", ""),
+            weather=env_vars.get("WEATHER", WEATHER_CYCLE),
+        )
 
         compose_profiles = [
             profile.strip()
@@ -916,6 +938,11 @@ class SimulationConfig(BaseModel):
             not sumo_selected
             and self.additional.testing_profile != TestingProfile.DISABLED
         )
+        # carla-client sets the weather; it runs with the environment profile.
+        weather_enabled = (
+            not sumo_selected
+            and self.additional.environment_profile == EnvironmentProfile.ENABLED
+        )
 
         if (
             current_opendrive
@@ -1090,6 +1117,20 @@ class SimulationConfig(BaseModel):
                         "Prebuilt map defaults are applied automatically when changing the map."
                     ),
                     control="text",
+                ),
+                UiField(
+                    path="scenario.weather",
+                    env_name="WEATHER",
+                    label="Weather",
+                    description=(
+                        "Cycle: day and night with passing storms. A fixed weather is "
+                        "OpenADSAfternoon or a CARLA preset. MapDefault keeps the map's weather, "
+                        "or the weather a scenario sets. Part of the environment profile, "
+                        "CARLA only."
+                    ),
+                    control="select",
+                    options=WEATHER_OPTIONS,
+                    disabled=not weather_enabled,
                 ),
                 UiField(
                     path="scenario.scenario_file",

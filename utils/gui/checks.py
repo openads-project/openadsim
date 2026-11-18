@@ -14,8 +14,10 @@ from models import (
     SUMO_PREBUILT_MAPS,
     SimulationProfile,
     TestingProfile,
+    EnvironmentProfile,
     SimulationConfig,
     Vehicle,
+    WEATHER_OPTIONS,
     is_vehicle_sensor_entry,
 )
 
@@ -368,6 +370,19 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
                             level="warning",
                         )
                     )
+
+    # Weather: carla-client fails on an unknown WEATHER, and only runs with the environment profile.
+    weather_applied = (
+        not sumo_selected
+        and config.additional.environment_profile == EnvironmentProfile.ENABLED
+    )
+    if weather_applied and config.scenario.weather not in WEATHER_OPTIONS:
+        result.errors.append(
+            ValidationIssue(
+                path="scenario.weather",
+                message=f"WEATHER must be one of: {', '.join(WEATHER_OPTIONS)}",
+            )
+        )
 
     # Additional options
     if sumo_selected and config.additional.perception_profile != PerceptionProfile.DISABLED:
