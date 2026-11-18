@@ -23,6 +23,7 @@ services:
         ./CarlaUnreal.sh \
           -nosound \
           -RenderOffScreen \
+          -quality-level=Medium \
           --ros2 \
           --rmw=zenoh \
           -carla-rpc-port=$${CARLA_PORT} \
