@@ -9,7 +9,7 @@ services:
 
   carla-client:
     profiles:
-      - traffic
+      - environment
     depends_on:
       carla-server:
         condition: service_healthy

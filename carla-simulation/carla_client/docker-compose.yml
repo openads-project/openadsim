@@ -9,7 +9,7 @@ services:
   carla-client:
     # TODO(openads): replace the feature-branch CI image with the release tag (v1.0.0-x.y.z) when releasing.
     profiles:
-      - traffic
+      - environment
     depends_on:
       carla-server:
         condition: service_healthy

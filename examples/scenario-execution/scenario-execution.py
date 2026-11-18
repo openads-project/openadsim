@@ -361,13 +361,13 @@ class ScenarioExecutor:
                 "must not include sumo together with carla"
             )
 
-        traffic_profiles = [
-            profile for profile in ("no-traffic", "traffic") if profile in profiles
+        environment_profiles = [
+            profile for profile in ("no-environment", "environment") if profile in profiles
         ]
-        if len(traffic_profiles) != 1:
+        if len(environment_profiles) != 1:
             raise ScenarioExecutionError(
                 f'{scenario_label} COMPOSE_PROFILES="{environment["COMPOSE_PROFILES"]}" '
-                "must include exactly one of no-traffic or traffic"
+                "must include exactly one of no-environment or environment"
             )
         if "manual-testing" in profiles:
             raise ScenarioExecutionError(
@@ -886,8 +886,8 @@ def parse_args() -> argparse.Namespace:
 Configuration:
   COMPOSE_PROFILES is required in the top-level JSON env and may be overridden
   by scenario rules. Each effective value must include carla,
-  automated-testing, and exactly one of no-traffic or traffic. It must not
-  include sumo or manual-testing. Environment precedence is:
+  automated-testing, and exactly one of no-environment or environment. It
+  must not include sumo or manual-testing. Environment precedence is:
   scenario rules > config env > host environment.
 
   MAP selects a prebuilt CARLA map. CUSTOM_OPENDRIVE selects an .xodr file.

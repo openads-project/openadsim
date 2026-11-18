@@ -41,9 +41,11 @@ class SimulationProfile(str, Enum):
     SUMO = "sumo"
 
 
-class TrafficProfile(str, Enum):
-    DISABLED = "no-traffic"
-    ENABLED = "traffic"
+class EnvironmentProfile(str, Enum):
+    """carla-client: background traffic and weather."""
+
+    DISABLED = "no-environment"
+    ENABLED = "environment"
 
 
 class TestingProfile(str, Enum):
@@ -390,7 +392,7 @@ class AdditionalOptionsConfig(BaseModel):
         "rmw",
         "simulation",
         "example_overlay",
-        "traffic_profile",
+        "environment_profile",
         "testing_profile",
         "perception_profile",
         "planning_profile",
@@ -401,7 +403,7 @@ class AdditionalOptionsConfig(BaseModel):
     rmw: Rmw = Rmw.ZENOH
     simulation: SimulationProfile = SimulationProfile.CARLA
     example_overlay: str = ""
-    traffic_profile: TrafficProfile = TrafficProfile.ENABLED
+    environment_profile: EnvironmentProfile = EnvironmentProfile.ENABLED
     testing_profile: TestingProfile = TestingProfile.MANUAL
     perception_profile: PerceptionProfile = PerceptionProfile.DISABLED
     planning_profile: PlanningProfile = PlanningProfile.CLASSIC
@@ -425,7 +427,7 @@ class AdditionalOptionsConfig(BaseModel):
         if self.simulation == SimulationProfile.CARLA:
             parts.extend(
                 [
-                    self.traffic_profile.value,
+                    self.environment_profile.value,
                     self.testing_profile.value,
                 ]
             )
@@ -739,27 +741,25 @@ class SimulationConfig(BaseModel):
         else:
             simulation = SimulationProfile.CARLA
 
-        traffic_profile = TrafficProfile.ENABLED
+        environment_profile = EnvironmentProfile.ENABLED
         testing_profile = TestingProfile.MANUAL
         perception_profile = PerceptionProfile.DISABLED
         planning_profile = PlanningProfile.CLASSIC
 
-        traffic_values = {item.value for item in TrafficProfile}
+        environment_values = {item.value for item in EnvironmentProfile}
         testing_values = {item.value for item in TestingProfile}
 
-        selected_traffic_profile = next(
-            (profile for profile in compose_profiles if profile in traffic_values),
+        selected_environment_profile = next(
+            (profile for profile in compose_profiles if profile in environment_values),
             "",
         )
-        if selected_traffic_profile:
-            traffic_profile = TrafficProfile(selected_traffic_profile)
-        elif "traffic-testing" in compose_profiles:
-            traffic_profile = TrafficProfile.ENABLED
+        if selected_environment_profile:
+            environment_profile = EnvironmentProfile(selected_environment_profile)
         elif any(
             profile in compose_profiles
             for profile in ("no-testing", "manual-testing", "automated-testing")
         ):
-            traffic_profile = TrafficProfile.DISABLED
+            environment_profile = EnvironmentProfile.DISABLED
 
         for profile in compose_profiles:
             if profile in testing_values:
@@ -785,7 +785,7 @@ class SimulationConfig(BaseModel):
             example_overlay=cls._infer_example_overlay_from_compose(
                 env_vars.get("COMPOSE_FILE", env_vars.get("COMPOSE_FILES", "")),
             ),
-            traffic_profile=traffic_profile,
+            environment_profile=environment_profile,
             testing_profile=testing_profile,
             perception_profile=perception_profile,
             planning_profile=planning_profile,
@@ -1118,12 +1118,12 @@ class SimulationConfig(BaseModel):
                     options=(SimulationProfile.CARLA.value, SimulationProfile.SUMO.value),
                 ),
                 UiField(
-                    path="additional.traffic_profile",
+                    path="additional.environment_profile",
                     env_name="COMPOSE_PROFILES",
-                    label="Traffic Profile",
-                    description="Enable or disable generated background traffic. CARLA only.",
+                    label="Environment Profile",
+                    description="Enable or disable generated background traffic and weather. CARLA only.",
                     control="select",
-                    options=tuple(profile.value for profile in TrafficProfile),
+                    options=tuple(profile.value for profile in EnvironmentProfile),
                     disabled=self.additional.simulation != SimulationProfile.CARLA,
                 ),
                 UiField(

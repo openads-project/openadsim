@@ -8,7 +8,7 @@ include:
       compose-file: docker-compose.yml
       include-env-file-in-bundle: true
       chart-map: deployment/chart-map.yaml
-      profiles: carla,traffic,automated-testing,no-perception,planning
+      profiles: carla,environment,automated-testing,no-perception,planning
       output-dir: deployment/generated
       helmfile-entrypoint: deployment/helmfile.yaml
       bundle-dir: deployment

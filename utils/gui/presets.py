@@ -9,7 +9,7 @@ from models import (
     SimulationConfig,
     Vehicle,
     VehicleConfig,
-    TrafficProfile,
+    EnvironmentProfile,
     TestingProfile,
 )
 
@@ -38,7 +38,7 @@ PRESETS = {
         ),
         scenario=ScenarioConfig(scenario_file="scenarios/simple-scenario/synthetic_curve_cut_in.xosc"),
         additional=AdditionalOptionsConfig(
-            traffic_profile=TrafficProfile.DISABLED,
+            environment_profile=EnvironmentProfile.DISABLED,
             testing_profile=TestingProfile.AUTOMATED,
         ),
     ),
@@ -55,7 +55,7 @@ PRESETS = {
         ),
         additional=AdditionalOptionsConfig(
             example_overlay="cooperative-perception",
-            traffic_profile=TrafficProfile.ENABLED,
+            environment_profile=EnvironmentProfile.ENABLED,
             testing_profile=TestingProfile.DISABLED,
             perception_profile=PerceptionProfile.ENABLED,
         ),

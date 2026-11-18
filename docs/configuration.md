@@ -19,7 +19,7 @@ All variables below can be set through the Configuration GUI or manually in `.en
 
 | Variable | Purpose / Impact | Typical Values |
 | ------ | ------ | ------ |
-| `COMPOSE_PROFILES` | Selected functional groups for simulation, traffic, testing, perception, and planning. | `carla,traffic,manual-testing,no-perception,planning`, `sumo,no-perception,planning` |
+| `COMPOSE_PROFILES` | Selected functional groups for simulation, environment (traffic and weather), testing, perception, and planning. | `carla,environment,manual-testing,no-perception,planning`, `sumo,no-perception,planning` |
 | `COMPOSE_FILE` | Compose file chain. Examples override the standard `docker-compose.yml` with a more specialized file. | `docker-compose.yml:examples/cooperative-perception/docker-compose.override.yml` |
 | `VEHICLE` | Vehicle profile for sensor frames (URDF), parameters, and controller tuning. Mostly relevant for CARLA. | `karl`, `shuttle` |
 | `SENSORS` | Comma-separated list of CARLA sensor layout files to be used when spawning objects. SUMO does not use sensor layouts. | `global-sensors.json,karl-minimal.json`,`rita-minimal.json` |
@@ -41,12 +41,12 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | Group | Profiles | Compatibility / Effect |
 | ------ | ------ | ------ |
 | Simulation | `carla`, `sumo` | Selects the simulation backend. CARLA supports the full stack; SUMO is lightweight and more restricted. |
-| Traffic | `no-traffic`, `traffic` | Selects if background traffic in CARLA is enabled. SUMO always generates random traffic. |
+| Environment | `no-environment`, `environment` | Selects if CARLA gets background traffic and weather (`carla-client`). Without it, the map keeps its own weather. SUMO always generates random traffic. |
 | Testing | `no-testing`, `manual-testing`, `automated-testing` | CARLA only. `no-testing` starts no scenario runner, `manual-testing` controls scenarios manually through RViz, `automated-testing` starts the `SCENARIO_FILE` directly. |
 | Perception | `no-perception`, `perception` | `perception` is CARLA only. SUMO must use `no-perception`. |
 | Planning | `planning` | CARLA and SUMO support `planning`. |
 
-CARLA uses one profile from both the Traffic and Testing groups. Their defaults are `traffic` and `manual-testing`. SUMO uses neither group.
+CARLA uses one profile from both the Environment and Testing groups. Their defaults are `environment` and `manual-testing`. SUMO uses neither group.
 
 Add `bag-recording` when ROS bag capture is required.
 
@@ -67,7 +67,7 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | `carla-ackermann-control` | `carla` | Applies Ackermann control commands to the ego vehicle |
 | `carla-manual-control` | `carla` | Manual keyboard control of the vehicle |
 | `carla-control-active-bridge` | `carla` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
-| `carla-client` | `traffic` | Defines random traffic and environment variation |
+| `carla-client` | `environment` | Defines random traffic and environment variation |
 | `carla-scenario-runner-ros-manual-testing` | `manual-testing` | Interactive scenario execution through RViz |
 | `carla-scenario-runner-ros-automated-testing` | `automated-testing` | Direct scenario execution from `SCENARIO_FILE` |
 
