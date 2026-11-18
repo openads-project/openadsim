@@ -29,11 +29,11 @@ WALKER_NAV_LOCATION_ATTEMPTS = 10
 CONNECT_RETRY_SECONDS = 2.0
 CLIENT_TIMEOUT_SECONDS = 10.0
 
-# Weather. By default it cycles through day and night with passing storms; --weather or the
-# WEATHER environment variable pick a fixed weather instead.
+# Weather. By default the map's weather stays as it is; --weather or the WEATHER environment
+# variable pick the day/night cycle with passing storms or a fixed weather instead.
 CYCLE_WEATHER = "Cycle"
-DEFAULT_WEATHER = CYCLE_WEATHER
 MAP_DEFAULT_WEATHER = "MapDefault"
+DEFAULT_WEATHER = MAP_DEFAULT_WEATHER
 
 # Weather cycle, in simulation seconds. The night is short: NIGHT_FRACTION of a day.
 CYCLE_DAY_LENGTH_S = 480.0
@@ -158,10 +158,10 @@ def parse_args():
         "--weather",
         metavar="PRESET",
         default=os.environ.get("WEATHER") or DEFAULT_WEATHER,
-        help='Weather: "%s" (default, or the WEATHER environment variable) cycles through day '
-        'and night with passing storms; a fixed weather is "OpenADSAfternoon", a CARLA preset such '
-        'as "ClearNoon" or "WetCloudySunset", or "%s" to leave the weather alone, e.g. while '
-        'another client changes it' % (CYCLE_WEATHER, MAP_DEFAULT_WEATHER),
+        help='Weather: "%s" (default, or the WEATHER environment variable) leaves the map\'s '
+        'weather alone, e.g. while another client changes it; "%s" cycles through day and night '
+        'with passing storms; a fixed weather is "OpenADSAfternoon" or a CARLA preset such as '
+        '"ClearNoon" or "WetCloudySunset"' % (MAP_DEFAULT_WEATHER, CYCLE_WEATHER),
     )
     parser.add_argument(
         "--day-length", type=float, default=CYCLE_DAY_LENGTH_S,

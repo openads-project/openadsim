@@ -65,8 +65,8 @@ class PlanningProfile(str, Enum):
 
 GLOBAL_SENSOR_FILE = "global-sensors.json"
 
-# WEATHER of carla-client (carla-simulation/carla_client/set_environment.py): the day/night cycle,
-# OpenADSim's own fixed weather, the map's weather left untouched, or a CARLA preset.
+# WEATHER of carla-client (carla-simulation/carla_client/set_environment.py): the map's weather
+# left untouched (default), the day/night cycle, OpenADSim's own fixed weather, or a CARLA preset.
 WEATHER_CYCLE = "Cycle"
 WEATHER_MAP_DEFAULT = "MapDefault"
 CARLA_WEATHER_PRESETS: tuple[str, ...] = (
@@ -79,7 +79,7 @@ CARLA_WEATHER_PRESETS: tuple[str, ...] = (
     "DustStorm",
 )
 WEATHER_OPTIONS: tuple[str, ...] = (
-    WEATHER_CYCLE, "OpenADSAfternoon", WEATHER_MAP_DEFAULT, *CARLA_WEATHER_PRESETS,
+    WEATHER_MAP_DEFAULT, WEATHER_CYCLE, "OpenADSAfternoon", *CARLA_WEATHER_PRESETS,
 )
 
 
@@ -399,11 +399,11 @@ class MapConfig(BaseModel):
 
 class ScenarioConfig(BaseModel):
     scenario_file: str = ""
-    weather: str = WEATHER_CYCLE
+    weather: str = WEATHER_MAP_DEFAULT
 
     def normalize(self):
         self.scenario_file = self.scenario_file.strip()
-        self.weather = self.weather.strip() or WEATHER_CYCLE
+        self.weather = self.weather.strip() or WEATHER_MAP_DEFAULT
 
 
 class AdditionalOptionsConfig(BaseModel):
@@ -741,7 +741,7 @@ class SimulationConfig(BaseModel):
 
         scenario = ScenarioConfig(
             scenario_file=env_vars.get("SCENARIO_FILE", ""),
-            weather=env_vars.get("WEATHER", WEATHER_CYCLE),
+            weather=env_vars.get("WEATHER", WEATHER_MAP_DEFAULT),
         )
 
         compose_profiles = [
@@ -1123,10 +1123,10 @@ class SimulationConfig(BaseModel):
                     env_name="WEATHER",
                     label="Weather",
                     description=(
-                        "Cycle: day and night with passing storms. A fixed weather is "
-                        "OpenADSAfternoon or a CARLA preset. MapDefault keeps the map's weather, "
-                        "or the weather a scenario sets. Part of the environment profile, "
-                        "CARLA only."
+                        "MapDefault (default) keeps the map's weather, or the weather a "
+                        "scenario sets. Cycle: day and night with passing storms. A fixed "
+                        "weather is OpenADSAfternoon or a CARLA preset. Part of the "
+                        "environment profile, CARLA only."
                     ),
                     control="select",
                     options=WEATHER_OPTIONS,
