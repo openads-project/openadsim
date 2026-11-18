@@ -16,6 +16,9 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
+    environment:
+      # Weather preset of set_environment.py; MapDefault leaves the weather to another client.
+      WEATHER: ${WEATHER:-}
     command:
       - /bin/bash
       - -ic

@@ -20,6 +20,7 @@ services:
     environment:
       CARLA_HOST: carla-server
       CARLA_PORT: 2000
+      WEATHER: ${WEATHER:-}
     # command:
     #   - sleep
     #   - infinity

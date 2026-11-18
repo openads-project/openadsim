@@ -28,10 +28,77 @@ NEAR_EGO_VEHICLE_TARGET_FRACTION = 0.7
 WALKER_NAV_LOCATION_ATTEMPTS = 10
 CONNECT_RETRY_SECONDS = 2.0
 CLIENT_TIMEOUT_SECONDS = 10.0
+
+# Weather. By default it cycles through day and night with passing storms; --weather or the
+# WEATHER environment variable pick a fixed weather instead.
+CYCLE_WEATHER = "Cycle"
+DEFAULT_WEATHER = CYCLE_WEATHER
+MAP_DEFAULT_WEATHER = "MapDefault"
+
+# Weather cycle, in simulation seconds. The night is short: NIGHT_FRACTION of a day.
+CYCLE_DAY_LENGTH_S = 480.0
+CYCLE_NIGHT_FRACTION = 0.1
+CYCLE_STORM_LENGTH_S = 240.0       # half a day: one storm by day, one at night; 0: no storms
+CYCLE_STORM_SHARE = 0.5            # part of a storm cycle with a storm: about 40% bad weather
+CYCLE_STORM_PEAK_FRACTION = 0.635  # heavy rain within a storm (precipitation 100 from 0.55 to 0.72)
+CYCLE_START_FRACTION = 0.15        # start in the morning, with the sun at about 30 degrees
+CYCLE_SUN_MAX_ALTITUDE_DEG = 60.0  # noon
+CYCLE_SUN_MIN_ALTITUDE_DEG = -20.0  # midnight; cameras are dark from about -10
+CYCLE_UPDATE_INTERVAL_S = 0.5      # simulation time between two weather updates
+CYCLE_WARMUP_S = 5.0               # blend in from the current weather; a jump can glitch the sky
+CYCLE_LOG_INTERVAL_S = 60.0
+
+# Storm cycle of PythonAPI/examples/dynamic_day_night_weather_cycle.py (CARLA 1.0): every field
+# has its own (fraction, value) keyframes, so clouds come first, then rain, wind, wet road,
+# puddles and some fog at the height of the storm, before it clears up again.
+STORM_KEYFRAMES = {
+    "cloudiness": [(0.00, 0), (0.15, 90), (0.20, 100), (0.75, 100), (0.85, 85), (1.00, 0)],
+    "precipitation": [(0.00, 0), (0.19, 0), (0.20, 5), (0.35, 45), (0.55, 100), (0.72, 100),
+                      (0.80, 40), (0.90, 0), (1.00, 0)],
+    "wind_intensity": [(0.00, 0), (0.30, 0), (0.35, 20), (0.55, 55), (0.72, 100), (0.85, 60),
+                       (0.95, 10), (1.00, 0)],
+    "wetness": [(0.00, 0), (0.20, 0), (0.22, 10), (0.30, 60), (0.38, 80), (0.55, 95), (0.72, 100),
+                (0.85, 70), (0.95, 15), (1.00, 0)],
+    "precipitation_deposits": [(0.00, 0), (0.44, 0), (0.45, 10), (0.60, 55), (0.72, 100),
+                               (0.88, 60), (0.97, 10), (1.00, 0)],
+    "fog_density": [(0.00, 0), (0.44, 0), (0.50, 8), (0.65, 20), (0.72, 30), (0.85, 15),
+                    (0.95, 0), (1.00, 0)],
+    "fog_distance": [(0.00, 100), (0.50, 100), (0.65, 60), (0.72, 35), (0.85, 70), (1.00, 100)],
+    "fog_falloff": [(0.00, 1.0), (0.50, 1.0), (0.72, 2.0), (1.00, 1.0)],
+    "scattering_intensity": [(0.00, 1.0), (0.60, 1.0), (0.72, 2.5), (0.90, 1.0), (1.00, 1.0)],
+}
+WEATHER_FIELDS = [
+    "cloudiness", "precipitation", "precipitation_deposits", "wind_intensity", "sun_azimuth_angle",
+    "sun_altitude_angle", "fog_density", "fog_distance", "fog_falloff", "wetness",
+    "scattering_intensity", "mie_scattering_scale", "rayleigh_scattering_scale", "dust_storm",
+]
+
+# Fixed weathers of OpenADSim. Fields left out keep the map's values, including the sun azimuth.
+CUSTOM_WEATHERS = {
+    "OpenADSAfternoon": {
+        "cloudiness": 40.0,              # some clouds dim the light a little
+        "precipitation": 40.0,            # a trace of rain
+        "precipitation_deposits": 0.01,  # a few small puddles: a slightly wet road
+        "wetness": 10.0,                 # wet sheen, RGB cameras only
+        "wind_intensity": 10.0,
+        "sun_altitude_angle": 20.0,       # low evening sun; street lights switch on only below 0.8
+        "rayleigh_scattering_scale": 0.05,  # default 0.0331; reddens the low sun and the sky near it
+        "mie_scattering_scale": 0.05,       # default 0.03; warm haze and halo around the sun
+        "fog_density": 10.0,
+    },
+}
 EGO_ROLE_NAME = "ego_vehicle"
 BACKGROUND_ROLE_NAME = "autopilot"
 
 STATUS_INTERVAL = 5.0
+LIGHT_UPDATE_INTERVAL = 1.0
+
+# Vehicle lights follow the weather with the thresholds of the Traffic Manager
+# (LibCarla/source/carla/trafficmanager/Constants.h), so the ego looks like the traffic.
+SUN_ALTITUDE_LOW_BEAM_DEG = 15.0   # below: position lights and low beam
+SUN_ALTITUDE_POSITION_DEG = 35.0   # below: position lights
+HEAVY_PRECIPITATION = 80.0         # above: position lights and low beam
+FOG_DENSITY_FOG_LIGHTS = 20.0      # above: position lights, low beam and fog lights
 STUCK_SPEED_MPS = 0.2
 STUCK_DISTANCE_M = 1.0
 STUCK_SECONDS = 45.0
@@ -89,9 +156,29 @@ def parse_args():
     parser.add_argument(
         "--weather",
         metavar="PRESET",
-        help='Weather preset name, e.g. "ClearNoon" or "WetCloudyNoon"',
+        default=os.environ.get("WEATHER") or DEFAULT_WEATHER,
+        help='Weather: "%s" (default, or the WEATHER environment variable) cycles through day '
+        'and night with passing storms; a fixed weather is "OpenADSAfternoon", a CARLA preset such '
+        'as "ClearNoon" or "WetCloudySunset", or "%s" to leave the weather alone, e.g. while '
+        'another client changes it' % (CYCLE_WEATHER, MAP_DEFAULT_WEATHER),
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--day-length", type=float, default=CYCLE_DAY_LENGTH_S,
+        help="Weather cycle: length of one day in simulation seconds (default %(default)s)",
+    )
+    parser.add_argument(
+        "--night-fraction", type=float, default=CYCLE_NIGHT_FRACTION,
+        help="Weather cycle: share of the day the sun is below the horizon (default %(default)s)",
+    )
+    parser.add_argument(
+        "--storm-length", type=float, default=CYCLE_STORM_LENGTH_S,
+        help="Weather cycle: length of one storm cycle in simulation seconds, 0 for no storms "
+        "(default %(default)s)",
+    )
+    args = parser.parse_args()
+    if args.day_length <= 0 or not 0.0 < args.night_fraction < 1.0 or args.storm_length < 0:
+        parser.error("--day-length must be > 0, --night-fraction in (0, 1), --storm-length >= 0")
+    return args
 
 
 def connect_to_carla(args):
@@ -154,10 +241,20 @@ def get_blueprints(world, pattern):
 
 
 def apply_weather(world, preset_name):
-    if not preset_name:
+    if not preset_name or preset_name == MAP_DEFAULT_WEATHER:
         return None
+    if preset_name == CYCLE_WEATHER:
+        logging.info("Weather cycles through day and night, driven by the supervision loop")
+        return world.get_weather()
 
-    if not hasattr(carla.WeatherParameters, preset_name):
+    if preset_name in CUSTOM_WEATHERS:
+        # Start from the map's weather so that unset fields, e.g. the sun azimuth, stay as they are.
+        weather = world.get_weather()
+        for field, value in CUSTOM_WEATHERS[preset_name].items():
+            setattr(weather, field, value)
+    elif hasattr(carla.WeatherParameters, preset_name):
+        weather = getattr(carla.WeatherParameters, preset_name)
+    else:
         presets = [
             name
             for name in dir(carla.WeatherParameters)
@@ -165,11 +262,11 @@ def apply_weather(world, preset_name):
         ]
         raise ValueError(
             "Unknown weather preset '%s'. Available presets: %s"
-            % (preset_name, ", ".join(sorted(presets)))
+            % (preset_name, ", ".join(sorted(list(CUSTOM_WEATHERS) + [CYCLE_WEATHER, MAP_DEFAULT_WEATHER] + presets)))
         )
 
     previous_weather = world.get_weather()
-    world.set_weather(getattr(carla.WeatherParameters, preset_name))
+    world.set_weather(weather)
     logging.info("Weather preset set to %s", preset_name)
     return previous_weather
 
@@ -201,6 +298,94 @@ def configure_simulation(world, traffic_manager, args):
         logging.warning("Running in asynchronous mode; traffic can be less stable")
 
     return original_settings, changed_settings, synchronous_master
+
+
+def sample_keyframes(keyframes, fraction):
+    """Linear interpolation of (fraction, value) keyframes."""
+    if fraction <= keyframes[0][0]:
+        return keyframes[0][1]
+    for (f0, v0), (f1, v1) in zip(keyframes, keyframes[1:]):
+        if fraction <= f1:
+            return v0 + (v1 - v0) * ((fraction - f0) / (f1 - f0) if f1 > f0 else 0.0)
+    return keyframes[-1][1]
+
+
+def cycle_sun(fraction, night_fraction):
+    """Sun altitude and azimuth over one day: a long day arc up to noon, then a short night arc."""
+    day_fraction = 1.0 - night_fraction
+    if fraction < day_fraction:
+        altitude = CYCLE_SUN_MAX_ALTITUDE_DEG * math.sin(math.pi * fraction / day_fraction)
+    else:
+        altitude = CYCLE_SUN_MIN_ALTITUDE_DEG * math.sin(
+            math.pi * (fraction - day_fraction) / night_fraction)
+    return altitude, (360.0 * fraction) % 360.0
+
+
+def copy_weather(weather):
+    return carla.WeatherParameters(**{field: getattr(weather, field) for field in WEATHER_FIELDS})
+
+
+class WeatherCycle:
+    """Day/night and storm cycle on simulation time, updated from the supervision loop."""
+
+    def __init__(self, day_length, night_fraction, storm_length):
+        self.day_length = day_length
+        self.night_fraction = night_fraction
+        self.storm_length = storm_length
+        self.start_sim_time = None
+        self.last_sim_time = None
+        self.last_update = None
+        self.last_log = None
+        self.start_weather = None
+        # Shift the storms so that the heavy rain of one falls on midnight (and with a storm
+        # cycle of half a day, the other one on noon).
+        midnight = ((1.0 - night_fraction / 2.0 - CYCLE_START_FRACTION) % 1.0) * day_length
+        peak = CYCLE_STORM_PEAK_FRACTION * CYCLE_STORM_SHARE * storm_length
+        self.storm_offset = (midnight - peak) % storm_length if storm_length > 0 else 0.0
+
+    def storm_fraction(self, elapsed):
+        """Position in the storm keyframes; 1.0 (clear) outside the storm part of the cycle."""
+        if self.storm_length <= 0:
+            return 0.0
+        phase = ((elapsed - self.storm_offset) / self.storm_length) % 1.0
+        return phase / CYCLE_STORM_SHARE if phase < CYCLE_STORM_SHARE else 1.0
+
+    def weather_at(self, elapsed):
+        weather = copy_weather(self.start_weather)  # keeps the fields the cycle does not drive
+        day = (CYCLE_START_FRACTION + elapsed / self.day_length) % 1.0
+        weather.sun_altitude_angle, weather.sun_azimuth_angle = cycle_sun(day, self.night_fraction)
+        storm = self.storm_fraction(elapsed)
+        for field, keyframes in STORM_KEYFRAMES.items():
+            setattr(weather, field, sample_keyframes(keyframes, storm))
+        return weather
+
+    def update(self, world):
+        now = world.get_snapshot().timestamp.elapsed_seconds
+        if self.start_sim_time is None or now < self.last_sim_time:
+            # first call, or the episode restarted (map reload): start over from its weather
+            self.start_sim_time, self.last_update, self.last_log = now, None, None
+            self.start_weather = world.get_weather()
+        self.last_sim_time = now
+        elapsed = now - self.start_sim_time
+        if self.last_update is not None and elapsed - self.last_update < CYCLE_UPDATE_INTERVAL_S:
+            return
+        self.last_update = elapsed
+
+        weather = self.weather_at(elapsed)
+        if elapsed < CYCLE_WARMUP_S:
+            alpha = elapsed / CYCLE_WARMUP_S
+            for field in WEATHER_FIELDS:
+                start = getattr(self.start_weather, field)
+                setattr(weather, field, start + (getattr(weather, field) - start) * alpha)
+        world.set_weather(weather)
+
+        if self.last_log is None or elapsed - self.last_log >= CYCLE_LOG_INTERVAL_S:
+            self.last_log = elapsed
+            logging.info(
+                "Weather cycle: sun %.0f deg, clouds %.0f, rain %.0f, puddles %.0f, fog %.0f",
+                weather.sun_altitude_angle, weather.cloudiness, weather.precipitation,
+                weather.precipitation_deposits, weather.fog_density,
+            )
 
 
 def restore_simulation(world, original_settings, changed_settings, previous_weather):
@@ -244,7 +429,11 @@ def spawn_vehicles(client, world, traffic_manager, blueprints, count, synchronou
             )
         )
 
-    return apply_spawn_batch(client, batch, synchronous_master)
+    vehicle_ids = apply_spawn_batch(client, batch, synchronous_master)
+    # Let the Traffic Manager switch the lights of the traffic with the weather.
+    for vehicle in world.get_actors(vehicle_ids):
+        traffic_manager.update_vehicle_lights(vehicle, True)
+    return vehicle_ids
 
 
 def select_vehicle_spawn_points(world, count):
@@ -516,14 +705,22 @@ def supervise_environment(
     collided_vehicles,
     walker_records,
     synchronous_master,
+    weather_cycle=None,
 ):
     vehicle_state = build_vehicle_state(world, vehicles, time.monotonic())
     next_status = time.monotonic()
+    next_lights = time.monotonic()
 
     while True:
         tick_once(world, args, synchronous_master)
 
+        if weather_cycle is not None:
+            weather_cycle.update(world)
+
         now = time.monotonic()
+        if now >= next_lights:
+            next_lights = now + LIGHT_UPDATE_INTERVAL
+            update_ego_lights(world)
         if now < next_status:
             continue
         next_status = now + STATUS_INTERVAL
@@ -593,6 +790,36 @@ def supervise_environment(
             ),
             flush=True,
         )
+
+
+def weather_light_state(weather):
+    """Position, low beam and fog lights for the weather, as the Traffic Manager sets them."""
+    lights = carla.VehicleLightState.NONE
+    if weather.sun_altitude_angle < SUN_ALTITUDE_POSITION_DEG:
+        lights |= carla.VehicleLightState.Position
+    if weather.sun_altitude_angle < SUN_ALTITUDE_LOW_BEAM_DEG or weather.precipitation > HEAVY_PRECIPITATION:
+        lights |= carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
+    if weather.fog_density > FOG_DENSITY_FOG_LIGHTS:
+        lights |= (carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
+                   | carla.VehicleLightState.Fog)
+    return int(lights)
+
+
+def update_ego_lights(world):
+    """Switch the ego's weather-dependent lights; brake lights, blinkers and high beam stay as they are."""
+    ego = find_ego_vehicle(world)
+    if ego is None:
+        return
+    managed = int(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
+                  | carla.VehicleLightState.Fog)
+    try:
+        current = int(ego.get_light_state())
+        wanted = (current & ~managed) | weather_light_state(world.get_weather())
+        if wanted != current:
+            ego.set_light_state(carla.VehicleLightState(wanted))
+            logging.info("Ego lights set to %s", carla.VehicleLightState(wanted))
+    except RuntimeError as error:
+        logging.warning("Could not update the ego lights: %s", error)
 
 
 def tick_once(world, args, synchronous_master):
@@ -784,6 +1011,10 @@ def main():
 
     try:
         previous_weather = apply_weather(world, args.weather)
+        weather_cycle = (
+            WeatherCycle(args.day_length, args.night_fraction, args.storm_length)
+            if args.weather == CYCLE_WEATHER else None
+        )
         original_settings, changed_settings, synchronous_master = configure_simulation(
             world, traffic_manager, args
         )
@@ -832,6 +1063,7 @@ def main():
             collided_vehicles,
             walker_records,
             synchronous_master,
+            weather_cycle,
         )
 
     finally:
