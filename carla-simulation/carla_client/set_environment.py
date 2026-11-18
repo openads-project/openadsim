@@ -41,9 +41,10 @@ CYCLE_NIGHT_FRACTION = 0.1
 CYCLE_STORM_LENGTH_S = 240.0       # half a day: one storm by day, one at night; 0: no storms
 CYCLE_STORM_SHARE = 0.5            # part of a storm cycle with a storm: about 40% bad weather
 CYCLE_STORM_PEAK_FRACTION = 0.635  # heavy rain within a storm (precipitation 100 from 0.55 to 0.72)
+CYCLE_STORM_PEAK_DELAY = 0.05      # of a day after midnight: the storm clears after sunrise, not with it
 CYCLE_START_FRACTION = 0.15        # start in the morning, with the sun at about 30 degrees
 CYCLE_SUN_MAX_ALTITUDE_DEG = 60.0  # noon
-CYCLE_SUN_MIN_ALTITUDE_DEG = -20.0  # midnight; cameras are dark from about -10
+CYCLE_SUN_MIN_ALTITUDE_DEG = -15.0  # midnight: dark (from about -10), but never pitch black
 CYCLE_UPDATE_INTERVAL_S = 0.5      # simulation time between two weather updates
 CYCLE_WARMUP_S = 5.0               # blend in from the current weather; a jump can glitch the sky
 CYCLE_LOG_INTERVAL_S = 60.0
@@ -316,8 +317,13 @@ def cycle_sun(fraction, night_fraction):
     if fraction < day_fraction:
         altitude = CYCLE_SUN_MAX_ALTITUDE_DEG * math.sin(math.pi * fraction / day_fraction)
     else:
-        altitude = CYCLE_SUN_MIN_ALTITUDE_DEG * math.sin(
-            math.pi * (fraction - day_fraction) / night_fraction)
+        # Ease into and out of the night: the sun lingers near the horizon and only dips fast in
+        # the middle of the night. A short night otherwise drops the light within seconds, faster
+        # than the cameras' auto exposure follows (pitch black at dusk, a flash at dawn). CARLA
+        # hands the light over from the sun to the moon within +-8 degrees of the horizon.
+        night = (fraction - day_fraction) / night_fraction
+        eased = night - math.sin(2.0 * math.pi * night) / (2.0 * math.pi)
+        altitude = CYCLE_SUN_MIN_ALTITUDE_DEG * math.sin(math.pi * eased)
     return altitude, (360.0 * fraction) % 360.0
 
 
@@ -337,9 +343,10 @@ class WeatherCycle:
         self.last_update = None
         self.last_log = None
         self.start_weather = None
-        # Shift the storms so that the heavy rain of one falls on midnight (and with a storm
-        # cycle of half a day, the other one on noon).
+        # Shift the storms so that the heavy rain of one falls just after midnight (and with a
+        # storm cycle of half a day, the other one just after noon).
         midnight = ((1.0 - night_fraction / 2.0 - CYCLE_START_FRACTION) % 1.0) * day_length
+        midnight += CYCLE_STORM_PEAK_DELAY * day_length
         peak = CYCLE_STORM_PEAK_FRACTION * CYCLE_STORM_SHARE * storm_length
         self.storm_offset = (midnight - peak) % storm_length if storm_length > 0 else 0.0
 
