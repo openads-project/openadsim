@@ -64,6 +64,16 @@ services:
       - donotuse
     extends:
       service: carla-server
+    # command:
+    #   - /bin/bash
+    #   - -ic
+    #   - |
+    #     ./CarlaUnreal.sh \
+    #       -nosound \
+    #       -RenderOffScreen \
+    #       --ros2 \
+    #       --rmw=zenoh \
+    #       -carla-rpc-port=$${CARLA_PORT}
     command:
       - /bin/bash
       - -ic
@@ -71,6 +81,8 @@ services:
         ./CarlaUnreal.sh \
           -nosound \
           -RenderOffScreen \
+          -quality-level=Medium \
           --ros2 \
           --rmw=zenoh \
-          -carla-rpc-port=$${CARLA_PORT}
+          -carla-rpc-port=$${CARLA_PORT} \
+          -ENGINEINI=/openadsim/DefaultEngine.ini

@@ -34,3 +34,16 @@ services:
   carla-server-offscreen:
     profiles: !override
       - donotuse
+    # same launch as carla-server, which already renders offscreen
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ./CarlaUnreal.sh \
+          -nosound \
+          -RenderOffScreen \
+          -quality-level=Medium \
+          --ros2 \
+          --rmw=zenoh \
+          -carla-rpc-port=$${CARLA_PORT} \
+          -ENGINEINI=/openadsim/DefaultEngine.ini
