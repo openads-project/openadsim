@@ -1,7 +1,7 @@
 {
     "objects": [
         {
-            "type": "vehicle.lincoln.mkz",
+            "type": "vehicle.ika.karl",
             "id": "ego_vehicle",
             "sensors": [
                 {

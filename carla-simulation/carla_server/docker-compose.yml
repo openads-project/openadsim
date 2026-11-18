@@ -15,7 +15,6 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
-    # TODO(carla-1.0): use the slim release image once it is published.
     healthcheck:
       test: ["CMD", "bash", "-c", "</dev/tcp/127.0.0.1/2000"]
       start_period: 30s
@@ -24,7 +23,7 @@ services:
       timeout: 1s
       retries: 3
     # image: ghcr.io/openads-project/carla-simulator:server-slim_v0.10.0-1.1.1
-    image: ghcr.io/openads-project/carla-simulator:server_feature-carla-1.0_ci
+    image: ghcr.io/openads-project/carla-simulator:server-slim_feature-carla-1.0_ci
     environment:
       CARLA_PORT: 2000
       ZENOH_CONFIG_OVERRIDE: >-

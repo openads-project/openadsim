@@ -17,8 +17,7 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
-    # TODO(carla-1.0): use the slim release image once it is published.
-    image: ghcr.io/openads-project/carla-simulator:server_feature-carla-1.0_ci
+    image: ghcr.io/openads-project/carla-simulator:server-slim_feature-carla-1.0_ci
     environment:
       # The native ROS 2 interface runs on Zenoh and connects to the Zenoh router.
       ZENOH_CONFIG_OVERRIDE: >-
