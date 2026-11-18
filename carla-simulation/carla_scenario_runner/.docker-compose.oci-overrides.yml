@@ -16,6 +16,8 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
+    # TODO(carla-1.0): v1.0.0-1.2.0 is not published yet; use the feature-branch build until the release.
+    image: ghcr.io/openads-project/carla-scenario-runner/ros:latest_feature-carla-1-0_ci
     environment:
       MAP: ${MAP:-}
       CUSTOM_OPENDRIVE: ${CUSTOM_OPENDRIVE:-}

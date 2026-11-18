@@ -7,7 +7,6 @@
 services:
 
   carla-scenario-runner-ros:
-    # TODO(openads): replace the feature-branch CI image with the release tag (v1.0.0-x.y.z) when releasing.
     profiles:
       - donotuse
     depends_on:
@@ -16,6 +15,8 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
+    # TODO(carla-1.0): v1.0.0-1.2.0 is not published yet; use the feature-branch build until the release.
+    # image: ghcr.io/openads-project/carla-scenario-runner/ros:v1.0.0-1.2.0
     image: ghcr.io/openads-project/carla-scenario-runner/ros:latest_feature-carla-1-0_ci
     environment:
       USE_SIM_TIME: ${USE_SIM_TIME:-true}

@@ -16,8 +16,6 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
-    # TODO(carla-1.0): the feature-branch compose references a tag that CI does not publish.
-    image: ghcr.io/openads-project/carla-ros-bridge:latest_feature-carla-1-0_ci
     environment:
       TOWN: ${MAP:-/opendrive.xodr}
       IGNORE_ALTITUDE: "True"
