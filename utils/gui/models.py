@@ -605,7 +605,7 @@ class SimulationConfig(BaseModel):
             if self.additional.simulation == SimulationProfile.CARLA_SUMO:
                 # the coordinator drives the traffic; the scenario runner is not supported
                 self.scenario.scenario_file = ""
-                self.additional.traffic_profile = TrafficProfile.DISABLED
+                self.scenario.traffic = TRAFFIC_NONE
                 self.additional.testing_profile = TestingProfile.DISABLED
                 self.additional.planning_profile = PlanningProfile.CLASSIC
             if self.additional.perception_profile == PerceptionProfile.ENABLED:
@@ -1260,7 +1260,8 @@ class SimulationConfig(BaseModel):
                     ),
                     control="select",
                     options=TRAFFIC_OPTIONS,
-                    disabled=not environment_enabled,
+                    # CARLA-SUMO: SUMO provides the traffic, TRAFFIC stays none
+                    disabled=not environment_enabled or cosim_selected,
                 ),
                 UiField(
                     path="scenario.weather",

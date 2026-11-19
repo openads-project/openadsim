@@ -798,9 +798,9 @@ def _render_profiles_section(
         changed = _render_profile_field(config, simulation_field) or changed
         changed = _render_profile_field(config, testing_field) or changed
         if config.additional.simulation.value == "carla-sumo":
-            st.caption("Traffic and testing profiles are fixed for CARLA-SUMO; SUMO provides the traffic.")
+            st.caption("The testing profile is fixed for CARLA-SUMO; SUMO provides the traffic (TRAFFIC=none).")
         elif config.additional.simulation.value != "carla":
-            st.caption("Traffic and testing profiles are only available for CARLA.")
+            st.caption("The testing profile is only available for CARLA.")
 
     with right_col:
         changed = _render_profile_field(config, perception_field) or changed

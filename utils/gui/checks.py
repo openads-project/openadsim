@@ -16,8 +16,8 @@ from models import (
     RESTRICTED_PREBUILT_MAPS,
     SimulationProfile,
     TestingProfile,
-    TrafficProfile,
     SimulationConfig,
+    TRAFFIC_NONE,
     TRAFFIC_OPTIONS,
     Vehicle,
     cosim_scenario_fits_map,
@@ -433,11 +433,11 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
             )
         )
 
-    if cosim_selected and config.additional.traffic_profile != TrafficProfile.DISABLED:
+    if cosim_selected and config.scenario.traffic != TRAFFIC_NONE:
         result.errors.append(
             ValidationIssue(
-                path="additional.traffic_profile",
-                message="Traffic profile must be no-traffic for CARLA-SUMO, SUMO provides the traffic",
+                path="scenario.traffic",
+                message=f"TRAFFIC must be {TRAFFIC_NONE} for CARLA-SUMO, SUMO provides the traffic",
             )
         )
 
