@@ -35,12 +35,13 @@ CLIENT_TIMEOUT_SECONDS = 10.0
 
 # Background traffic. TRAFFIC (or --traffic) picks a level: (vehicles, walkers), spawned and
 # recycled around the ego as set above. Small maps can have fewer free spawn points than a level
-# asks for.
+# asks for. Every traffic participant costs the ROS bridge time in each tick: on the campus map,
+# about 60 participants still run in real time; dense runs at about 0.8 of real time.
 TRAFFIC_LEVELS = {
     "none": (0, 0),
     "light": (30, 10),
-    "medium": (60, 30),
-    "dense": (100, 60),
+    "medium": (45, 15),
+    "dense": (60, 30),
 }
 DEFAULT_TRAFFIC = "light"
 
