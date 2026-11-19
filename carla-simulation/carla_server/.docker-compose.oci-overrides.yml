@@ -16,6 +16,7 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
+    image: ghcr.io/openads-project/carla-simulator:server-slim_4-merge_ci  # TODO(carla-1.0): PR #4 build until the feature-branch image is rebuilt
     command:
       - /bin/bash
       - -ic

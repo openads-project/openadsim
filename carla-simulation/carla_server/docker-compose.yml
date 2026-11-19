@@ -23,6 +23,7 @@ services:
       interval: 2s
       timeout: 1s
       retries: 3
+    # image: ghcr.io/openads-project/carla-simulator:server-slim_feature-carla-1.0_ci
     image: ghcr.io/openads-project/carla-simulator:server-slim_4-merge_ci
     environment:
       CARLA_PORT: 2000
