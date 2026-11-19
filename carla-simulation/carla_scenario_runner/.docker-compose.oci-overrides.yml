@@ -2,7 +2,8 @@
 # `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
 
 include:
-  - oci://ghcr.io/openads-project/carla-scenario-runner/compose:v0.10.0-1.1.1
+  # TODO(carla-1.0): temporary feature-branch build of openads-project/carla-scenario-runner for CARLA 1.0.
+  - oci://ghcr.io/openads-project/carla-scenario-runner/compose:feature-carla-1.0
 
 services:
 
@@ -15,9 +16,9 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
+    # TODO(carla-1.0): v1.0.0-1.2.0 is not published yet; use the feature-branch build until the release.
+    image: ghcr.io/openads-project/carla-scenario-runner/ros:latest_feature-carla-1-0_ci
     environment:
-      CARLA_HOST: ${CARLA_HOST:-carla-server}
-      CARLA_PORT: ${CARLA_PORT:-2000}
       MAP: ${MAP:-}
       CUSTOM_OPENDRIVE: ${CUSTOM_OPENDRIVE:-}
       CUSTOM_LANELET: ${CUSTOM_LANELET:-}
@@ -32,17 +33,21 @@ services:
       service: carla-scenario-runner-ros
     environment:
       SCENARIO_MAP: ${CUSTOM_OPENDRIVE:-${MAP:-}}
+      INVALID_SCENARIOS_FILE: /tmp/invalid_scenarios.txt
     command:
       - /bin/bash
       - -ic
       - |
         set -e
-        python3 /scenario_checker.py validate-runtime /scenarios
+        python3 /scenario_checker.py validate-runtime /scenarios --invalid-list "$${INVALID_SCENARIOS_FILE}"
         SCENARIOS_DIR=/scenarios
         if [ -n "$${CUSTOM_OPENDRIVE}" ]; then
           SCENARIOS_DIR="$$(dirname "/$${CUSTOM_OPENDRIVE#/}")"
         fi
         exec ros2 launch carla_ros_scenario_runner carla_ros_scenario_runner_with_selection.launch.py \
+          use_sim_time:=$${USE_SIM_TIME} \
+          host:=$${CARLA_HOST} \
+          port:=$${CARLA_PORT} \
           scenario_runner_path:=$${SCENARIO_RUNNER_PATH} \
           scenarios_dir:=$${SCENARIOS_DIR}
 

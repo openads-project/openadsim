@@ -30,7 +30,7 @@ Two layouts are available. The minimal layout spawns the physical sensor platfor
    To use the full sensor layout, replace `rita-minimal.json` with `rita-all.json` in the example `.env` file.
 
    > [!NOTE]
-   > The `ego_vehicle` remains stationary after startup by design. The `traffic` profile generates background traffic but does not assign a route to the ego vehicle. To let OpenADStack drive the ego vehicle through this traffic, use the **Plan Route** tool in RViz to set a destination.
+   > The `ego_vehicle` remains stationary after startup by design. The `environment` profile generates background traffic and weather but does not assign a route to the ego vehicle. To let OpenADStack drive the ego vehicle through this traffic, use the **Plan Route** tool in RViz to set a destination.
 
 2. Inspect the intersection in RViz. The appropriate RViz configuration is selected automatically from the sensor file. With `rita-minimal.json`, roadside camera images and point clouds are available only for `srisu2`. With `rita-all.json`, they are available for all four roadside units and can be enabled individually in the common frame alongside the ego vehicle sensors.
 

@@ -68,10 +68,10 @@ The links below provide detailed setup examples demonstrating the capabilities o
 
 | Example | Compose Profiles | Description |
 | ------ | ------ | ------ |
-| ***prototyping*** | `carla`, `traffic`, `manual-testing`, `no-perception`, `planning` (or `sumo`, `no-perception`, `planning`) | **Default** setup for experimenting with and manually testing OpenADStack. Traffic and testing profiles apply only to CARLA. |
-| [***scenario-execution***](./docs/example-scenario-execution.md) | `carla`, `no-traffic`, `automated-testing`, `no-perception`, `planning` | Sequential simulation of **multiple scenarios** in OpenSCENARIO format with automated evaluation. |
-| [***cooperative-perception***](./docs/example-cooperative-perception.md) | `carla`, `traffic`, `no-testing`, `perception`, `planning` | Intersection scenario with multiple sensor-equipped participants sharing perception via **V2X**. |
-| [***ml-planning***](./docs/example-ml-planning.md) | `carla`, `no-traffic`, `manual-testing`, `no-perception`, `ml-planning` | Partial offloading of planning tasks to a **machine learning-based planning** module with adaptive orchestration. |
+| ***prototyping*** | `carla`, `environment`, `manual-testing`, `no-perception`, `planning` (or `sumo`, `no-perception`, `planning`) | **Default** setup for experimenting with and manually testing OpenADStack. Environment and testing profiles apply only to CARLA. |
+| [***scenario-execution***](./docs/example-scenario-execution.md) | `carla`, `no-environment`, `automated-testing`, `no-perception`, `planning` | Sequential simulation of **multiple scenarios** in OpenSCENARIO format with automated evaluation. |
+| [***cooperative-perception***](./docs/example-cooperative-perception.md) | `carla`, `environment`, `no-testing`, `perception`, `planning` | Intersection scenario with multiple sensor-equipped participants sharing perception via **V2X**. |
+| [***ml-planning***](./docs/example-ml-planning.md) | `carla`, `no-environment`, `manual-testing`, `no-perception`, `ml-planning` | Partial offloading of planning tasks to a **machine learning-based planning** module with adaptive orchestration. |
 | ... | ... | ... |
 
 ## 📐 Architecture

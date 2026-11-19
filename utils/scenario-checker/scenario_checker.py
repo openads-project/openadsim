@@ -691,6 +691,7 @@ def validate_scenario_folder(
     expected_map: str = "",
     expected_opendrive: Path | str | None = None,
     lanelet: Path | str | None = None,
+    skip_invalid: bool = False,
 ) -> dict[str, object]:
     folder = Path(scenario_folder).resolve()
     if not folder.is_dir():
@@ -700,6 +701,7 @@ def validate_scenario_folder(
             "checked": 0,
             "errors": [f"Scenario folder does not exist: {folder}"],
             "warnings": [],
+            "invalid_scenarios": [],
         }
 
     custom_opendrive = Path(expected_opendrive).resolve() if expected_opendrive else None
@@ -707,7 +709,9 @@ def validate_scenario_folder(
     selected_normalized = _normalize_map_reference(selected_reference)
     errors: list[str] = []
     warnings: list[str] = []
+    invalid_scenarios: list[str] = []
     checked = 0
+    valid_count = 0
 
     for scenario in sorted(folder.rglob("*.xosc")):
         if "catalogs" in {part.lower() for part in scenario.parts}:
@@ -729,6 +733,7 @@ def validate_scenario_folder(
                 continue
         except ScenarioCheckerError as error:
             errors.append(f"{scenario}: {error}")
+            invalid_scenarios.append(str(scenario))
             continue
 
         report = validate_scenario(
@@ -741,18 +746,29 @@ def validate_scenario_folder(
             expected_lanelet=lanelet,
         )
         checked += 1
+        if report.is_valid:
+            valid_count += 1
+        else:
+            invalid_scenarios.append(str(scenario))
         errors.extend(f"{scenario}: {message}" for message in report.errors)
         warnings.extend(f"{scenario}: {message}" for message in report.warnings)
 
+    fatal = False
     if selected_normalized and checked == 0:
         errors.append(f"No OpenSCENARIO files match the configured map {selected_reference!r}")
+        fatal = True
+    elif skip_invalid and invalid_scenarios and valid_count == 0:
+        errors.append("No valid OpenSCENARIO files left after skipping invalid ones")
+        fatal = True
 
     return {
-        "valid": not errors,
+        # With skip_invalid, invalid scenarios are reported without blocking valid ones.
+        "valid": not fatal if skip_invalid else not errors,
         "folder": str(folder),
         "checked": checked,
         "errors": errors,
         "warnings": warnings,
+        "invalid_scenarios": invalid_scenarios,
     }
 
 
@@ -812,6 +828,7 @@ def validate_runtime(
             expected_map=expected_map,
             expected_opendrive=expected_opendrive,
             lanelet=lanelet,
+            skip_invalid=True,
         )
     report = validate_scenario(
         resolved_target,
@@ -1323,6 +1340,10 @@ def _parse_args() -> argparse.Namespace:
     )
     validate_runtime_parser.add_argument("target")
     validate_runtime_parser.add_argument("--json", action="store_true")
+    validate_runtime_parser.add_argument(
+        "--invalid-list",
+        help="write invalid scenario paths to this file, one per line",
+    )
 
     importer = subparsers.add_parser("import", help="validate and create an import bundle")
     importer.add_argument("scenario")
@@ -1348,9 +1369,10 @@ def _print_report(data: dict[str, object], as_json: bool) -> None:
             print(f"  - {action}")
         for warning in data.get("warnings", []):
             print(f"  warning: {warning}")
-    else:
-        for error in data.get("errors", []):
-            print(f"Error: {error}", file=sys.stderr)
+        if data.get("invalid_scenarios"):
+            print(f"  skipped invalid: {len(data['invalid_scenarios'])}")
+    for error in data.get("errors", []):
+        print(f"Error: {error}", file=sys.stderr)
 
 
 def main() -> int:
@@ -1384,6 +1406,11 @@ def main() -> int:
 
         if args.command == "validate-runtime":
             data = validate_runtime(args.target)
+            if args.invalid_list:
+                Path(args.invalid_list).write_text(
+                    "".join(f"{path}\n" for path in data.get("invalid_scenarios", [])),
+                    encoding="utf-8",
+                )
             _print_report(data, args.json)
             return 0 if data["valid"] else 1
 

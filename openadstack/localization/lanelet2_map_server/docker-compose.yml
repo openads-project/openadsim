@@ -26,7 +26,7 @@ services:
           $${ORIGIN_LON:+-p origin_lon:=$${ORIGIN_LON}} \
     volumes:
       - type: image
-        source: ghcr.io/openads-project/lanelet2-maps:v1.0.4
+        source: ghcr.io/openads-project/lanelet2-maps:v1.0.5
         image:
           subpath: data/maps
         target: /data/maps

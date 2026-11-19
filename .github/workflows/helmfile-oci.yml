@@ -1,0 +1,28 @@
+name: helmfile-oci
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  helmfile-oci:
+    uses: openads-project/openads-helm/.github/workflows/reusable-helmfile-oci.yml@main
+    with:
+      compose-file: docker-compose.yml
+      include-env-file-in-bundle: true
+      chart-map: deployment/chart-map.yaml
+      profiles: carla,environment,automated-testing,no-perception,planning
+      output-dir: deployment/generated
+      helmfile-entrypoint: deployment/helmfile.yaml
+      bundle-dir: deployment

@@ -1,13 +1,16 @@
 /**/*:
   ros__parameters:
-    # Simulation settings
+    # General simulation settings
     headless_mode: false
     realtime_factor: 1.0
     sim_step: 0.01
     enable_traci_server: false
     traci_server_port: 8813
     traci_server_num_clients: 0
+    # Traffic behavior
     sumo_time_to_teleport: -1.0  # -1 disables automatic jam teleportation
+    sumo_max_num_vehicles: 100   # maximum number of vehicles simultaneously loaded by SUMO
+    sumo_rerouting_period: 0.0   # 0 = reroute only at vehicle departure (prevents cyclic batch rerouting)
 
     # ROS Interface settings
     objects_frequency: 10.0
@@ -16,12 +19,16 @@
     enable_ego_vehicle: true
     ego_vehicle_id: "ego"
     ego_vehicle_type: "DEFAULT_VEHTYPE"
+    # Spawn pose:
+    #   XY: "x,y,yaw", "x,y,z,yaw", "x,y,z,roll,pitch,yaw" (z/roll/pitch ignored)
+    #   WGS84:   "lat,lon,yaw,wgs84", "lat,lon,alt,yaw,wgs84", "lat,lon,alt,roll,pitch,yaw,wgs84"
+    #            (alt/roll/pitch ignored)
     ego_wheelbase: 2.7
     ego_vehicle_length: -1.0    # if negative takes sumo default length of 5.0
     ego_vehicle_width: -1.0     # if negative takes sumo default width of 1.8
     ego_vehicle_height: -1.0    # if negative takes sumo default height of 1.5
-    ego_radius: 100.0           # if negative, all vehicles are considered
-    ego_collision_margin: 0.25  # safety padding (m) added around ego for collision stop
+    ego_radius: 100.0            # if negative, all vehicles are considered
+    ego_collision_margin: 0.25   # safety padding (m) added around ego for collision stop
 
     # Optional target frame settings
     target_frame_id: ""
@@ -30,3 +37,4 @@
     target_frame_origin_yaw: 0.0
     target_frame_utm_zone: 0
     target_frame_utm_northp: true
+    target_frame_fov_radius: -1.0  # if positive, publishes target-frame FoV object list within this radius

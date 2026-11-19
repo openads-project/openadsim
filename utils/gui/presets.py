@@ -11,8 +11,8 @@ from models import (
     SimulationConfig,
     SimulationProfile,
     Vehicle,
+    TRAFFIC_NONE,
     VehicleConfig,
-    TrafficProfile,
     TestingProfile,
 )
 
@@ -57,9 +57,12 @@ PRESETS = {
             custom_lanelet="scenarios/simple-scenario/synthetic_curve_cut_in.osm",
             spawn_point="100.0,100.0,-100.0,0.0",
         ),
-        scenario=ScenarioConfig(scenario_file="scenarios/simple-scenario/synthetic_curve_cut_in.xosc"),
+        # No background traffic and the map's weather: reproducible runs.
+        scenario=ScenarioConfig(
+            scenario_file="scenarios/simple-scenario/synthetic_curve_cut_in.xosc",
+            traffic=TRAFFIC_NONE,
+        ),
         additional=AdditionalOptionsConfig(
-            traffic_profile=TrafficProfile.DISABLED,
             testing_profile=TestingProfile.AUTOMATED,
         ),
     ),
@@ -76,7 +79,6 @@ PRESETS = {
         ),
         additional=AdditionalOptionsConfig(
             example_overlay="cooperative-perception",
-            traffic_profile=TrafficProfile.ENABLED,
             testing_profile=TestingProfile.DISABLED,
             perception_profile=PerceptionProfile.ENABLED,
         ),

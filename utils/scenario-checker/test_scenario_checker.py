@@ -10,6 +10,7 @@ from scenario_checker import (
     import_scenario,
     validate_runtime,
     validate_scenario,
+    validate_scenario_folder,
 )
 
 
@@ -490,6 +491,32 @@ class ScenarioCheckerTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ScenarioCheckerError, "does not exist"):
             validate_runtime(scenario_root / "missing.xosc", environment)
+
+    def test_runtime_folder_validation_skips_invalid_scenarios(self):
+        scenario_root = self.root / "scenarios"
+        valid = import_scenario(self.scenario, output_root=scenario_root, name="valid")
+        invalid = scenario_root / "invalid.xosc"
+        invalid.write_text(SCENARIO, encoding="utf-8")
+        broken = scenario_root / "broken.xosc"
+        broken.write_text("<OpenSCENARIO>", encoding="utf-8")
+        environment = {"MAP": "campus"}
+
+        manual = validate_runtime(scenario_root, environment)
+        strict = validate_scenario_folder(scenario_root, expected_map="campus")
+
+        self.assertTrue(manual["valid"])
+        self.assertEqual(
+            manual["invalid_scenarios"], [str(broken.resolve()), str(invalid.resolve())]
+        )
+        self.assertTrue(manual["errors"])
+        self.assertFalse(strict["valid"])
+
+        valid.scenario_file.unlink()
+        only_invalid = validate_runtime(scenario_root, environment)
+        self.assertFalse(only_invalid["valid"])
+        self.assertTrue(
+            any("No valid OpenSCENARIO files" in error for error in only_invalid["errors"])
+        )
 
     def test_import_converts_openscenario_1_2_to_1_1(self):
         scenario_1_2 = self.root / "source-1.2.xosc"

@@ -45,6 +45,8 @@ detects files and directories automatically. For custom maps, the configured
 `.xodr`, `.osm`, and every matching `.xosc` must be in the same directory. The
 `LogicFile` value must be the exact `.xodr` filename without a directory.
 
+For folders, invalid scenarios are reported as errors but do not fail the command as long as at least one valid scenario remains. With `--invalid-list <file>`, their paths are written to a file, one per line; manual testing passes this file as `INVALID_SCENARIOS_FILE` to the scenario selection, which hides the listed scenarios.
+
 Create a self-contained scenario bundle with a normalized scenario copy:
 
 ```bash

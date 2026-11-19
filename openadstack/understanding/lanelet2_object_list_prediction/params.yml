@@ -1,8 +1,26 @@
 /**/*:
   ros__parameters:
     ll2_map_server_name: /localization/lanelet2_map_server
-    lanelet_match_max_distance_m: 0.2
+    lanelet_match_max_distance_m: 0.5
     lanelet_match_max_yaw_diff_rad: 1.047197551
-    prediction_horizon_s: 10.0
+    prediction_horizon_s: 8.0
     prediction_sample_interval_s: 0.5
     unmatched_object_prediction_mode: static
+    infeasible_prediction_probability: 0.0
+    max_longitudinal_acceleration_mps2: 1.0     # maximum acceleration for regaining the current speed after slowing down
+    max_longitudinal_deceleration_mps2: 3.0     # maximum deceleration for slowing down, e.g. before a curve or a yield line
+    keep_lane_offset: true                      # keep the object's lateral position in its lane, relative to the lane width, instead of predicting it along the centerline
+    participant_specific_matching:
+      enable: true                              # match and route pedestrians and two-wheelers with their own traffic rules, preferring bicycle lanes for two-wheelers
+      allow_opposite_direction: true            # predict two-wheelers without a legal lanelet match against a lanelet's direction
+    motion_limits:
+      enable: true                              # reduce the predicted speed in curves to respect the acceleration limits
+      max_lateral_acceleration_mps2: 3.0        # maximum lateral acceleration of predicted objects in curves
+    yielding:
+      enable: true                              # stop objects at yield lines for conflicting priority traffic
+    following:
+      enable: true                              # slow objects down behind leaders ahead on their routes, i.e. other objects and ego
+      min_distance_m: 1.0                       # minimum distance that objects keep to the rear of their leader
+    lane_coverage_matching:
+      enable: true                              # match objects to their nearest lanelets if enough of their area lies on the lanelet sequence of it
+      min_coverage: 0.55                        # minimum share of the footprint on the lanelet and its predecessors and successors

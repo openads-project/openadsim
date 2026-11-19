@@ -16,8 +16,22 @@
     max_time_diff_sec: 0.05 # Maximum allowed timestamp difference (seconds) across inputs
     output_queue_size: 1 # Queue depth for fused output publisher
     age_penalty: 0.1 # Optional ApproximateTime tuning
-    use_cuda: true # Enable CUDA acceleration (requires CUDA build)
+    use_cuda: true # Runtime-reconfigurable CPU/CUDA backend selection (requires CUDA build for true)
+    motion_compensation:
+      enable: false # Compensate sensor capture skew and motion during each rotating scan
+      fixed_frame: map # World-fixed TF frame connecting target_frame and every sensor frame
+      time_field: t # UINT32 offset from header.stamp for each point
+      # time_scale_sec: 1.0e-9 # default: nanoseconds; override only for a nonstandard time field
+      tf_timeout_sec: 0.1 # Per-lookup timeout; unavailable motion TF falls back to rigid fusion
     fixed_points_per_input_cloud: 0 # 0=disabled
+    range_limits:
+      enable: false # Enable XYZ range filtering in target_frame
+      # x_min: -1000.0 # Minimum x coordinate to keep [m] (in target_frame)
+      # x_max: 1000.0 # Maximum x coordinate to keep [m] (in target_frame)
+      # y_min: -1000.0 # Minimum y coordinate to keep [m] (in target_frame)
+      # y_max: 1000.0 # Maximum y coordinate to keep [m] (in target_frame)
+      # z_min: -20.0 # Minimum z coordinate to keep [m] (in target_frame)
+      # z_max: 20.0 # Maximum z coordinate to keep [m] (in target_frame)
     # output_fields: # Determine which fields to include in the output point cloud (all if not set)
     #   - "x"
     #   - "y"

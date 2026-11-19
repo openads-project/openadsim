@@ -6,10 +6,11 @@ services:
       service: perception.point-cloud-object-detection
     profiles:
       - perception
-    depends_on: 
+    depends_on:
       - triton-server
     environment:
       PARAMS: /params.yml
+      TRITON_SERVER_URL: triton-server:8001
     volumes:
       - ./params.yml:/params.yml
       - type: image

@@ -56,7 +56,7 @@ The following `.env` snippets are minimal example configurations for each simula
 For CARLA:
 
 ```bash
-COMPOSE_PROFILES=carla,traffic,manual-testing,no-perception,planning
+COMPOSE_PROFILES=carla,environment,manual-testing,no-perception,planning
 MAP=campus
 SPAWN_POINT=50.787510,6.045938,260.0,90.0,wgs84 # lat, lon, altitude, heading, coord.
 VEHICLE=karl
@@ -128,10 +128,10 @@ Alternatively, use the `Stop` button in the Configuration GUI.
 
 Use scenarios when you want to reproduce a defined traffic situation instead of driving freely or relying on random traffic. OpenADSim uses the [CARLA scenario runner](https://github.com/openads-project/carla-scenario-runner) to execute OpenSCENARIO files. It is currently only available with the CARLA backend.
 
-1. Select `no-traffic` and `manual-testing` in the Configuration GUI or set the following values in `.env`:
+1. In the Configuration GUI, set **Traffic** to `none`, keep **Weather** at `MapDefault` and select `manual-testing`, or set the following values in `.env`:
 
 ```bash
-COMPOSE_PROFILES=carla,no-traffic,manual-testing,no-perception,planning
+COMPOSE_PROFILES=carla,no-environment,manual-testing,no-perception,planning
 ```
 
 2. Start the simulation:

@@ -1,0 +1,33 @@
+name: ghcr-cleanup
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # every day at 00:00
+  workflow_dispatch:
+
+permissions:
+  packages: write
+
+jobs:
+  helmfile:
+    uses: openads-project/openads-helm/.github/workflows/reusable-helmfile-cleanup.yml@main
+
+  gui:
+    name: Cleanup gui
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup ${{ github.event.repository.name }}/gui
+        uses: dataaxiom/ghcr-cleanup-action@v1.2.2
+        with:
+          packages: ${{ github.event.repository.name }}/gui
+          dry-run: false
+          use-regex: true
+          skip-regex-checks: true
+          older-than: 1 month
+          exclude-tags: '^(v[0-9]+\.[0-9]+\.[0-9]+|latest)$' # v1.2.3, latest
+          delete-tags: ".*"
+          delete-untagged: true
+          delete-ghost-images: true
+          delete-partial-images: true
+          delete-orphaned-images: true
+          validate: true

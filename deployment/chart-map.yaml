@@ -1,0 +1,44 @@
+excluded_profiles:
+  - donotuse
+  - gui
+  - sumo
+services:
+  # charts centrally maintained in https://github.com/openads-project/openads-helm/tree/main/charts
+  zenoh-router:
+    chart: oci://ghcr.io/openads-project/openads-helm/zenoh-router
+    version: 0.2.10
+  triton-server:
+    chart: oci://ghcr.io/openads-project/openads-helm/triton-server
+    version: "26.05"
+  # nested charts in https://github.com/openads-project/carla-simulator/tree/main/deployment/helm
+  # TODO(carla-1.0): bump to the CARLA 1.0 chart versions once openads-project/carla-simulator publishes them.
+  carla-server:
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-server
+    version: 0.10.0-1.1.1
+  carla-client:
+    chart: oci://ghcr.io/openads-project/carla-simulator/helm/carla-client
+    version: 0.10.0-1.1.1
+  # nested charts in https://github.com/openads-project/carla-ros-bridge/tree/main/deployment/helm
+  carla-ackermann-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ackermann-control
+    version: 0.10.0-1.2.0-carla-ackermann-control
+  carla-manual-control:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-manual-control
+    version: 0.10.0-1.2.0-carla-manual-control
+  carla-ros-bridge:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-ros-bridge
+    version: 0.10.0-1.2.0-carla-ros-bridge
+  carla-spawn-objects:
+    chart: oci://ghcr.io/openads-project/carla-ros-bridge/helm/carla-spawn-objects
+    version: 0.10.0-1.2.0-carla-spawn-objects
+  # nested chart in https://github.com/openads-project/carla-scenario-runner/tree/main/deployment/helm
+  carla-scenario-runner-ros-automated-testing: &scenario-runner
+    chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
+    version: 0.10.0-1.1.2
+    volume_policies:
+      /scenarios: bind
+  carla-scenario-runner-ros-manual-testing: *scenario-runner
+  # chart derived from image, writable volume mounted from host
+  monitoring.rviz-carla:
+    volume_policies:
+      /docker-ros/ws/monitoring-volume: bind
