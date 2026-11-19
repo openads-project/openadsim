@@ -11,6 +11,8 @@ OpenADSim separates the simulated environment (background traffic and weather) f
 
 The CARLA default is `environment` together with `manual-testing`. The scenario-execution example uses `no-environment` together with `automated-testing` so unrelated random actors and changing weather do not affect reproducible runs.
 
+In the Configuration GUI, background traffic (`TRAFFIC`) and weather (`WEATHER`) are part of the scenario settings, and the environment profile follows them. A scenario takes precedence where it defines the environment itself: an OpenSCENARIO `EnvironmentAction` sets the weather when the scenario starts, and the weather cycle (`WEATHER=Cycle`) then pauses. A scenario without an `EnvironmentAction` keeps the weather of `WEATHER`. Background traffic drives alongside the scenario's actors.
+
 > [!IMPORTANT]
 > Scenario execution using OpenSCENARIO is currently supported only with CARLA. Make sure that the [OpenADS system requirements](https://openads-project.github.io/start/start.html#requirements) are met before starting.
 

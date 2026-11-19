@@ -128,7 +128,7 @@ Alternatively, use the `Stop` button in the Configuration GUI.
 
 Use scenarios when you want to reproduce a defined traffic situation instead of driving freely or relying on random traffic. OpenADSim uses the [CARLA scenario runner](https://github.com/openads-project/carla-scenario-runner) to execute OpenSCENARIO files. It is currently only available with the CARLA backend.
 
-1. Select `no-environment` and `manual-testing` in the Configuration GUI or set the following values in `.env`:
+1. In the Configuration GUI, set **Traffic** to `none`, keep **Weather** at `MapDefault` and select `manual-testing`, or set the following values in `.env`:
 
 ```bash
 COMPOSE_PROFILES=carla,no-environment,manual-testing,no-perception,planning

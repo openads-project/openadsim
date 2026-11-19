@@ -18,7 +18,8 @@ services:
       service: gpu-x11-service
     image: ghcr.io/openads-project/carla-simulator:client_4-merge_ci  # TODO(carla-1.0): PR #4 build until the feature-branch image is rebuilt
     environment:
-      # Weather preset of set_environment.py; MapDefault leaves the weather to another client.
+      # Traffic level and weather of set_environment.py; MapDefault leaves the weather to another client.
+      TRAFFIC: ${TRAFFIC:-}
       WEATHER: ${WEATHER:-}
     command:
       - /bin/bash

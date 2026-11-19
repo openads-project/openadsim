@@ -6,7 +6,7 @@ the local OpenADSim Compose environment.
 It can:
 - load existing `.env` configurations and expose them as editable forms
 - apply presets such as `scenario-execution` and `cooperative-perception`
-- configure profiles, vehicle, sensors, map, scenario, weather and additional options
+- configure profiles, vehicle, sensors, map, scenario with background traffic and weather, and additional options
 - validate and import OpenSCENARIO bundles with optional OpenDRIVE/Lanelet2 maps
 - show scenarios and Lanelet2 files from the selected OpenDRIVE file's directory, additionally matching scenarios to their OpenDRIVE reference, while keeping OpenDRIVE maps freely selectable
 - validate configuration dependencies and show warnings/errors

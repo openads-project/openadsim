@@ -3,6 +3,7 @@
 """UE5 environment setup for CARLA traffic and optional weather."""
 
 import argparse
+import fnmatch
 import logging
 import math
 import os
@@ -16,18 +17,37 @@ from numpy import random
 FOLLOWING_DISTANCE = 2.5
 HYBRID_RADIUS = 70.0
 FIXED_DELTA_SECONDS = 0.05
-DEFAULT_NUMBER_OF_VEHICLES = 30
-DEFAULT_NUMBER_OF_WALKERS = 10
 WALKER_SPAWN_Z_OFFSET = 2.0
 PEDESTRIANS_RUNNING = 0.0
 PEDESTRIANS_CROSSING = 0.0
 BACKGROUND_VEHICLE_SPAWN_CLEARANCE_M = 20.0
-EGO_VEHICLE_SPAWN_CLEARANCE_M = 75.0
+# Traffic around the ego, the same for vehicles and walkers: nothing spawns closer to the ego than
+# EGO_SPAWN_CLEARANCE_M (no pop-in in front of its sensors), NEAR_EGO_TARGET_FRACTION of the
+# traffic within NEAR_EGO_SPAWN_RADIUS_M and the rest up to RECYCLE_DISTANCE_M. Traffic farther
+# away than RECYCLE_DISTANCE_M is removed and respawned near the ego, so it moves along with it.
+EGO_SPAWN_CLEARANCE_M = 100.0
 NEAR_EGO_SPAWN_RADIUS_M = 200.0
-NEAR_EGO_VEHICLE_TARGET_FRACTION = 0.7
-WALKER_NAV_LOCATION_ATTEMPTS = 10
+NEAR_EGO_TARGET_FRACTION = 0.7
+RECYCLE_DISTANCE_M = 500.0
+WALKER_NAV_LOCATION_ATTEMPTS = 50  # random navmesh locations sampled per walker
 CONNECT_RETRY_SECONDS = 2.0
 CLIENT_TIMEOUT_SECONDS = 10.0
+
+# Background traffic. TRAFFIC (or --traffic) picks a level: (vehicles, walkers), spawned and
+# recycled around the ego as set above. Small maps can have fewer free spawn points than a level
+# asks for.
+TRAFFIC_LEVELS = {
+    "none": (0, 0),
+    "light": (30, 10),
+    "medium": (60, 30),
+    "dense": (100, 60),
+}
+DEFAULT_TRAFFIC = "light"
+
+# Vehicle blueprints never spawned as background traffic (fnmatch patterns on the blueprint id).
+EXCLUDED_VEHICLE_BLUEPRINTS = (
+    "vehicle.ika.wheelloader",  # causes problems as background traffic
+)
 
 # Weather. By default the map's weather stays as it is; --weather or the WEATHER environment
 # variable pick the day/night cycle with passing storms or a fixed weather instead.
@@ -48,6 +68,13 @@ CYCLE_SUN_MIN_ALTITUDE_DEG = -15.0  # midnight: dark (from about -10), but never
 CYCLE_UPDATE_INTERVAL_S = 0.5      # simulation time between two weather updates
 CYCLE_WARMUP_S = 5.0               # blend in from the current weather; a jump can glitch the sky
 CYCLE_LOG_INTERVAL_S = 60.0
+# Another client, e.g. a scenario with an EnvironmentAction, changed the weather when one of these
+# fields moved by more than the tolerance since the cycle set it. The cycle then pauses.
+CYCLE_EXTERNAL_CHANGE_FIELDS = (
+    "cloudiness", "precipitation", "precipitation_deposits", "wind_intensity",
+    "sun_altitude_angle", "fog_density", "wetness",
+)
+CYCLE_EXTERNAL_CHANGE_TOLERANCE = 0.5
 
 # Storm cycle of PythonAPI/examples/dynamic_day_night_weather_cycle.py (CARLA 1.0): every field
 # has its own (fraction, value) keyframes, so clouds come first, then rain, wind, wet road,
@@ -125,16 +152,26 @@ def parse_args():
     )
     parser.add_argument("--tm-port", default=8000, type=int, help="Traffic Manager port")
     parser.add_argument(
+        "--traffic",
+        metavar="LEVEL",
+        default=os.environ.get("TRAFFIC") or DEFAULT_TRAFFIC,
+        help="Background traffic: %s (default %s, or the TRAFFIC environment variable)"
+        % (", ".join(
+            "%s (%d vehicles, %d walkers)" % (level, *counts)
+            for level, counts in TRAFFIC_LEVELS.items()
+        ), DEFAULT_TRAFFIC),
+    )
+    parser.add_argument(
         "-n",
         "--number-of-vehicles",
-        default=DEFAULT_NUMBER_OF_VEHICLES,
         type=int,
+        help="Number of vehicles, overrides the traffic level",
     )
     parser.add_argument(
         "-w",
         "--number-of-walkers",
-        default=DEFAULT_NUMBER_OF_WALKERS,
         type=int,
+        help="Number of walkers, overrides the traffic level",
     )
     parser.add_argument("--filterv", default="vehicle.*", help="Vehicle blueprint filter")
     parser.add_argument("--filterw", default="walker.pedestrian.*", help="Walker blueprint filter")
@@ -179,6 +216,17 @@ def parse_args():
     args = parser.parse_args()
     if args.day_length <= 0 or not 0.0 < args.night_fraction < 1.0 or args.storm_length < 0:
         parser.error("--day-length must be > 0, --night-fraction in (0, 1), --storm-length >= 0")
+    args.traffic = args.traffic.strip().lower()
+    if args.traffic not in TRAFFIC_LEVELS:
+        parser.error(
+            "Unknown traffic level '%s'. Available levels: %s"
+            % (args.traffic, ", ".join(TRAFFIC_LEVELS))
+        )
+    vehicles, walkers = TRAFFIC_LEVELS[args.traffic]
+    if args.number_of_vehicles is None:
+        args.number_of_vehicles = vehicles
+    if args.number_of_walkers is None:
+        args.number_of_walkers = walkers
     return args
 
 
@@ -234,11 +282,19 @@ def is_ego_vehicle(actor):
     )
 
 
-def get_blueprints(world, pattern):
+def get_blueprints(world, pattern, excluded=()):
     blueprints = world.get_blueprint_library().filter(pattern)
-    if not blueprints:
+    kept = [
+        blueprint
+        for blueprint in blueprints
+        if not any(fnmatch.fnmatchcase(blueprint.id, exclude) for exclude in excluded)
+    ]
+    skipped = sorted({blueprint.id for blueprint in blueprints} - {blueprint.id for blueprint in kept})
+    if skipped:
+        logging.info("Excluded blueprints: %s", ", ".join(skipped))
+    if not kept:
         raise ValueError("No blueprints found for filter: %s" % pattern)
-    return sorted(blueprints, key=lambda blueprint: blueprint.id)
+    return sorted(kept, key=lambda blueprint: blueprint.id)
 
 
 def apply_weather(world, preset_name):
@@ -331,8 +387,20 @@ def copy_weather(weather):
     return carla.WeatherParameters(**{field: getattr(weather, field) for field in WEATHER_FIELDS})
 
 
+def changed_externally(expected, current):
+    """True if the weather differs from the one the cycle set last."""
+    return any(
+        abs(getattr(current, field) - getattr(expected, field)) > CYCLE_EXTERNAL_CHANGE_TOLERANCE
+        for field in CYCLE_EXTERNAL_CHANGE_FIELDS
+    )
+
+
 class WeatherCycle:
-    """Day/night and storm cycle on simulation time, updated from the supervision loop."""
+    """Day/night and storm cycle on simulation time, updated from the supervision loop.
+
+    The cycle yields to other clients: once another client changes the weather, e.g. a scenario
+    that defines its own, the cycle pauses until the next episode (map reload).
+    """
 
     def __init__(self, day_length, night_fraction, storm_length):
         self.day_length = day_length
@@ -343,6 +411,8 @@ class WeatherCycle:
         self.last_update = None
         self.last_log = None
         self.start_weather = None
+        self.last_weather = None
+        self.paused = False
         # Shift the storms so that the heavy rain of one falls just after midnight (and with a
         # storm cycle of half a day, the other one just after noon).
         midnight = ((1.0 - night_fraction / 2.0 - CYCLE_START_FRACTION) % 1.0) * day_length
@@ -370,13 +440,27 @@ class WeatherCycle:
         now = world.get_snapshot().timestamp.elapsed_seconds
         if self.start_sim_time is None or now < self.last_sim_time:
             # first call, or the episode restarted (map reload): start over from its weather
+            if self.paused:
+                logging.info("Weather cycle: new episode, resuming")
             self.start_sim_time, self.last_update, self.last_log = now, None, None
             self.start_weather = world.get_weather()
+            self.last_weather = None
+            self.paused = False
         self.last_sim_time = now
+        if self.paused:
+            return
         elapsed = now - self.start_sim_time
         if self.last_update is not None and elapsed - self.last_update < CYCLE_UPDATE_INTERVAL_S:
             return
         self.last_update = elapsed
+
+        if self.last_weather is not None and changed_externally(self.last_weather, world.get_weather()):
+            logging.info(
+                "Weather cycle: another client, e.g. a scenario, set the weather; "
+                "pausing until the next episode"
+            )
+            self.paused = True
+            return
 
         weather = self.weather_at(elapsed)
         if elapsed < CYCLE_WARMUP_S:
@@ -385,6 +469,7 @@ class WeatherCycle:
                 start = getattr(self.start_weather, field)
                 setattr(weather, field, start + (getattr(weather, field) - start) * alpha)
         world.set_weather(weather)
+        self.last_weather = weather
 
         if self.last_log is None or elapsed - self.last_log >= CYCLE_LOG_INTERVAL_S:
             self.last_log = elapsed
@@ -473,8 +558,9 @@ def select_vehicle_spawn_points(world, count):
     eligible_spawn_points = [
         spawn_point
         for spawn_point in spawn_points
-        if spawn_point.location.distance(ego_location)
-        >= EGO_VEHICLE_SPAWN_CLEARANCE_M
+        if EGO_SPAWN_CLEARANCE_M
+        <= spawn_point.location.distance(ego_location)
+        <= RECYCLE_DISTANCE_M
     ]
     near_spawn_points = [
         spawn_point
@@ -492,7 +578,7 @@ def select_vehicle_spawn_points(world, count):
         for actor in background_vehicles
     )
     desired_nearby = round(
-        (len(background_vehicles) + count) * NEAR_EGO_VEHICLE_TARGET_FRACTION
+        (len(background_vehicles) + count) * NEAR_EGO_TARGET_FRACTION
     )
     near_target = min(
         count,
@@ -528,7 +614,7 @@ def select_vehicle_spawn_points(world, count):
         "(current=%d target=%d)",
         selected_nearby,
         len(selected_spawn_points),
-        EGO_VEHICLE_SPAWN_CLEARANCE_M,
+        EGO_SPAWN_CLEARANCE_M,
         NEAR_EGO_SPAWN_RADIUS_M,
         current_nearby,
         desired_nearby,
@@ -583,13 +669,13 @@ def apply_spawn_batch(client, batch, do_tick=True):
     return actor_ids
 
 
-def spawn_walkers(client, world, blueprints, count, args, synchronous_master):
+def spawn_walkers(client, world, blueprints, count, args, synchronous_master, walker_ids=()):
     if count <= 0:
         return []
 
     world.set_pedestrians_cross_factor(PEDESTRIANS_CROSSING)
 
-    spawn_points = find_walker_spawn_points(world, count)
+    spawn_points = find_walker_spawn_points(world, count, walker_ids)
     if len(spawn_points) < count:
         logging.warning(
             "Only found %d/%d walker navigation spawn locations. "
@@ -623,20 +709,81 @@ def spawn_walkers(client, world, blueprints, count, args, synchronous_master):
     return records
 
 
-def find_walker_spawn_points(world, count):
-    spawn_points = []
-    attempts = max(count * WALKER_NAV_LOCATION_ATTEMPTS, count)
+def find_walker_spawn_points(world, count, walker_ids=()):
+    """Navmesh locations for count walkers, around the ego like the vehicle spawn points."""
+    ego = find_ego_vehicle(world)
+    ego_location = ego.get_location() if ego is not None else None
+    near_locations = []
+    distant_locations = []
 
-    for _ in range(attempts):
-        if len(spawn_points) >= count:
+    for _ in range(count * WALKER_NAV_LOCATION_ATTEMPTS):
+        if len(distant_locations) >= count and (
+            ego_location is None or len(near_locations) >= count
+        ):
             break
 
         location = world.get_random_location_from_navigation()
-        if location is not None:
-            location.z += WALKER_SPAWN_Z_OFFSET
-            spawn_points.append(carla.Transform(location))
+        if location is None:
+            continue
+        if ego_location is None:
+            distant_locations.append(location)
+            continue
+        distance = location.distance(ego_location)
+        if EGO_SPAWN_CLEARANCE_M <= distance <= NEAR_EGO_SPAWN_RADIUS_M:
+            near_locations.append(location)
+        elif NEAR_EGO_SPAWN_RADIUS_M < distance <= RECYCLE_DISTANCE_M:
+            distant_locations.append(location)
 
+    if ego_location is None:
+        selected = distant_locations[:count]
+    else:
+        current_nearby = sum(
+            walker.get_location().distance(ego_location) <= NEAR_EGO_SPAWN_RADIUS_M
+            for walker in world.get_actors(list(walker_ids))
+        )
+        desired_nearby = round((len(walker_ids) + count) * NEAR_EGO_TARGET_FRACTION)
+        near_target = min(count, max(0, desired_nearby - current_nearby))
+        selected = near_locations[:near_target]
+        selected += distant_locations[:count - len(selected)]
+        selected += near_locations[near_target:near_target + count - len(selected)]
+        selected_nearby = sum(
+            location.distance(ego_location) <= NEAR_EGO_SPAWN_RADIUS_M for location in selected
+        )
+        logging.info(
+            "Selected %d/%d walker spawn points within %.0f-%.0f m of the ego "
+            "(current=%d target=%d)",
+            selected_nearby,
+            len(selected),
+            EGO_SPAWN_CLEARANCE_M,
+            NEAR_EGO_SPAWN_RADIUS_M,
+            current_nearby,
+            desired_nearby,
+        )
+
+    spawn_points = []
+    for location in selected:
+        location.z += WALKER_SPAWN_Z_OFFSET
+        spawn_points.append(carla.Transform(location))
     return spawn_points
+
+
+def walker_target(world, ego_location):
+    """A random navmesh location within NEAR_EGO_SPAWN_RADIUS_M of the ego, else the closest one
+    sampled; anywhere without an ego."""
+    closest = None
+    closest_distance = math.inf
+    for _ in range(WALKER_NAV_LOCATION_ATTEMPTS):
+        location = world.get_random_location_from_navigation()
+        if location is None:
+            continue
+        if ego_location is None:
+            return location
+        distance = location.distance(ego_location)
+        if distance <= NEAR_EGO_SPAWN_RADIUS_M:
+            return location
+        if distance < closest_distance:
+            closest, closest_distance = location, distance
+    return closest
 
 
 def get_walker_speed(blueprint):
@@ -691,10 +838,12 @@ def start_walker_controllers(world, walker_records, args, synchronous_master):
         record["controller"]: record["speed"] for record in walker_records
     }
     controllers = world.get_actors(list(speed_by_controller.keys()))
+    ego = find_ego_vehicle(world)
+    ego_location = ego.get_location() if ego is not None else None
 
     for controller in controllers:
         controller.start()
-        target = world.get_random_location_from_navigation()
+        target = walker_target(world, ego_location)
         if target is not None:
             controller.go_to_location(target)
         controller.set_max_speed(speed_by_controller[controller.id])
@@ -745,7 +894,22 @@ def supervise_environment(
         ]
         collided_vehicles.difference_update(collided_vehicle_ids)
 
-        bad_vehicles = set(stuck_vehicles) | set(collided_vehicle_ids)
+        # Recycle the traffic that is too far from the ego: it respawns near the ego below.
+        ego = find_ego_vehicle(world)
+        ego_location = ego.get_location() if ego is not None else None
+        far_vehicles = far_actor_ids(world, vehicles, ego_location)
+        far_walkers = far_actor_ids(
+            world, [record["walker"] for record in walker_records], ego_location
+        )
+        if far_walkers:
+            destroy_walker_records(
+                client, [record for record in walker_records if record["walker"] in far_walkers]
+            )
+            walker_records[:] = [
+                record for record in walker_records if record["walker"] not in far_walkers
+            ]
+
+        bad_vehicles = set(stuck_vehicles) | set(collided_vehicle_ids) | far_vehicles
         if bad_vehicles:
             remove_vehicle_sensors(client, vehicle_sensors, bad_vehicles)
             destroy_actor_ids(client, bad_vehicles)
@@ -776,6 +940,7 @@ def supervise_environment(
             missing_walkers,
             args,
             synchronous_master,
+            walker_ids=[record["walker"] for record in walker_records],
         )
         walker_records.extend(new_walkers)
 
@@ -783,7 +948,8 @@ def supervise_environment(
             (
                 "environment: vehicles=%d/%d walkers=%d/%d "
                 "respawned_vehicles=%d respawned_walkers=%d "
-                "stuck_vehicles=%d collided_vehicles=%d"
+                "stuck_vehicles=%d collided_vehicles=%d "
+                "recycled_vehicles=%d recycled_walkers=%d"
             )
             % (
                 len(vehicles),
@@ -794,6 +960,8 @@ def supervise_environment(
                 len(new_walkers),
                 len(stuck_vehicles),
                 len(collided_vehicle_ids),
+                len(far_vehicles),
+                len(far_walkers),
             ),
             flush=True,
         )
@@ -970,25 +1138,39 @@ def destroy_actor_ids(client, actor_ids):
         client.apply_batch([carla.command.DestroyActor(actor_id) for actor_id in actor_ids])
 
 
-def cleanup(client, vehicles, vehicle_sensors, walker_records):
-    remove_vehicle_sensors(client, vehicle_sensors, list(vehicle_sensors.keys()))
+def far_actor_ids(world, actor_ids, ego_location):
+    """Ids of the actors farther from the ego than RECYCLE_DISTANCE_M; none without an ego."""
+    if ego_location is None or not actor_ids:
+        return set()
+    return {
+        actor.id
+        for actor in world.get_actors(list(actor_ids))
+        if actor.get_location().distance(ego_location) > RECYCLE_DISTANCE_M
+    }
 
-    controllers = world_actors_from_records(client, walker_records, "controller")
-    for controller in controllers:
+
+def destroy_walker_records(client, walker_records):
+    """Stop the walkers' controllers, then destroy walkers and controllers."""
+    for controller in world_actors_from_records(client, walker_records, "controller"):
         try:
             controller.stop()
         except RuntimeError as error:
             logging.warning("Could not stop walker controller: %s", error)
 
-    print("\ndestroying %d vehicles" % len(vehicles), flush=True)
-    destroy_actor_ids(client, vehicles)
-
     walker_actor_ids = []
     for record in walker_records:
         walker_actor_ids.extend([record["walker"], record["controller"]])
+    destroy_actor_ids(client, walker_actor_ids)
+
+
+def cleanup(client, vehicles, vehicle_sensors, walker_records):
+    remove_vehicle_sensors(client, vehicle_sensors, list(vehicle_sensors.keys()))
+
+    print("\ndestroying %d vehicles" % len(vehicles), flush=True)
+    destroy_actor_ids(client, vehicles)
 
     print("\ndestroying %d walkers" % len(walker_records), flush=True)
-    destroy_actor_ids(client, walker_actor_ids)
+    destroy_walker_records(client, walker_records)
 
 
 def world_actors_from_records(client, records, key):
@@ -1026,7 +1208,11 @@ def main():
             world, traffic_manager, args
         )
 
-        vehicle_blueprints = get_blueprints(world, args.filterv)
+        logging.info(
+            "Traffic %s: %d vehicles, %d walkers",
+            args.traffic, args.number_of_vehicles, args.number_of_walkers,
+        )
+        vehicle_blueprints = get_blueprints(world, args.filterv, EXCLUDED_VEHICLE_BLUEPRINTS)
         walker_blueprints = get_blueprints(world, args.filterw)
         vehicles.extend(
             spawn_vehicles(

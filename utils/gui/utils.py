@@ -115,6 +115,15 @@ def _xosc_logic_file(xosc_file: Path) -> str:
     return ""
 
 
+def xosc_sets_weather(xosc_file: Path) -> bool:
+    """True if the scenario sets its own weather (an EnvironmentAction) and so overrides WEATHER."""
+    try:
+        root = ET.parse(xosc_file).getroot()
+    except (OSError, ET.ParseError):
+        return False
+    return any(element.tag.rsplit("}", 1)[-1] == "EnvironmentAction" for element in root.iter())
+
+
 def filter_xosc_files_by_map(
     repo_root: Path,
     xosc_files: list[str],

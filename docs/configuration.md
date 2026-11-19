@@ -31,7 +31,8 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `ORIGIN_LON` | GPS origin longitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LAT` or leave both empty. | `6.070377` |
 | `LANELET_RELOAD` | `true` derives the Lanelet2 map from the simulation map; `false` uses `CUSTOM_LANELET`. Set automatically by the Configuration GUI. | `true`, `false` |
 | `SCENARIO_FILE` | *OpenSCENARIO* file executed directly using the CARLA scenario runner within the `automated-testing` profile. The Configuration GUI filters available scenarios for the selected map and can validate/import custom scenario bundles. For sequential runs of multiple scenarios, use the [multi-scenario execution script](./example-scenario-execution.md#execute-multiple-scenarios). | `scenarios/scenario-generator/campus_following.xosc` |
-| `WEATHER` | CARLA weather, applied by `carla-client` as part of the `environment` profile. `MapDefault` (default) leaves the map's weather alone, e.g. to keep the weather a scenario sets. `Cycle` runs a day/night cycle with passing storms. A fixed weather is `OpenADSAfternoon` or a [CARLA weather preset](https://carla.readthedocs.io/en/latest/python_api/#carlaweatherparameters). | `MapDefault`, `Cycle`, `OpenADSAfternoon`, `ClearNoon`, `WetCloudySunset` |
+| `TRAFFIC` | CARLA background traffic, spawned by `carla-client` as part of the `environment` profile: `none`, `light` (default, 30 vehicles and 10 walkers), `medium` (60 and 30) or `dense` (100 and 60). Vehicles and walkers spawn around the ego vehicle, 70% within 200 m, and respawn near it once they are more than 500 m away. The traffic runs alongside a scenario. | `none`, `light`, `medium`, `dense` |
+| `WEATHER` | CARLA weather, applied by `carla-client` as part of the `environment` profile. `MapDefault` (default) leaves the map's weather alone. `Cycle` runs a day/night cycle with passing storms. A fixed weather is `OpenADSAfternoon` or a [CARLA weather preset](https://carla.readthedocs.io/en/latest/python_api/#carlaweatherparameters). A scenario that sets its own weather (`EnvironmentAction`) overrides `WEATHER` when it starts; `Cycle` then pauses until the next map load. | `MapDefault`, `Cycle`, `OpenADSAfternoon`, `ClearNoon`, `WetCloudySunset` |
 | `USE_SIM_TIME` | Enables ROS simulated time across the stack. Must stay `true` in this setup. | `true` |
 | `ROS_TRACING` | Enables ROS 2 tracing for supported services. | `false`, `true` |
 
@@ -42,7 +43,7 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | Group | Profiles | Compatibility / Effect |
 | ------ | ------ | ------ |
 | Simulation | `carla`, `sumo` | Selects the simulation backend. CARLA supports the full stack; SUMO is lightweight and more restricted. |
-| Environment | `no-environment`, `environment` | Selects if CARLA gets background traffic and weather (`carla-client`). Without it, the map keeps its own weather. SUMO always generates random traffic. |
+| Environment | `no-environment`, `environment` | Selects if CARLA gets background traffic and weather (`carla-client`) from `TRAFFIC` and `WEATHER`. The Configuration GUI selects `environment` as soon as `TRAFFIC` is not `none` or `WEATHER` is not `MapDefault`. Without it, the map keeps its own weather. SUMO always generates random traffic. |
 | Testing | `no-testing`, `manual-testing`, `automated-testing` | CARLA only. `no-testing` starts no scenario runner, `manual-testing` controls scenarios manually through RViz, `automated-testing` starts the `SCENARIO_FILE` directly. |
 | Perception | `no-perception`, `perception` | `perception` is CARLA only. SUMO must use `no-perception`. |
 | Planning | `planning` | CARLA and SUMO support `planning`. |
@@ -68,7 +69,7 @@ The following overview lists the Docker Compose services involved in OpenADSim a
 | `carla-ackermann-control` | `carla` | Applies Ackermann control commands to the ego vehicle |
 | `carla-manual-control` | `carla` | Manual keyboard control of the vehicle |
 | `carla-control-active-bridge` | `carla` | Reports whether stack control is active on `/control/active` by inverting the manual override state |
-| `carla-client` | `environment` | Defines random traffic and sets the weather from `WEATHER` |
+| `carla-client` | `environment` | Spawns background traffic from `TRAFFIC` and sets the weather from `WEATHER` |
 | `carla-scenario-runner-ros-manual-testing` | `manual-testing` | Interactive scenario execution through RViz |
 | `carla-scenario-runner-ros-automated-testing` | `automated-testing` | Direct scenario execution from `SCENARIO_FILE` |
 

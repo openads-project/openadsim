@@ -443,7 +443,6 @@ def _field_label(field: UiField) -> str:
 def _profile_icon_svg(path: str) -> str:
     icons = {
         "additional.simulation": '<rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8"/><path d="M8 13h5"/>',
-        "additional.environment_profile": '<path d="M3 17h18"/><path d="M5 17l1.5-6h11L19 17"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/><path d="M8 11l2-4h4l2 4"/>',
         "additional.testing_profile": '<path d="M9 3h6"/><path d="M10 3v5l-4 8a4 4 0 0 0 3.6 5h4.8a4 4 0 0 0 3.6-5l-4-8V3"/><path d="M8 16h8"/>',
         "additional.perception_profile": '<path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/>',
         "additional.planning_profile": '<path d="M4 19V5"/><path d="M4 6c4-3 8 3 12 0v9c-4 3-8-3-12 0"/><path d="M17 19h3"/><path d="M18.5 17.5V20.5"/>',
@@ -767,7 +766,6 @@ def _render_profiles_section(
 ) -> bool:
     fields_by_path = {field.path: field for field in section_fields}
     simulation_field = fields_by_path.get("additional.simulation")
-    environment_field = fields_by_path.get("additional.environment_profile")
     testing_field = fields_by_path.get("additional.testing_profile")
     perception_field = fields_by_path.get("additional.perception_profile")
     planning_field = fields_by_path.get("additional.planning_profile")
@@ -775,7 +773,6 @@ def _render_profiles_section(
     if not all(
         [
             simulation_field,
-            environment_field,
             testing_field,
             perception_field,
             planning_field,
@@ -791,10 +788,9 @@ def _render_profiles_section(
     left_col, right_col = st.columns(2)
     with left_col:
         changed = _render_profile_field(config, simulation_field) or changed
-        changed = _render_profile_field(config, environment_field) or changed
         changed = _render_profile_field(config, testing_field) or changed
         if config.additional.simulation.value != "carla":
-            st.caption("Environment and testing profiles are only available for CARLA.")
+            st.caption("The testing profile is only available for CARLA.")
 
     with right_col:
         changed = _render_profile_field(config, perception_field) or changed

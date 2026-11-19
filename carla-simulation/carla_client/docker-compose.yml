@@ -21,6 +21,7 @@ services:
     environment:
       CARLA_HOST: carla-server
       CARLA_PORT: 2000
+      TRAFFIC: ${TRAFFIC:-}
       WEATHER: ${WEATHER:-}
     # command:
     #   - sleep

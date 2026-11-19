@@ -14,12 +14,14 @@ from models import (
     SUMO_PREBUILT_MAPS,
     SimulationProfile,
     TestingProfile,
-    EnvironmentProfile,
     SimulationConfig,
+    TRAFFIC_OPTIONS,
     Vehicle,
+    WEATHER_MAP_DEFAULT,
     WEATHER_OPTIONS,
     is_vehicle_sensor_entry,
 )
+from utils import xosc_sets_weather
 
 
 @dataclass(frozen=True)
@@ -371,16 +373,37 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
                         )
                     )
 
-    # Weather: carla-client fails on an unknown WEATHER, and only runs with the environment profile.
-    weather_applied = (
-        not sumo_selected
-        and config.additional.environment_profile == EnvironmentProfile.ENABLED
-    )
-    if weather_applied and config.scenario.weather not in WEATHER_OPTIONS:
+    # Traffic and weather: carla-client fails on an unknown TRAFFIC or WEATHER (CARLA only).
+    if not sumo_selected and config.scenario.traffic not in TRAFFIC_OPTIONS:
+        result.errors.append(
+            ValidationIssue(
+                path="scenario.traffic",
+                message=f"TRAFFIC must be one of: {', '.join(TRAFFIC_OPTIONS)}",
+            )
+        )
+    if not sumo_selected and config.scenario.weather not in WEATHER_OPTIONS:
         result.errors.append(
             ValidationIssue(
                 path="scenario.weather",
                 message=f"WEATHER must be one of: {', '.join(WEATHER_OPTIONS)}",
+            )
+        )
+    scenario_value = config.scenario.scenario_file.strip()
+    if (
+        not sumo_selected
+        and scenario_value
+        and repo_root is not None
+        and config.scenario.weather != WEATHER_MAP_DEFAULT
+        and xosc_sets_weather(_repo_path(repo_root, scenario_value))
+    ):
+        result.warnings.append(
+            ValidationIssue(
+                path="scenario.weather",
+                message=(
+                    f"The scenario sets its own weather (EnvironmentAction) and overrides "
+                    f"WEATHER={config.scenario.weather} when it starts."
+                ),
+                level="warning",
             )
         )
 
