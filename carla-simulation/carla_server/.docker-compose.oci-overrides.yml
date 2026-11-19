@@ -18,7 +18,7 @@ services:
       service: gpu-x11-service
     environment:
       CARLA_START_TIME: ${CARLA_START_TIME:-}
-    image: ghcr.io/openads-project/carla-simulator:server-slim_4-merge_ci  # TODO(carla-1.0): PR #4 build until the feature-branch image is rebuilt
+    image: ghcr.io/openads-project/carla-simulator:server_4-merge_ci  # TODO(carla-1.0): PR #4 build until the feature-branch image is rebuilt
     command:
       - /bin/bash
       - -ic
