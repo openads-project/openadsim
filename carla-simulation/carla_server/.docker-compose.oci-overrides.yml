@@ -30,7 +30,7 @@ services:
           --ros2 \
           --rmw=zenoh \
           -carla-rpc-port=$${CARLA_PORT} \
-          -$${CARLA_START_TIME:+-carla-start-time=$${CARLA_START_TIME}} \
+          $${CARLA_START_TIME:+-carla-start-time=$${CARLA_START_TIME}} \
           -ENGINEINI=/openadsim/DefaultEngine.ini
     volumes:
       - ./DefaultEngine.ini:/openadsim/DefaultEngine.ini:ro
