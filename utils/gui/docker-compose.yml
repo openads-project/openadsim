@@ -2,7 +2,7 @@ services:
   gui:
     profiles:
       - gui
-    image: ghcr.io/openads-project/openadsim/gui:latest
+    image: ghcr.io/openads-project/openadsim/gui:feature-carla-1.0
     container_name: openadsim-configuration-gui
     ports:
       - 8501:8501
