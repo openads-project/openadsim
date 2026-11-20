@@ -2,14 +2,14 @@
 # `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
 
 include:
-  # TODO(carla-1.0): temporary feature-branch build of openads-project/carla-simulator for CARLA 1.0.
-  - oci://ghcr.io/openads-project/carla-simulator/compose:feature-carla-1.0-carla-server
+  - oci://ghcr.io/openads-project/carla-simulator/compose:v1.0.0-1.0.0-carla-server
 
 services:
 
   carla-server:
     profiles:
       - carla
+      - carla-sumo
     depends_on:
       zenoh-router:
         condition: service_healthy
@@ -17,15 +17,14 @@ services:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
     environment:
-      CARLA_START_TIME: ${CARLA_START_TIME:-}
-    image: ghcr.io/openads-project/carla-simulator:server_4-merge_ci  # TODO(carla-1.0): PR #4 build until the feature-branch image is rebuilt
+      CARLA_START_TIME: ${CARLA_START_TIME:--1}  # Unix time the simulation clock starts at, -1: server start (V2X needs Unix time)
+    image: ghcr.io/openads-project/carla-simulator:server_v1.0.0-1.0.0  # full package instead of server-slim: also cooks Town01_Opt-Town07_Opt
     command:
       - /bin/bash
       - -ic
       - |
         ./CarlaUnreal.sh \
           -nosound \
-          -RenderOffScreen \
           -quality-level=Medium \
           --ros2 \
           --rmw=zenoh \
@@ -50,4 +49,5 @@ services:
           --ros2 \
           --rmw=zenoh \
           -carla-rpc-port=$${CARLA_PORT} \
+          $${CARLA_START_TIME:+-carla-start-time=$${CARLA_START_TIME}} \
           -ENGINEINI=/openadsim/DefaultEngine.ini
