@@ -24,7 +24,7 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `VEHICLE` | Vehicle profile for sensor frames (URDF), parameters, and controller tuning. Mostly relevant for CARLA. | `karl`, `shuttle` |
 | `SENSORS` | Comma-separated list of CARLA sensor layout files to be used when spawning objects. SUMO does not use sensor layouts. | `global-sensors.json,karl-minimal.json`,`rita-minimal.json` |
 | `MAP` | Selected prebuilt map. Leave empty when using custom OpenDRIVE mode. | CARLA: `aldenhoven`, `campus`, `Town10HD_Opt`; SUMO: `campus` |
-| `SPAWN_POINT` | Ego spawn point, given as `x,y,z,heading` in simulation map coordinates, or as `lat,lon,altitude,heading` when suffixed with `wgs84`. Required for prebuilt maps. | `50.787510,6.045938,260.0,90.0,wgs84`, `-1.0,-154.0,1.0,238.0` |
+| `SPAWN_POINT` | Ego spawn point, given as `x,y,z,heading` in simulation map coordinates, or as `lat,lon,altitude,heading` when suffixed with `wgs84`. CARLA: leave empty for a random spawn point. SUMO: required. | `50.787510,6.045938,260.0,90.0,wgs84`, `-1.0,-154.0,1.0,238.0` |
 | `CUSTOM_OPENDRIVE` | Custom *OpenDRIVE* (`.xodr`) map for CARLA standalone map mode. Not supported for SUMO. | `custom.xodr` |
 | `CUSTOM_LANELET` | Matching Lanelet2 `.osm` map for route planning and map server. Required with custom OpenDRIVE. | `custom.osm` |
 | `ORIGIN_LAT` | GPS origin latitude for a custom Lanelet2 map frame. Set together with `ORIGIN_LON` or leave both empty. | `50.782329` |
