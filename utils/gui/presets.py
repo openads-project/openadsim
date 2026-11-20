@@ -1,6 +1,7 @@
 """Predefined preset configurations for common scenarios."""
 
 from models import (
+    CARLA_START_TIME_DEFAULT,
     COSIM_SCENARIO_MAPS,
     AdditionalOptionsConfig,
     CosimConfig,
@@ -39,7 +40,10 @@ def _cosim_preset(scenario: str, spawn_point: str, sumo_cfg: str = "") -> Simula
         ),
         map=MapConfig(prebuilt_map=prebuilt_map, spawn_point=spawn_point),
         cosim=CosimConfig(cosim_scenario=scenario, sumo_cfg=sumo_cfg),
-        additional=AdditionalOptionsConfig(simulation=SimulationProfile.CARLA_SUMO),
+        additional=AdditionalOptionsConfig(
+            simulation=SimulationProfile.CARLA_SUMO,
+            carla_start_time=CARLA_START_TIME_DEFAULT,
+        ),
     )
 
 
@@ -83,7 +87,7 @@ PRESETS = {
             perception_profile=PerceptionProfile.ENABLED,
         ),
     ),
-    "carla-sumo-town10-incident": _cosim_preset("town10-incident", "-11.4,-127.2,0.2,180.0"),
+    "carla-sumo-town10-incident": _cosim_preset("town10-incident", "-113.5,20.0,0.2,-90.7"),
     "carla-sumo-town04-roadworkzone": _cosim_preset("town04-roadworkzone", "62.0,190.0,2.5,90.0"),
     "carla-sumo-town03-tunnel": _cosim_preset("town03-tunnel", "34.0,4.5,0.2,-179.1"),
 }

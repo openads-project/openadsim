@@ -94,6 +94,10 @@ WEATHER_OPTIONS: tuple[str, ...] = (
     WEATHER_MAP_DEFAULT, WEATHER_CYCLE, "OpenADSAfternoon", *CARLA_WEATHER_PRESETS,
 )
 
+# CARLA_START_TIME of carla-server: -1 starts the simulation clock at the server's start time.
+# V2X messages (CAM, CPM) need unix time, 0 starts the clock at zero.
+CARLA_START_TIME_DEFAULT = "-1"
+
 # TRAFFIC of carla-client: the background traffic level, see TRAFFIC_LEVELS in set_environment.py.
 TRAFFIC_NONE = "none"
 TRAFFIC_LIGHT = "light"
@@ -508,7 +512,7 @@ class AdditionalOptionsConfig(BaseModel):
     }
 
     use_sim_time: bool = True
-    carla_start_time: str = ""
+    carla_start_time: str = CARLA_START_TIME_DEFAULT
     ros_tracing: bool = False
     rmw: Rmw = Rmw.ZENOH
     simulation: SimulationProfile = SimulationProfile.CARLA
@@ -520,7 +524,7 @@ class AdditionalOptionsConfig(BaseModel):
 
     def normalize(self):
         self.use_sim_time = True
-        self.carla_start_time = self.carla_start_time.strip()
+        self.carla_start_time = self.carla_start_time.strip() or CARLA_START_TIME_DEFAULT
         self.rmw = Rmw.ZENOH
         self.example_overlay = self.example_overlay.strip()
 
@@ -908,7 +912,7 @@ class SimulationConfig(BaseModel):
                 env_vars.get("USE_SIM_TIME", "true"),
                 default=True,
             ),
-            carla_start_time=env_vars.get("CARLA_START_TIME", ""),
+            carla_start_time=env_vars.get("CARLA_START_TIME", CARLA_START_TIME_DEFAULT),
             ros_tracing=cls._parse_bool(
                 env_vars.get("ROS_TRACING", "false"),
                 default=False,
@@ -1353,8 +1357,9 @@ class SimulationConfig(BaseModel):
                     env_name="CARLA_START_TIME",
                     label="CARLA Start Time",
                     description=(
-                        "Unix time the simulation clock starts at; -1 for the time the server starts. "
-                        "Leave empty for CARLA's default clock. Not used for SUMO."
+                        "Unix time the simulation clock starts at; -1 (default) for the time the "
+                        "server starts, 0 for CARLA's clock starting at zero. V2X messages (CAM, CPM) "
+                        "need unix time. Not used for SUMO."
                     ),
                     control="text",
                     disabled=self.additional.simulation == SimulationProfile.SUMO,

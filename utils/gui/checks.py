@@ -382,6 +382,29 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
     # Co-simulation
     if cosim_selected:
         _validate_cosim(config, result, repo_root)
+
+    # CARLA_START_TIME is passed to the server as -carla-start-time=<value>.
+    if not sumo_selected:
+        start_time = config.additional.carla_start_time
+        try:
+            float(start_time)
+        except ValueError:
+            result.errors.append(
+                ValidationIssue(
+                    path="additional.carla_start_time",
+                    message="CARLA_START_TIME must be a Unix time in seconds, or -1 for the server's start time",
+                )
+            )
+        else:
+            if float(start_time) == 0 and cosim_selected:
+                result.warnings.append(
+                    ValidationIssue(
+                        path="additional.carla_start_time",
+                        message="CARLA_START_TIME=0: the converter drops V2X messages (CAM, CPM), they need Unix time",
+                        level="warning",
+                    )
+                )
+
     # Traffic and weather: carla-client fails on an unknown TRAFFIC or WEATHER (CARLA only).
     if not sumo_selected and config.scenario.traffic not in TRAFFIC_OPTIONS:
         result.errors.append(

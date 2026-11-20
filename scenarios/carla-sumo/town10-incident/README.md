@@ -7,6 +7,7 @@ SENSORS=global-sensors.json,karl-minimal.json
 COSIM_SCENARIO=town10-incident
 TRAFFIC=none
 MAP=Town10HD_Opt
-SPAWN_POINT=-11.4,-127.2,0.2,180.0
+SPAWN_POINT=-113.5,20.0,0.2,-90.7
 SUMO_CFG=
+CARLA_START_TIME=-1
 ```
