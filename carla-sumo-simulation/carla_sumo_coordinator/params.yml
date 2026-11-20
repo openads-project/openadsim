@@ -41,7 +41,7 @@ sumo_gui: true
 # ============================================================================
 
 # Traffic light authority: 'none', 'sumo', or 'carla'.
-tls_manager: none
+tls_manager: sumo
 
 # Synchronize vehicle color / light state between CARLA and SUMO.
 sync_vehicle_color: false
