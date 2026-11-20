@@ -1139,10 +1139,10 @@ class SimulationConfig(BaseModel):
                     description=(
                         "Background traffic: none, light (default, 30 vehicles and 10 "
                         "walkers), medium (45 and 15) or dense (60 and 30). Vehicles and "
-                        "walkers spawn around the ego vehicle, 70% within 200 m, and respawn "
-                        "near it once they are more than 500 m away. The traffic runs alongside "
-                        "a scenario. Dense can fall below real time (about 0.8 on the campus "
-                        "map). CARLA only; SUMO generates its own traffic."
+                        "walkers spawn around the ego vehicle, none closer than 100 m, 70% "
+                        "within 200 m, and respawn near it once they are more than 500 m away. "
+                        "The traffic runs alongside a scenario. Dense can fall below real time "
+                        "(about 0.8 on the campus map). CARLA only; SUMO generates its own traffic."
                     ),
                     control="select",
                     options=TRAFFIC_OPTIONS,
