@@ -32,7 +32,7 @@ Demo scenarios are stored in [`scenarios`](https://github.com/openads-project/op
 | --- | --- | --- | --- |
 | `campus_following.xosc` | `campus` | Following a vehicle on a straight route | `scenario.generator` (will be released soon) |
 | `campus_intersecting_with_vehicle_from_left.xosc` | `campus` | Interaction with a vehicle approaching from the left | `scenario.generator` (will be released soon) |
-| `campus_merging_following_with_vehicle_from_right.xosc` | `campus` | Merging and following a traffic participant approaching from the right | `scenario.generator` (will be released soon) |
+| `campus_merging_following_with_cyclist_from_right.xosc` | `campus` | Merging and following a cyclist approaching from the right | `scenario.generator` (will be released soon) |
 | `campus_turning_left.xosc` | `campus` | Ego left-turn route | [simple-scenario](https://github.com/ika-rwth-aachen/simple-scenario) |
 | `atc_turn_left_intersecting_vehicle_from_left_turning_left.xosc` | `aldenhoven` | Left turn with an intersecting vehicle from the left | [simple-scenario](https://github.com/ika-rwth-aachen/simple-scenario) |
 | `synthetic_curve_cut_in.xosc` | Custom `synthetic_curve_cut_in.xodr` | Vehicle cut-in on a curved road | [simple-scenario](https://github.com/ika-rwth-aachen/simple-scenario) |

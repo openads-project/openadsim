@@ -24,7 +24,8 @@
       </Vehicle>
     </ScenarioObject>
     <ScenarioObject name="cyclist_1">
-      <Vehicle name="cyclist_1" vehicleCategory="bicycle">
+      <!-- TODO(carla-1.0): explicit crossbike until vehicle.diamondback.century (BP_RoadBike) has its mesh again -->
+      <Vehicle name="vehicle.bh.crossbike" vehicleCategory="bicycle">
         <BoundingBox>
           <Center x="0" y="0" z="0.85" />
           <Dimensions width="0.7" length="1.8" height="1.7" />
