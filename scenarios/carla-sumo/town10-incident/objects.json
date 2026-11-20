@@ -67,20 +67,20 @@
             "id": "warningaccident3",
             "spawn_point": {"x": 104.3, "y": -54.5, "z_above_ground": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
         },
-        { 
+        {
             "type": "blueprint.mrisu",
             "id": "mrisu1",
-            "spawn_point": {"x": 114.5, "y": -75.2, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": 180.0} 
+            "spawn_point": {"x": 114.0, "y": -99.1, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": 152.0}
         },
         {
             "type": "blueprint.mrisu",
             "id": "mrisu2",
-            "spawn_point": {"x": 114.5, "y": -58.2, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": 180.0}
+            "spawn_point": {"x": 83.0, "y": -75.5, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": 83.0}
         },
         {
             "type": "blueprint.mrisu",
             "id": "mrisu3",
-            "spawn_point": {"x": 92.5, "y": -58.2, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": -45.0}
+            "spawn_point": {"x": 114.5, "y": -43.8, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": 177.0}
         }
     ]
 }

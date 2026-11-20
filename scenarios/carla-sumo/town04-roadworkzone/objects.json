@@ -385,20 +385,20 @@
             "id": "wheelloader_parked",
             "spawn_point": {"x": -6.0, "y": 122.0, "z_above_ground": 0.1, "roll": 0.0, "pitch": 0.0, "yaw": -89.0}
         },
-        { 
+        {
             "type": "blueprint.mrisu",
             "id": "mrisu1",
-            "spawn_point": {"x": -20.5, "y": 145.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+            "spawn_point": {"x": -20.3, "y": 191.2, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
         },
-        { 
+        {
             "type": "blueprint.mrisu",
             "id": "mrisu2",
-            "spawn_point": {"x": -20.5, "y": 115.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+            "spawn_point": {"x": -20.1, "y": 147.2, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
         },
-        { 
+        {
             "type": "blueprint.mrisu",
             "id": "mrisu3",
-            "spawn_point": {"x": -20.5, "y": 85.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0} 
+            "spawn_point": {"x": -20.2, "y": 98.6, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
         }
     ]
 }
