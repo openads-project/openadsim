@@ -867,7 +867,7 @@ def supervise_environment(
     vehicle_state = build_vehicle_state(world, vehicles, time.monotonic())
     next_status = time.monotonic()
     next_lights = time.monotonic()
-
+ego_lights = None  # (ego id, light state) last applied by update_ego_lights
     while True:
         tick_once(world, args, synchronous_master)
 
@@ -877,7 +877,7 @@ def supervise_environment(
         now = time.monotonic()
         if now >= next_lights:
             next_lights = now + LIGHT_UPDATE_INTERVAL
-            update_ego_lights(world)
+            ego_lights = update_ego_lights(world, ego_lights)
         if now < next_status:
             continue
         next_status = now + STATUS_INTERVAL
@@ -981,21 +981,31 @@ def weather_light_state(weather):
     return int(lights)
 
 
-def update_ego_lights(world):
-    """Switch the ego's weather-dependent lights; brake lights, blinkers and high beam stay as they are."""
+def update_ego_lights(world, applied=None):
+    """Switch the ego's weather-dependent lights; brake lights, blinkers and high beam stay as they are.
+
+    Only acts when the weather's light state changes, or on a new ego. In between, anyone may
+    switch these lights by hand, e.g. manual control, and they stay as they were set. Returns the
+    (ego id, light state) applied, to pass back in as applied on the next call.
+    """
     ego = find_ego_vehicle(world)
     if ego is None:
-        return
+        return applied
+    target = (ego.id, weather_light_state(world.get_weather()))
+    if target == applied:
+        return applied
     managed = int(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
                   | carla.VehicleLightState.Fog)
     try:
         current = int(ego.get_light_state())
-        wanted = (current & ~managed) | weather_light_state(world.get_weather())
+        wanted = (current & ~managed) | target[1]
         if wanted != current:
             ego.set_light_state(carla.VehicleLightState(wanted))
             logging.info("Ego lights set to %s", carla.VehicleLightState(wanted))
     except RuntimeError as error:
         logging.warning("Could not update the ego lights: %s", error)
+        return applied  # try again on the next call
+    return target
 
 
 def tick_once(world, args, synchronous_master):
