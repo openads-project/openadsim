@@ -41,9 +41,11 @@ class SimulationProfile(str, Enum):
     SUMO = "sumo"
 
 
-class TrafficProfile(str, Enum):
-    DISABLED = "no-traffic"
-    ENABLED = "traffic"
+class EnvironmentProfile(str, Enum):
+    """carla-client: background traffic and weather, derived from TRAFFIC and WEATHER."""
+
+    DISABLED = "no-environment"
+    ENABLED = "environment"
 
 
 class TestingProfile(str, Enum):
@@ -62,6 +64,28 @@ class PlanningProfile(str, Enum):
 
 
 GLOBAL_SENSOR_FILE = "global-sensors.json"
+
+# WEATHER of carla-client (carla-simulation/carla_client/set_environment.py): the map's weather
+# left untouched (default), the day/night cycle, OpenADSim's own fixed weather, or a CARLA preset.
+WEATHER_CYCLE = "Cycle"
+WEATHER_MAP_DEFAULT = "MapDefault"
+CARLA_WEATHER_PRESETS: tuple[str, ...] = (
+    "ClearNoon", "CloudyNoon", "WetNoon", "WetCloudyNoon",
+    "SoftRainNoon", "MidRainyNoon", "HardRainNoon",
+    "ClearSunset", "CloudySunset", "WetSunset", "WetCloudySunset",
+    "SoftRainSunset", "MidRainSunset", "HardRainSunset",
+    "ClearNight", "CloudyNight", "WetNight", "WetCloudyNight",
+    "SoftRainNight", "MidRainyNight", "HardRainNight",
+    "DustStorm",
+)
+WEATHER_OPTIONS: tuple[str, ...] = (
+    WEATHER_MAP_DEFAULT, WEATHER_CYCLE, "OpenADSAfternoon", *CARLA_WEATHER_PRESETS,
+)
+
+# TRAFFIC of carla-client: the background traffic level, see TRAFFIC_LEVELS in set_environment.py.
+TRAFFIC_NONE = "none"
+TRAFFIC_LIGHT = "light"
+TRAFFIC_OPTIONS: tuple[str, ...] = (TRAFFIC_NONE, TRAFFIC_LIGHT, "medium", "dense")
 
 
 def env_export(env_name: str):
@@ -380,9 +404,17 @@ class MapConfig(BaseModel):
 
 class ScenarioConfig(BaseModel):
     scenario_file: str = ""
+    traffic: str = TRAFFIC_LIGHT
+    weather: str = WEATHER_MAP_DEFAULT
 
     def normalize(self):
         self.scenario_file = self.scenario_file.strip()
+        self.traffic = self.traffic.strip().lower() or TRAFFIC_LIGHT
+        self.weather = self.weather.strip() or WEATHER_MAP_DEFAULT
+
+    def environment_enabled(self) -> bool:
+        """carla-client has something to do: background traffic or a weather to set."""
+        return self.traffic != TRAFFIC_NONE or self.weather != WEATHER_MAP_DEFAULT
 
 
 class AdditionalOptionsConfig(BaseModel):
@@ -390,7 +422,7 @@ class AdditionalOptionsConfig(BaseModel):
         "rmw",
         "simulation",
         "example_overlay",
-        "traffic_profile",
+        "environment_profile",
         "testing_profile",
         "perception_profile",
         "planning_profile",
@@ -401,7 +433,7 @@ class AdditionalOptionsConfig(BaseModel):
     rmw: Rmw = Rmw.ZENOH
     simulation: SimulationProfile = SimulationProfile.CARLA
     example_overlay: str = ""
-    traffic_profile: TrafficProfile = TrafficProfile.ENABLED
+    environment_profile: EnvironmentProfile = EnvironmentProfile.ENABLED
     testing_profile: TestingProfile = TestingProfile.MANUAL
     perception_profile: PerceptionProfile = PerceptionProfile.DISABLED
     planning_profile: PlanningProfile = PlanningProfile.CLASSIC
@@ -425,7 +457,7 @@ class AdditionalOptionsConfig(BaseModel):
         if self.simulation == SimulationProfile.CARLA:
             parts.extend(
                 [
-                    self.traffic_profile.value,
+                    self.environment_profile.value,
                     self.testing_profile.value,
                 ]
             )
@@ -464,7 +496,7 @@ class SimulationConfig(BaseModel):
                 "LANELET_RELOAD",
             ],
         ),
-        ("### Scenario Configuration", ["SCENARIO_FILE"]),
+        ("### Scenario Configuration", ["SCENARIO_FILE", "TRAFFIC", "WEATHER"]),
         ("### Additional Options", ["USE_SIM_TIME", "ROS_TRACING"]),
     ]
     OPTIONAL_EMPTY_ENV_KEYS: ClassVar[set[str]] = {"COMPOSE_FILE"}
@@ -489,6 +521,13 @@ class SimulationConfig(BaseModel):
         self.map.normalize()
         self.map.align_to_simulation(self.additional.simulation)
         self.scenario.normalize()
+        # The environment profile follows TRAFFIC and WEATHER: carla-client runs only when it
+        # has something to do.
+        self.additional.environment_profile = (
+            EnvironmentProfile.ENABLED
+            if self.scenario.environment_enabled()
+            else EnvironmentProfile.DISABLED
+        )
 
     def apply_ui_constraints(self, trigger_path: str):
         if trigger_path == "vehicle.vehicle":
@@ -718,7 +757,11 @@ class SimulationConfig(BaseModel):
             origin_lon=cls._parse_optional_float(env_vars.get("ORIGIN_LON")),
         )
 
-        scenario = ScenarioConfig(scenario_file=env_vars.get("SCENARIO_FILE", ""))
+        scenario = ScenarioConfig(
+            scenario_file=env_vars.get("SCENARIO_FILE", ""),
+            traffic=env_vars.get("TRAFFIC", TRAFFIC_LIGHT),
+            weather=env_vars.get("WEATHER", WEATHER_MAP_DEFAULT),
+        )
 
         compose_profiles = [
             profile.strip()
@@ -739,27 +782,12 @@ class SimulationConfig(BaseModel):
         else:
             simulation = SimulationProfile.CARLA
 
-        traffic_profile = TrafficProfile.ENABLED
+        # The environment profile is not read: apply_defaults() derives it from TRAFFIC and WEATHER.
         testing_profile = TestingProfile.MANUAL
         perception_profile = PerceptionProfile.DISABLED
         planning_profile = PlanningProfile.CLASSIC
 
-        traffic_values = {item.value for item in TrafficProfile}
         testing_values = {item.value for item in TestingProfile}
-
-        selected_traffic_profile = next(
-            (profile for profile in compose_profiles if profile in traffic_values),
-            "",
-        )
-        if selected_traffic_profile:
-            traffic_profile = TrafficProfile(selected_traffic_profile)
-        elif "traffic-testing" in compose_profiles:
-            traffic_profile = TrafficProfile.ENABLED
-        elif any(
-            profile in compose_profiles
-            for profile in ("no-testing", "manual-testing", "automated-testing")
-        ):
-            traffic_profile = TrafficProfile.DISABLED
 
         for profile in compose_profiles:
             if profile in testing_values:
@@ -785,7 +813,6 @@ class SimulationConfig(BaseModel):
             example_overlay=cls._infer_example_overlay_from_compose(
                 env_vars.get("COMPOSE_FILE", env_vars.get("COMPOSE_FILES", "")),
             ),
-            traffic_profile=traffic_profile,
             testing_profile=testing_profile,
             perception_profile=perception_profile,
             planning_profile=planning_profile,
@@ -916,6 +943,8 @@ class SimulationConfig(BaseModel):
             not sumo_selected
             and self.additional.testing_profile != TestingProfile.DISABLED
         )
+        # carla-client sets traffic and weather; SUMO generates its own traffic.
+        environment_enabled = not sumo_selected
 
         if (
             current_opendrive
@@ -1076,7 +1105,8 @@ class SimulationConfig(BaseModel):
         scenario_section = UiSection(
             title="Scenario",
             description=(
-                "Scenario file used for manual or automated testing."
+                "Scenario file used for manual or automated testing, with background traffic "
+                "and weather. A scenario that sets its own weather overrides WEATHER."
                 + directory_filter_description
             ),
             fields=(
@@ -1102,6 +1132,36 @@ class SimulationConfig(BaseModel):
                     disabled=not scenario_enabled,
                     strict_options=bool(current_opendrive),
                 ),
+                UiField(
+                    path="scenario.traffic",
+                    env_name="TRAFFIC",
+                    label="Traffic",
+                    description=(
+                        "Background traffic: none, light (default, 30 vehicles and 10 "
+                        "walkers), medium (45 and 15) or dense (60 and 30). Vehicles and "
+                        "walkers spawn around the ego vehicle, none closer than 100 m, 70% "
+                        "within 200 m, and respawn near it once they are more than 500 m away. "
+                        "The traffic runs alongside a scenario. Dense can fall below real time "
+                        "(about 0.8 on the campus map). CARLA only; SUMO generates its own traffic."
+                    ),
+                    control="select",
+                    options=TRAFFIC_OPTIONS,
+                    disabled=not environment_enabled,
+                ),
+                UiField(
+                    path="scenario.weather",
+                    env_name="WEATHER",
+                    label="Weather",
+                    description=(
+                        "MapDefault (default) keeps the map's weather. Cycle: day and night "
+                        "with passing storms. A fixed weather is OpenADSAfternoon or a CARLA "
+                        "preset. A scenario that sets its own weather (EnvironmentAction) "
+                        "overrides it when it starts; the cycle then pauses. CARLA only."
+                    ),
+                    control="select",
+                    options=WEATHER_OPTIONS,
+                    disabled=not environment_enabled,
+                ),
             ),
         )
 
@@ -1116,15 +1176,6 @@ class SimulationConfig(BaseModel):
                     description="Selected simulation core.",
                     control="select",
                     options=(SimulationProfile.CARLA.value, SimulationProfile.SUMO.value),
-                ),
-                UiField(
-                    path="additional.traffic_profile",
-                    env_name="COMPOSE_PROFILES",
-                    label="Traffic Profile",
-                    description="Enable or disable generated background traffic. CARLA only.",
-                    control="select",
-                    options=tuple(profile.value for profile in TrafficProfile),
-                    disabled=self.additional.simulation != SimulationProfile.CARLA,
                 ),
                 UiField(
                     path="additional.testing_profile",

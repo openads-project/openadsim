@@ -1,5 +1,0 @@
-apiVersion: v2
-name: ros-middleware-bridge-network-policy
-description: NetworkPolicy to isolate ros-middleware-bridges in concurrent deployments
-type: application
-version: 0.1.0

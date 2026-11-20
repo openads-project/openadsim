@@ -8,6 +8,6 @@ authors:
   - name: "Institute for Automotive Engineering (ika), RWTH Aachen University"
 repository-code: "https://github.com/openads-project/openadsim"
 url: "https://github.com/openads-project/openadsim"
-version: 1.0.0
-date-released: 2026-08-07
+version: 0.3.0
+date-released: 2026-11-20
 license: Apache-2.0

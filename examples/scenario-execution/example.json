@@ -1,6 +1,6 @@
 {
   "env": {
-    "COMPOSE_PROFILES": "carla,no-traffic,automated-testing,no-perception,planning",
+    "COMPOSE_PROFILES": "carla,no-environment,automated-testing,no-perception,planning",
     "VEHICLE": "karl",
     "SENSORS": "global-sensors.json,karl-basic.json",
     "SPAWN_POINT": "",

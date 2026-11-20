@@ -4,9 +4,8 @@ This directory contains the OpenADSim-specific inputs and manual additions for t
 
 ## Layout
 
-- `helmfile.yaml` is the entrypoint. It loads the add-ons and the generated services.
+- `helmfile.yaml` is the entrypoint. It loads the generated services.
 - `chart-map.yaml` contains chart references and conversion rules that cannot be derived from Compose.
-- `addons/` contains manually maintained releases: a NetworkPolicy that isolates the middleware bridge per stack, deployed with the `carla` profile.
 - `generated/` is the generator output. It is ignored by Git and must not be committed.
 
 ## CI

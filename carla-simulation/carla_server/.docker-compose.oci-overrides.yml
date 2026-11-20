@@ -2,13 +2,16 @@
 # `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
 
 include:
-  - oci://ghcr.io/openads-project/carla-simulator/compose:v0.10.0-1.1.1-carla-server
+  - oci://ghcr.io/openads-project/carla-simulator/compose:v1.0.0-1.0.0-carla-server
 
 services:
 
   carla-server:
     profiles:
       - carla
+    depends_on:
+      zenoh-router:
+        condition: service_healthy
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
@@ -16,15 +19,30 @@ services:
       - /bin/bash
       - -ic
       - |
-        ./Linux/CarlaUnreal.sh \
+        ./CarlaUnreal.sh \
           -nosound \
           -RenderOffScreen \
+          -quality-level=Medium \
           --ros2 \
-          -carla-rpc-port=$${CARLA_PORT}
-    ipc: service:zenoh-router
+          --rmw=zenoh \
+          -carla-rpc-port=$${CARLA_PORT} \
+          -ENGINEINI=/openadsim/DefaultEngine.ini
     volumes:
-      - ./DefaultEngine.ini:/workspace/Linux/CarlaUnreal/Config/DefaultEngine.ini
+      - ./DefaultEngine.ini:/openadsim/DefaultEngine.ini:ro
 
   carla-server-offscreen:
     profiles: !override
       - donotuse
+    # same launch as carla-server, which already renders offscreen
+    command:
+      - /bin/bash
+      - -ic
+      - |
+        ./CarlaUnreal.sh \
+          -nosound \
+          -RenderOffScreen \
+          -quality-level=Medium \
+          --ros2 \
+          --rmw=zenoh \
+          -carla-rpc-port=$${CARLA_PORT} \
+          -ENGINEINI=/openadsim/DefaultEngine.ini

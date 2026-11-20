@@ -2,14 +2,16 @@
 
 Scenario execution allows the behavior of a system under test, such as OpenADStack, to be assessed within a defined traffic situation. It enables reproducible functional tests, safety analyses, and regression testing.
 
-OpenADSim separates background traffic from scenario execution through two independent profile groups:
+OpenADSim separates the simulated environment (background traffic and weather) from scenario execution through two independent profile groups:
 
 | Group | Compose profiles | Use case |
 | --- | --- | --- |
-| Traffic | `no-traffic`, `traffic` | Disable or generate random background traffic |
+| Environment | `no-environment`, `environment` | Disable or generate random background traffic and weather |
 | Execution | `no-testing`, `manual-testing`, `automated-testing` | Select scenarios in RViz or run a configured scenario automatically |
 
-The CARLA default is `traffic` together with `manual-testing`. The scenario-execution example uses `no-traffic` together with `automated-testing` so unrelated random actors do not affect reproducible runs.
+The CARLA default is `environment` together with `manual-testing`. The scenario-execution example uses `no-environment` together with `automated-testing` so unrelated random actors and changing weather do not affect reproducible runs.
+
+In the Configuration GUI, background traffic (`TRAFFIC`) and weather (`WEATHER`) are part of the scenario settings, and the environment profile follows them. A scenario takes precedence where it defines the environment itself: an OpenSCENARIO `EnvironmentAction` sets the weather when the scenario starts, and the weather cycle (`WEATHER=Cycle`) then pauses. A scenario without an `EnvironmentAction` keeps the weather of `WEATHER`. Background traffic drives alongside the scenario's actors.
 
 > [!IMPORTANT]
 > Scenario execution using OpenSCENARIO is currently supported only with CARLA. Make sure that the [OpenADS system requirements](https://openads-project.github.io/start/start.html#requirements) are met before starting.
@@ -30,7 +32,7 @@ Demo scenarios are stored in [`scenarios`](https://github.com/openads-project/op
 | --- | --- | --- | --- |
 | `campus_following.xosc` | `campus` | Following a vehicle on a straight route | `scenario.generator` (will be released soon) |
 | `campus_intersecting_with_vehicle_from_left.xosc` | `campus` | Interaction with a vehicle approaching from the left | `scenario.generator` (will be released soon) |
-| `campus_merging_following_with_vehicle_from_right.xosc` | `campus` | Merging and following a traffic participant approaching from the right | `scenario.generator` (will be released soon) |
+| `campus_merging_following_with_cyclist_from_right.xosc` | `campus` | Merging and following a cyclist approaching from the right | `scenario.generator` (will be released soon) |
 | `campus_turning_left.xosc` | `campus` | Ego left-turn route | [simple-scenario](https://github.com/ika-rwth-aachen/simple-scenario) |
 | `atc_turn_left_intersecting_vehicle_from_left_turning_left.xosc` | `aldenhoven` | Left turn with an intersecting vehicle from the left | [simple-scenario](https://github.com/ika-rwth-aachen/simple-scenario) |
 | `synthetic_curve_cut_in.xosc` | Custom `synthetic_curve_cut_in.xodr` | Vehicle cut-in on a curved road | [simple-scenario](https://github.com/ika-rwth-aachen/simple-scenario) |
@@ -56,7 +58,7 @@ Manual mode lets you select, start, and repeat scenarios through RViz. OpenADSta
 1. Configure and start OpenADSim from the repository root:
 
    ```bash
-   COMPOSE_PROFILES=carla,no-traffic,manual-testing,no-perception,planning \
+   COMPOSE_PROFILES=carla,no-environment,manual-testing,no-perception,planning \
    docker compose up -d
    ```
 
@@ -81,7 +83,7 @@ The `automated-testing` profile starts `SCENARIO_FILE` immediately and reports t
 1. Configure and start OpenADSim from the repository root:
 
    ```bash
-   COMPOSE_PROFILES=carla,no-traffic,automated-testing,no-perception,planning \
+   COMPOSE_PROFILES=carla,no-environment,automated-testing,no-perception,planning \
    SCENARIO_FILE=scenarios/scenario-generator/campus_following.xosc \
    MAP=campus \
    docker compose up -d
