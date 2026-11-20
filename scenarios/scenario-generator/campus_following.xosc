@@ -2023,7 +2023,7 @@
                               </Vertex>
                               <Vertex time="37.646243">
                                 <Position>
-                                  <WorldPosition x="-10.171869" y="12.603593" z="0" h="0.619509" />
+                                  <WorldPosition x="-10.171869" y="12.603593" z="254.434331" h="0.619509" />
                                 </Position>
                               </Vertex>
                               <Vertex time="37.74398">
@@ -2138,7 +2138,7 @@
                               </Vertex>
                               <Vertex time="39.912105">
                                 <Position>
-                                  <WorldPosition x="-4.823581" y="20.515381" z="0" h="1.195695" />
+                                  <WorldPosition x="-4.823581" y="20.515381" z="254.335374" h="1.195695" />
                                 </Position>
                               </Vertex>
                               <Vertex time="40.011832">
@@ -2728,7 +2728,7 @@
                               </Vertex>
                               <Vertex time="51.6504">
                                 <Position>
-                                  <WorldPosition x="-0.729047" y="75.615573" z="0" h="1.792293" />
+                                  <WorldPosition x="-0.729047" y="75.615573" z="254.227567" h="1.792293" />
                                 </Position>
                               </Vertex>
                               <Vertex time="51.749894">
@@ -2753,7 +2753,7 @@
                               </Vertex>
                               <Vertex time="52.147872">
                                 <Position>
-                                  <WorldPosition x="-1.298313" y="77.575439" z="0" h="1.903767" />
+                                  <WorldPosition x="-1.298313" y="77.575439" z="254.228178" h="1.903767" />
                                 </Position>
                               </Vertex>
                               <Vertex time="52.247366">
@@ -2833,7 +2833,7 @@
                               </Vertex>
                               <Vertex time="53.723265">
                                 <Position>
-                                  <WorldPosition x="-5.350518" y="84.260293" z="0" h="2.24463" />
+                                  <WorldPosition x="-5.350518" y="84.260293" z="254.230891" h="2.24463" />
                                 </Position>
                               </Vertex>
                               <Vertex time="53.820695">
@@ -6329,7 +6329,7 @@
                               </Vertex>
                               <Vertex time="43.972232">
                                 <Position>
-                                  <WorldPosition x="-8.649544" y="15.54697" z="0" h="0.845917" />
+                                  <WorldPosition x="-8.649544" y="15.54697" z="254.389003" h="0.845917" />
                                 </Position>
                               </Vertex>
                               <Vertex time="44.069593">
@@ -6794,7 +6794,7 @@
                               </Vertex>
                               <Vertex time="53.15072">
                                 <Position>
-                                  <WorldPosition x="-1.010065" y="75.016262" z="0" h="1.844517" />
+                                  <WorldPosition x="-1.010065" y="75.016262" z="254.216617" h="1.844517" />
                                 </Position>
                               </Vertex>
                               <Vertex time="53.247796">
@@ -6809,7 +6809,7 @@
                               </Vertex>
                               <Vertex time="53.441948">
                                 <Position>
-                                  <WorldPosition x="-1.610661" y="76.917336" z="0" h="1.889266" />
+                                  <WorldPosition x="-1.610661" y="76.917336" z="254.214411" h="1.889266" />
                                 </Position>
                               </Vertex>
                               <Vertex time="53.539024">
@@ -6819,7 +6819,7 @@
                               </Vertex>
                               <Vertex time="53.6361">
                                 <Position>
-                                  <WorldPosition x="-2.054016" y="78.141209" z="0" h="1.918706" />
+                                  <WorldPosition x="-2.054016" y="78.141209" z="254.214981" h="1.918706" />
                                 </Position>
                               </Vertex>
                               <Vertex time="53.733176">
@@ -6884,7 +6884,7 @@
                               </Vertex>
                               <Vertex time="54.898088">
                                 <Position>
-                                  <WorldPosition x="-5.746297" y="85.307336" z="0" h="2.162972" />
+                                  <WorldPosition x="-5.746297" y="85.307336" z="254.241392" h="2.162972" />
                                 </Position>
                               </Vertex>
                               <Vertex time="54.995164">
