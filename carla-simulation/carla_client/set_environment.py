@@ -867,7 +867,8 @@ def supervise_environment(
     vehicle_state = build_vehicle_state(world, vehicles, time.monotonic())
     next_status = time.monotonic()
     next_lights = time.monotonic()
-ego_lights = None  # (ego id, light state) last applied by update_ego_lights
+    ego_lights = None  # (ego id, light state) last applied by update_ego_lights
+
     while True:
         tick_once(world, args, synchronous_master)
 
