@@ -33,7 +33,7 @@ services:
   # nested chart in https://github.com/openads-project/carla-scenario-runner/tree/main/deployment/helm
   carla-scenario-runner-ros-automated-testing: &scenario-runner
     chart: oci://ghcr.io/openads-project/carla-scenario-runner/helm/carla-scenario-runner-ros
-    version: 0.10.0-1.1.2
+    version: 1.0.0-1.0.0
     volume_policies:
       /scenarios: bind
   carla-scenario-runner-ros-manual-testing: *scenario-runner
