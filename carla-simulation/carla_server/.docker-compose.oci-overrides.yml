@@ -2,8 +2,7 @@
 # `openadstack/openadstack/utils/scripts/render_compose_sources.py --root-dir carla-simulation`
 
 include:
-  # TODO(carla-1.0): temporary feature-branch build of openads-project/carla-simulator for CARLA 1.0.
-  - oci://ghcr.io/openads-project/carla-simulator/compose:feature-carla-1.0-carla-server
+  - oci://ghcr.io/openads-project/carla-simulator/compose:v1.0.0-1.0.0-carla-server
 
 services:
 
@@ -16,7 +15,6 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: gpu-x11-service
-    image: ghcr.io/openads-project/carla-simulator:server-slim_4-merge_ci  # TODO(carla-1.0): PR #4 build until the feature-branch image is rebuilt
     command:
       - /bin/bash
       - -ic
