@@ -87,7 +87,6 @@ class Config:
     traci_host: str = "sumo-interface"
     traci_port: int = 8813
     traci_order: int = 1
-    stamp_source: str = "clock"         # where the ROS stamp base comes from: clock (/clock) | carla
     gate_participants: list = field(default_factory=list)
     gate_topics: list = field(default_factory=list)
     # name (participant, topic or topic pattern) -> longest expected sim time between two outputs;
@@ -145,7 +144,6 @@ def load(env: Mapping[str, str] = os.environ) -> Config:
         traci_host=_get(env, "TRACI_HOST", "sumo-interface"),
         traci_port=int(_float(env, "TRACI_PORT", 8813)),
         traci_order=int(_float(env, "TRACI_ORDER", 1, minimum=1)),
-        stamp_source=_get(env, "SIM_CLOCK_STAMP_SOURCE", "clock").lower(),
         gate_participants=_members(env, "GATE_PARTICIPANTS", gate_periods),
         gate_topics=_members(env, "GATE_TOPICS", gate_periods),
         gate_periods=gate_periods,
@@ -158,8 +156,6 @@ def load(env: Mapping[str, str] = os.environ) -> Config:
     if backend == "carla" and _get(env, "CARLA_BRIDGE_PASSIVE", "false").lower() not in ("1", "true", "yes"):
         raise ConfigError("SIM_TIME_MODE with CARLA alone needs CARLA_BRIDGE_PASSIVE=true, otherwise "
                           "carla-ros-bridge ticks the world as well")
-    if config.stamp_source not in ("carla", "clock"):
-        raise ConfigError(f"SIM_CLOCK_STAMP_SOURCE must be carla or clock, got {config.stamp_source!r}")
     if mode == "realtime" and rt_factor is None and config.warmup_s < AUTO_MIN_WARMUP_S:
         raise ConfigError(f"SIM_RT_FACTOR=auto measures the achievable factor during the warm-up: "
                           f"WARMUP_S must be at least {AUTO_MIN_WARMUP_S:g}, or set SIM_RT_FACTOR")

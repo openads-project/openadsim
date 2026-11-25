@@ -86,6 +86,7 @@ A comma-separated list of topics. sim-clock subscribes to each topic as soon as 
 - **Patterns:** glob patterns (`*`, `?`, `[]`) and regular expressions (starting with `^`, without commas) add every matching topic as soon as it is published, e.g. `/carla/ego_vehicle/*/image/compressed` for all compressed cameras. A pattern only counts as joined once at least one topic matches it.
 - **Message types:** besides the ROS and CARLA types, the image contains the OpenADStack types `perception_msgs`, `trajectory_planning_msgs` and `route_planning_msgs`, e.g. for `/simulation/object_list`.
 - **QoS:** sim-clock subscribes best effort, so it matches reliable and best-effort publishers.
+- **Rejected topics:** a topic whose type has no header or is not installed in the image is logged as an error and never joins, so the join waits for it until `GATE_JOIN_TIMEOUT`.
 
 ### Gate participants: `GATE_PARTICIPANTS`
 
@@ -136,7 +137,9 @@ Timeouts and gate waits per member (p50/p95/max) are in `/simulation/clock_statu
 
 ## Duration
 
-`SIM_CLOCK_STOP_AFTER_SIM_S` ends the main phase after this many sim seconds (0, the default: run until stopped). sim-clock then exits; CARLA continues asynchronously, SUMO waits for its next TraCI client.
+`SIM_CLOCK_STOP_AFTER_SIM_S` ends the main phase after this many sim seconds (0, the default: run until stopped). sim-clock then hands the timing back (CARLA continues asynchronously, SUMO waits for its next TraCI client) and stays up until the stack is stopped. A disabled sim-clock stays up as well. Only errors and `GATE_ON_TIMEOUT=abort` end sim-clock.
+
+A CARLA world reload (a new map, e.g. loaded by a scenario) restarts the CARLA time. sim-clock applies its settings again, keeps counting sim time across the reload and resets the gate, so reports from the old world do not finish steps of the new one.
 
 ## Output
 

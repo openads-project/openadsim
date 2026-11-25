@@ -22,7 +22,6 @@ class Pacer:
         self._clock = clock
         self._sleep = sleep
         self._next: Optional[float] = None
-        self.late_steps = 0
 
     def wait(self) -> bool:
         """Blocks until the next step is due. Returns False if the step is late."""
@@ -35,7 +34,6 @@ class Pacer:
         if delay > 0:
             self._sleep(delay)
             return True
-        self.late_steps += 1
         self._next = now
         return False
 

@@ -26,7 +26,6 @@ class PacerTest(unittest.TestCase):
         for _ in range(3):
             self.assertTrue(pacer.wait())
         self.assertAlmostEqual(clock.now, 0.6)
-        self.assertEqual(pacer.late_steps, 0)
 
     def test_late_step_restarts_schedule_without_burst(self):
         clock = FakeClock()
@@ -34,7 +33,6 @@ class PacerTest(unittest.TestCase):
         pacer.wait()
         clock.now += 0.5                  # a step took 0.5 s instead of 0.05 s
         self.assertFalse(pacer.wait())    # late, no sleep
-        self.assertEqual(pacer.late_steps, 1)
         start = clock.now
         self.assertTrue(pacer.wait())     # the next step is one period later, not immediately
         self.assertAlmostEqual(clock.now - start, 0.05)

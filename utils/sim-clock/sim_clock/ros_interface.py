@@ -64,7 +64,7 @@ class SimClockNode(Node):
         self._waiting = set()   # members the current step waits for (not finished when it started)
         self.create_subscription(Header, "/simulation/step_done", self._on_step_done, RELIABLE)
         self._unresolved = [t for t in gate_topics if t not in self._patterns]
-        self._subscribed = set()
+        self._rejected = set()  # topics whose type cannot be loaded or has no header
         if gate_topics:
             self.create_timer(1.0, self._resolve_gate_topics)
         self.clock_ns: Optional[int] = None
@@ -87,33 +87,42 @@ class SimClockNode(Node):
         a pattern become gate members when they appear."""
         if not self._unresolved and not self._patterns:
             return
-        from rosidl_runtime_py.utilities import get_message  # pylint: disable=import-outside-toplevel
         types = dict(self.get_topic_names_and_types())
-        for topic in list(self._unresolved):
-            if topic in types:
-                self._subscribe_gate_topic(topic, types[topic][0], get_message)
-                self._unresolved.remove(topic)
-        for pattern in self._patterns:
-            for topic in sorted(types):
-                if topic not in self._subscribed and topic_matches(pattern, topic):
+        for topic in [t for t in self._unresolved if t in types]:
+            self._unresolved.remove(topic)
+            self._subscribe_gate_topic(topic, types[topic][0])
+        for topic in sorted(types):
+            matching = [p for p in self._patterns if topic_matches(p, topic)]
+            if not matching or topic in self._rejected:
+                continue
+            if topic not in self.waiters:
+                with self._cv:
+                    self.waiters[topic] = Waiter(topic, self._periods.get(matching[0], 0.0))
+                if not self._subscribe_gate_topic(topic, types[topic][0]):
                     with self._cv:
-                        self.waiters[topic] = Waiter(topic, self._periods.get(pattern, 0.0))
-                        self._patterns[pattern] = True
-                        self._cv.notify_all()
-                    self._subscribe_gate_topic(topic, types[topic][0], get_message)
+                        del self.waiters[topic]
+                    continue
+            with self._cv:
+                for pattern in matching:    # every pattern that matches it has joined
+                    self._patterns[pattern] = True
+                self._cv.notify_all()
 
-    def _subscribe_gate_topic(self, topic, type_name, get_message):
-        self.create_subscription(get_message(type_name), topic,
-                                 lambda msg, t=topic: self._on_gate_topic(t, msg), BEST_EFFORT)
-        self._subscribed.add(topic)
+    def _subscribe_gate_topic(self, topic, type_name) -> bool:
+        """Runs on the executor thread: an exception here would end the spin, so a topic whose
+        type cannot be loaded or has no header is rejected and logged once."""
+        from rosidl_runtime_py.utilities import get_message  # pylint: disable=import-outside-toplevel
+        try:
+            msg_type = get_message(type_name)
+            if "header" not in msg_type.get_fields_and_field_types():
+                raise ValueError("the type has no header, so its messages cannot be attributed to steps")
+            self.create_subscription(msg_type, topic, lambda msg, t=topic: self._finished(t, to_ns(msg.header.stamp)),
+                                     BEST_EFFORT)
+        except Exception as exc:  # pylint: disable=broad-except
+            self._rejected.add(topic)
+            LOGGER.error("Gate topic %s (%s) rejected: %s", topic, type_name, exc)
+            return False
         LOGGER.info("Gate topic %s (%s)", topic, type_name)
-
-    def _on_gate_topic(self, topic, msg):
-        header = getattr(msg, "header", None)
-        if header is None:
-            LOGGER.error("Gate topic %s has no header; it cannot be attributed to steps", topic)
-            return
-        self._finished(topic, to_ns(header.stamp))
+        return True
 
     def _finished(self, name: str, stamp_ns: int):
         with self._cv:
@@ -143,6 +152,18 @@ class SimClockNode(Node):
         self._status_pub.publish(array)
 
     # -- gate ---------------------------------------------------------------------------------
+
+    def members(self):
+        """Snapshot of (name, waiter): the executor thread adds topics that match a pattern."""
+        with self._cv:
+            return list(self.waiters.items())
+
+    def reset_gate(self):
+        """After a world reload the stamps start again near 0: reports of the old world must not
+        finish steps of the new one."""
+        with self._cv:
+            for waiter in self.waiters.values():
+                waiter.latest_ns = None
 
     def wait_joined(self, timeout: float) -> List[str]:
         """Waits until every gate member has reported at least once. Returns the missing ones."""

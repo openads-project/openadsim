@@ -4,7 +4,6 @@ Each backend returns the stamp of the new step in the time base of the ROS messa
 acknowledgements and output stamps of the system under test can be compared with it."""
 
 import logging
-import threading
 import time
 from typing import Optional
 
@@ -12,12 +11,13 @@ LOGGER = logging.getLogger("sim-clock")
 
 
 class StepResult:
-    __slots__ = ("stamp", "index", "frames")
+    __slots__ = ("stamp", "index", "frames", "reset")
 
-    def __init__(self, stamp: float, index: int, frames: Optional[int] = None):
+    def __init__(self, stamp: float, index: int, frames: Optional[int] = None, reset: bool = False):
         self.stamp = stamp      # sim time of the new step in the ROS time base [s]
         self.index = index      # step counter (CARLA frame or SUMO step)
         self.frames = frames    # CARLA frames per step since the last lockstep check (1.0 = lockstep), if known
+        self.reset = reset      # the world was reloaded: the stamps started again
 
 
 class CarlaBackend:
@@ -32,6 +32,7 @@ class CarlaBackend:
         self._check_no_other_tick_owner()
         self._apply_settings()
         self._last_frame = None
+        self._last_elapsed = None
         self.resets = 0
 
     def _apply_settings(self):
@@ -57,22 +58,24 @@ class CarlaBackend:
 
     def step(self) -> StepResult:
         frame = self._world.tick()
-        snapshot = self._world.get_snapshot()
-        if abs(snapshot.timestamp.delta_seconds - self._step_length) > 1e-6:
-            # A map (re)load, e.g. by carla-ros-bridge at its start, resets the world to
-            # asynchronous mode: take the new world and apply the settings again.
+        timestamp = self._world.get_snapshot().timestamp
+        reset = (abs(timestamp.delta_seconds - self._step_length) > 1e-6
+                 or (self._last_elapsed is not None and timestamp.elapsed_seconds < self._last_elapsed))
+        if reset:
+            # A map (re)load, by carla-ros-bridge at its start or by a scenario, starts a new episode:
+            # its elapsed time starts again near 0 and it may be back in asynchronous mode.
             self.resets += 1
-            LOGGER.warning("CARLA step was %.4f s instead of %.3f s (world reloaded or settings "
-                           "changed): applying synchronous settings again",
-                           snapshot.timestamp.delta_seconds, self._step_length)
+            LOGGER.warning("CARLA world reloaded (step %.4f s, elapsed %.3f s): applying synchronous settings again",
+                           timestamp.delta_seconds, timestamp.elapsed_seconds)
             self._world = self._client.get_world()
             self._apply_settings()
             self._last_frame = None
             frame = self._world.tick()
-            snapshot = self._world.get_snapshot()
+            timestamp = self._world.get_snapshot().timestamp
         frames = None if self._last_frame is None else frame - self._last_frame
         self._last_frame = frame
-        return StepResult(snapshot.timestamp.elapsed_seconds, frame, frames)
+        self._last_elapsed = timestamp.elapsed_seconds
+        return StepResult(timestamp.elapsed_seconds, frame, frames, reset)
 
     def close(self):
         """Leaves the world in asynchronous mode, so it keeps running without a tick master."""
@@ -85,59 +88,26 @@ class CarlaBackend:
             LOGGER.warning("Could not reset CARLA to asynchronous mode: %s", exc)
 
 
-class TraciBackend:  # pylint: disable=too-many-instance-attributes
-    """Steps SUMO as an additional TraCI client.
+class TraciBackend:
+    """Steps SUMO as an additional TraCI client of sumo_interface's TraCI server.
 
-    CARLA-SUMO: the coordinator's SUMO waits for this client (sumo_num_clients=2), so the
-    coordinator only syncs and ticks CARLA when sim-clock steps. SUMO alone: sumo_interface's
-    TraCI server waits for this client.
+    The ROS stamp base is sumo_interface's /clock: the caller measures its offset to SUMO time
+    once (set_stamp_offset)."""
 
-    The ROS stamp base: with stamp_source=carla the offset between CARLA's elapsed time and SUMO
-    time is read from the CARLA world (CARLA-SUMO); with stamp_source=clock it is read from /clock
-    by the caller (set_stamp_offset)."""
-
-    def __init__(self, host: str, port: int, order: int, step_length: float,
-                 carla_host: Optional[str] = None, carla_port: int = 2000, connect_timeout_s: float = 600.0):
+    def __init__(self, host: str, port: int, order: int, step_length: float, connect_timeout_s: float = 600.0):
         import traci  # pylint: disable=import-outside-toplevel
-        self._traci = traci
-        retries = max(1, int(connect_timeout_s))
         LOGGER.info("Connecting to SUMO at %s:%d as TraCI client %d", host, port, order)
-        traci.init(host=host, port=port, numRetries=retries, label="sim-clock")
+        traci.init(host=host, port=port, numRetries=max(1, int(connect_timeout_s)), label="sim-clock")
         self._conn = traci.getConnection("sim-clock")
         self._conn.setOrder(order)
-        self._delta = self._conn.simulation.getDeltaT()
+        delta = self._conn.simulation.getDeltaT()
         # advance per call: whole SUMO steps, at least one
-        self._steps_per_call = max(1, round(step_length / self._delta))
-        self._advance = self._steps_per_call * self._delta
+        self._steps_per_call = max(1, round(step_length / delta))
+        self._advance = self._steps_per_call * delta
         LOGGER.info("SUMO step %.3f s, sim-clock advances %d step(s) = %.3f s per call",
-                    self._delta, self._steps_per_call, self._advance)
+                    delta, self._steps_per_call, self._advance)
         self._index = 0
-        self._offset: Optional[float] = None
-        self._world = None
-        self._latest = None             # (frame, elapsed) of the newest CARLA frame
-        self._frame_cv = threading.Condition()
-        self._check_every = 200         # steps between lockstep checks
-        self._check_frame = None
-        if carla_host:
-            import carla  # pylint: disable=import-outside-toplevel
-            client = carla.Client(carla_host, carla_port)
-            client.set_timeout(30.0)
-            self._world = client.get_world()
-            self._tick_id = self._world.on_tick(self._on_carla_tick)
-
-    def _on_carla_tick(self, snapshot):
-        with self._frame_cv:
-            self._latest = (snapshot.frame, snapshot.timestamp.elapsed_seconds)
-            self._frame_cv.notify_all()
-
-    def _carla_frame_after(self, frame_before, timeout=10.0):
-        """The coordinator ticks CARLA right after the SUMO step. Waits for a frame newer than
-        frame_before; the callback records it even if the tick happened before this call."""
-        with self._frame_cv:
-            ok = self._frame_cv.wait_for(
-                lambda: self._latest is not None and (frame_before is None or self._latest[0] > frame_before),
-                timeout=timeout)
-            return self._latest if ok else None
+        self._offset = 0.0
 
     @property
     def sumo_time(self) -> float:
@@ -147,39 +117,11 @@ class TraciBackend:  # pylint: disable=too-many-instance-attributes
         self._offset = offset
 
     def step(self) -> StepResult:
-        check = self._world is not None and (self._offset is None or self._index % self._check_every == 0)
-        with self._frame_cv:
-            frame_before = self._latest[0] if self._latest else None
-        target = self.sumo_time + self._advance
-        self._conn.simulationStep(round(target, 6))
+        self._conn.simulationStep(round(self.sumo_time + self._advance, 6))
         self._index += self._steps_per_call
-        sumo_time = self.sumo_time
-        frames = None
-        if check:
-            # measure the stamp offset once, and check lockstep every _check_every steps
-            latest = self._carla_frame_after(frame_before)
-            if latest is None:
-                LOGGER.warning("No CARLA frame within 10 s after a SUMO step")
-            else:
-                frame, elapsed = latest
-                offset = elapsed - sumo_time
-                if self._offset is None:
-                    self._offset = offset
-                    LOGGER.info("ROS stamp base: CARLA elapsed = SUMO time + %.3f s", offset)
-                elif abs(offset - self._offset) > 0.5 * self._delta:
-                    LOGGER.warning("CARLA drifted against SUMO by %.3f s: another client ticks "
-                                   "CARLA (carla-ros-bridge must be passive)", offset - self._offset)
-                if self._check_frame is not None:
-                    frames = (frame - self._check_frame) / self._check_every
-                self._check_frame = frame
-        return StepResult(sumo_time + (self._offset or 0.0), self._index, frames)
+        return StepResult(self.sumo_time + self._offset, self._index)
 
     def close(self):
-        if self._world is not None:
-            try:
-                self._world.remove_on_tick(self._tick_id)
-            except Exception:  # pylint: disable=broad-except
-                pass
         try:
             self._conn.close()
         except Exception as exc:  # pylint: disable=broad-except

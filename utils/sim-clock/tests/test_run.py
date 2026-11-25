@@ -23,6 +23,7 @@ class FakeNode:
     def __init__(self, backend, reports_after):
         self.backend, self.reports_after = backend, reports_after
         self.waiters = {}
+        self.resets = 0
         self.ticks, self.phases, self.gated_steps = [], [], []
 
     def publish_tick(self, stamp, index):
@@ -30,6 +31,12 @@ class FakeNode:
 
     def publish_status(self, level, message, values, stamp=None):
         self.phases.append(values["phase"])
+
+    def members(self):
+        return list(self.waiters.items())
+
+    def reset_gate(self):
+        self.resets += 1
 
     def wait_joined(self, timeout):
         return [] if self.backend.steps >= self.reports_after else ["member"]
@@ -72,6 +79,26 @@ class RunTest(unittest.TestCase):
     def test_explicit_warmup_runs_before_the_gate(self):
         backend, node, r = run({"SIM_TIME_MODE": "gated", "GATE_TOPICS": "/x", "WARMUP_S": "0.5"})
         self.assertEqual(backend.steps - len(node.gated_steps), 11)  # 0.05 .. 0.55 s free, then gated
+
+
+    def test_world_reload_keeps_sim_time_and_resets_the_gate(self):
+        class ReloadingBackend(FakeBackend):
+            def step(self):
+                self.steps += 1
+                if self.steps == 5:     # a new episode: stamps start again
+                    return StepResult(STEP, self.steps, reset=True)
+                stamp = self.steps if self.steps < 5 else self.steps - 4
+                return StepResult(round(stamp * STEP, 6), self.steps)
+
+        cfg = load({"CARLA_BRIDGE_PASSIVE": "true", "SIM_TIME_MODE": "fast", "SIM_CLOCK_STOP_AFTER_SIM_S": "1"})
+        backend = ReloadingBackend()
+        node = FakeNode(backend, 0)
+        r = Run(cfg, node, backend)
+        r.main()
+        self.assertEqual(node.resets, 1)
+        self.assertEqual(backend.steps, 20)             # 1 sim second although the stamps restarted
+        self.assertAlmostEqual(r.sim_s, 1.0 - STEP, places=6)
+        self.assertTrue(all(w.sim_s > 0 for w in r.windows.windows))
 
 
 if __name__ == "__main__":

@@ -43,9 +43,7 @@ services:
         condition: service_started
     environment:
       SIM_CLOCK_BACKEND: carla
-      CARLA_HOST: carla-server
       CARLA_BRIDGE_PASSIVE: ${CARLA_BRIDGE_PASSIVE:-false}
-      STEP_LENGTH: 0.05
 
   # SUMO alone: steps sumo_interface's SUMO as its TraCI client
   sim-clock-sumo:
@@ -58,8 +56,3 @@ services:
         condition: service_started
     environment:
       SIM_CLOCK_BACKEND: traci
-      TRACI_HOST: sumo-interface
-      TRACI_PORT: 8813
-      TRACI_ORDER: 1
-      SIM_CLOCK_STAMP_SOURCE: clock
-      STEP_LENGTH: 0.05
