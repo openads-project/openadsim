@@ -1,6 +1,7 @@
 excluded_profiles:
   - donotuse
   - gui
+  - sim-clock
   - sumo
 services:
   # charts centrally maintained in https://github.com/openads-project/openads-helm/tree/main/charts

@@ -26,6 +26,7 @@ services:
       CARLA_HOST: carla-server
       CARLA_PORT: 2000
       TIMEOUT: 5000
+      # PASSIVE: false
       PASSIVE: ${CARLA_BRIDGE_PASSIVE:-false}
       PUBLISH_CLOCK: true
       SYNCHRONOUS_MODE: true
