@@ -530,7 +530,7 @@ class SimulationConfig(BaseModel):
         ("### Scenario Configuration", ["SCENARIO_FILE", "TRAFFIC", "WEATHER"]),
         ("### Additional Options", ["USE_SIM_TIME", "ROS_TRACING"]),
         (
-            "### Time Control (utils/sim-clock)",
+            "### Time Control",
             ["SIM_TIME_MODE", "SIM_RT_FACTOR", "GATE_PARTICIPANTS", "GATE_TOPICS", "CARLA_BRIDGE_PASSIVE"],
         ),
     ]
@@ -877,22 +877,10 @@ class SimulationConfig(BaseModel):
 
     @staticmethod
     def _parse_enum(enum_cls, value: str, default):
-        """Enum member for value (also e.g. "1" for RtFactor "1.0"); default if unknown."""
-        value = (value or "").strip().lower()
-        for member in enum_cls:
-            if member.value == value:
-                return member
         try:
-            number = float(value)
+            return enum_cls((value or "").strip().lower())
         except ValueError:
             return default
-        for member in enum_cls:
-            try:
-                if float(member.value) == number:
-                    return member
-            except ValueError:
-                continue
-        return default
 
     @classmethod
     def from_env_file(cls, filepath: Path | str) -> Optional["SimulationConfig"]:
