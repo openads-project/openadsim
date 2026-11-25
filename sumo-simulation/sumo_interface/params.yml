@@ -4,9 +4,9 @@
     headless_mode: false
     realtime_factor: 1.0
     sim_step: 0.01
-    enable_traci_server: false
+    enable_traci_server: true  # in case sim-clock steps SUMO as TraCI client when SIM_TIME_MODE is set
     traci_server_port: 8813
-    traci_server_num_clients: 0
+    traci_server_num_clients: 1
     # Traffic behavior
     sumo_time_to_teleport: -1.0  # -1 disables automatic jam teleportation
     sumo_max_num_vehicles: 100   # maximum number of vehicles simultaneously loaded by SUMO

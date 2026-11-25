@@ -35,6 +35,11 @@ All variables below can be set through the Configuration GUI or manually in `.en
 | `WEATHER` | CARLA weather, applied by `carla-client` as part of the `environment` profile. `MapDefault` (default) leaves the map's weather alone. `Cycle` runs a day/night cycle with passing storms. A fixed weather is `OpenADSAfternoon` or a [CARLA weather preset](https://carla.readthedocs.io/en/latest/python_api/#carlaweatherparameters). A scenario that sets its own weather (`EnvironmentAction`) overrides `WEATHER` when it starts; `Cycle` then pauses until the next map load. | `MapDefault`, `Cycle`, `OpenADSAfternoon`, `ClearNoon`, `WetCloudySunset` |
 | `USE_SIM_TIME` | Enables ROS simulated time across the stack. Must stay `true` in this setup. | `true` |
 | `ROS_TRACING` | Enables ROS 2 tracing for supported services. | `false`, `true` |
+| `SIM_TIME_MODE` | Opt-in time control by [sim-clock](https://github.com/openads-project/openadsim/blob/main/utils/sim-clock/README.md). Empty: the simulators keep their own timing. `realtime`: fixed real-time factor, the system under test gets no extra time. `gated`: every step waits for the gate participants. `fast`: as fast as possible. | empty, `realtime`, `gated`, `fast` |
+| `SIM_RT_FACTOR` | Target real-time factor of `realtime`. `auto` takes the largest factor the simulation sustains during the warm-up (`WARMUP_S`, 60 sim seconds by default with `auto`; no warm-up otherwise). | `auto`, `0.25`, `0.5`, `0.75`, `1.0` |
+| `GATE_PARTICIPANTS` | `gated` only: ids that acknowledge every step on `/simulation/step_done`. `id@P`: acknowledges at most every P sim seconds. | `my_planner`, `my_planner,my_detector@0.1` |
+| `GATE_TOPICS` | `gated` only: output topics with a header; a step is done when a message stamped at or after it arrives. `topic@P`: publishes at most every P sim seconds (e.g. a LiDAR with `sensor_tick: 0.1`); steps only wait for it when it is P behind. | `/control/ackermann_trajectory_control/controls` |
+| `CARLA_BRIDGE_PASSIVE` | `true` lets sim-clock tick CARLA alone; required together with `SIM_TIME_MODE` for the `carla` profile. Set by the Configuration GUI and `scenario-execution.py`. | `false`, `true` |
 
 ## Service Profiles
 
@@ -98,6 +103,7 @@ OpenADStack services, their roles, and interfaces are documented in the [OpenADS
 | `monitoring.rviz-carla` | `carla` | RViz visualization with the CARLA display configuration |
 | `monitoring.rviz-sumo` | `sumo` | RViz visualization with the SUMO display configuration |
 | `monitoring.bag-recorder` | `bag-recording` | Optionally records ROS bags after the route topic becomes available |
+| `sim-clock-carla`, `sim-clock-sumo` | `carla`, `sumo` | Tick master when `SIM_TIME_MODE` is set |
 | `gui` | `gui` | Web-based Configuration GUI on port 8501 |
 
 </details>

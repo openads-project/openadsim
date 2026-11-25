@@ -12,6 +12,7 @@ from models import (
     PlanningProfile,
     PREBUILT_MAP_DEFAULTS,
     SUMO_PREBUILT_MAPS,
+    SimTimeMode,
     SimulationProfile,
     TestingProfile,
     SimulationConfig,
@@ -432,7 +433,29 @@ def validate_config(config: SimulationConfig, repo_root: Optional[Path] = None) 
             )
         )
 
+    _validate_timing(config, result)
+
     return result
+
+
+def _validate_timing(config: SimulationConfig, result: ValidationResult):
+    """sim-clock (SIM_TIME_MODE)."""
+    timing = config.timing
+    if timing.sim_time_mode == SimTimeMode.GATED and not (timing.gate_participants or timing.gate_topics):
+        result.errors.append(
+            ValidationIssue(
+                path="timing.gate_participants",
+                message="SIM_TIME_MODE=gated needs GATE_PARTICIPANTS or GATE_TOPICS",
+            )
+        )
+    if timing.sim_time_mode != SimTimeMode.GATED and (timing.gate_participants or timing.gate_topics):
+        result.warnings.append(
+            ValidationIssue(
+                path="timing.gate_participants",
+                message="GATE_PARTICIPANTS and GATE_TOPICS are only used with SIM_TIME_MODE=gated",
+                level="warning",
+            )
+        )
 
 
 def validate_env_file(filepath: Path, repo_root: Optional[Path] = None) -> EnvValidationResult:

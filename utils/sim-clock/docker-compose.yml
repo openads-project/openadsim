@@ -1,0 +1,61 @@
+services:
+
+  # sim-clock is opt-in: with SIM_TIME_MODE empty the service exits right away and the simulators
+  # keep their own timing. See utils/sim-clock/README.md.
+  template.sim-clock:
+    profiles:
+      - donotuse
+    extends:
+      file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
+      service: ros2-service
+    # published by .github/workflows/sim-clock-image.yml; `docker compose build` builds it locally
+    image: ghcr.io/openads-project/openadsim/sim-clock:feature-sim-clock
+    build:
+      context: .
+    environment:
+      SIM_TIME_MODE: ${SIM_TIME_MODE:-}
+      SIM_RT_FACTOR: ${SIM_RT_FACTOR:-auto}
+      WARMUP_S: ${WARMUP_S:-}  # empty: 60 for SIM_RT_FACTOR=auto, none otherwise
+      GATE_PARTICIPANTS: ${GATE_PARTICIPANTS:-}
+      GATE_TOPICS: ${GATE_TOPICS:-}
+      GATE_TIMEOUT: ${GATE_TIMEOUT:-10}
+      GATE_ON_TIMEOUT: ${GATE_ON_TIMEOUT:-continue}
+      GATE_JOIN_TIMEOUT: ${GATE_JOIN_TIMEOUT:-300}
+      SIM_CLOCK_OUTPUT_DIRECTORY: /output
+      SIM_CLOCK_STOP_AFTER_SIM_S: ${SIM_CLOCK_STOP_AFTER_SIM_S:-0}
+    command:
+      - /bin/bash
+      - -ic
+      - exec python3 -m sim_clock
+    volumes:
+      - ../../${SIM_CLOCK_DIRECTORY:-utils/sim-clock/output}:/output
+    stop_grace_period: 20s
+
+  # CARLA alone: ticks the world; carla-ros-bridge is passive when SIM_TIME_MODE is set
+  sim-clock-carla:
+    profiles:
+      - carla
+      - sim-clock  # excluded from the Helm bundle
+    extends:
+      service: template.sim-clock
+    depends_on:
+      carla-server:
+        condition: service_healthy
+      carla-ros-bridge:
+        condition: service_started
+    environment:
+      SIM_CLOCK_BACKEND: carla
+      CARLA_BRIDGE_PASSIVE: ${CARLA_BRIDGE_PASSIVE:-false}
+
+  # SUMO alone: steps sumo_interface's SUMO as its TraCI client
+  sim-clock-sumo:
+    profiles:
+      - sumo
+      - sim-clock  # excluded from the Helm bundle
+    extends:
+      service: template.sim-clock
+    depends_on:
+      sumo-interface:
+        condition: service_started
+    environment:
+      SIM_CLOCK_BACKEND: traci

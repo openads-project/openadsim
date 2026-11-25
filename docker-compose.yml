@@ -10,3 +10,4 @@ include:
 
   # utils
   - utils/gui/docker-compose.yml
+  - utils/sim-clock/docker-compose.yml

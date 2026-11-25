@@ -417,6 +417,36 @@ class ScenarioConfig(BaseModel):
         return self.traffic != TRAFFIC_NONE or self.weather != WEATHER_MAP_DEFAULT
 
 
+class SimTimeMode(str, Enum):
+    """SIM_TIME_MODE of sim-clock (utils/sim-clock). Empty: the simulators keep their own timing."""
+    DISABLED = ""
+    REALTIME = "realtime"
+    GATED = "gated"
+    FAST = "fast"
+
+
+class RtFactor(str, Enum):
+    """SIM_RT_FACTOR of sim-clock: target real-time factor of SIM_TIME_MODE=realtime."""
+    AUTO = "auto"
+    X025 = "0.25"
+    X05 = "0.5"
+    X075 = "0.75"
+    X1 = "1.0"
+
+
+class TimingConfig(BaseModel):
+    """Opt-in time control by sim-clock."""
+
+    sim_time_mode: SimTimeMode = SimTimeMode.DISABLED
+    sim_rt_factor: RtFactor = RtFactor.AUTO
+    gate_participants: str = ""
+    gate_topics: str = ""
+
+    def normalize(self):
+        self.gate_participants = ",".join(p.strip() for p in self.gate_participants.split(",") if p.strip())
+        self.gate_topics = ",".join(t.strip() for t in self.gate_topics.split(",") if t.strip())
+
+
 class AdditionalOptionsConfig(BaseModel):
     ENV_EXCLUDE: ClassVar[set[str]] = {
         "rmw",
@@ -477,6 +507,7 @@ class SimulationConfig(BaseModel):
     map: MapConfig = Field(default_factory=MapConfig)
     scenario: ScenarioConfig = Field(default_factory=ScenarioConfig)
     additional: AdditionalOptionsConfig = Field(default_factory=AdditionalOptionsConfig)
+    timing: TimingConfig = Field(default_factory=TimingConfig)
 
     ENV_LAYOUT: ClassVar[list[tuple[str, list[str]]]] = [
         (
@@ -498,14 +529,25 @@ class SimulationConfig(BaseModel):
         ),
         ("### Scenario Configuration", ["SCENARIO_FILE", "TRAFFIC", "WEATHER"]),
         ("### Additional Options", ["USE_SIM_TIME", "ROS_TRACING"]),
+        (
+            "### Time Control",
+            ["SIM_TIME_MODE", "SIM_RT_FACTOR", "GATE_PARTICIPANTS", "GATE_TOPICS", "CARLA_BRIDGE_PASSIVE"],
+        ),
     ]
     OPTIONAL_EMPTY_ENV_KEYS: ClassVar[set[str]] = {"COMPOSE_FILE"}
 
     def model_post_init(self, __context: Any):
         self.apply_defaults()
 
+    @env_export("CARLA_BRIDGE_PASSIVE")
+    def export_carla_bridge_passive(self) -> bool:
+        """With CARLA, sim-clock ticks the world when SIM_TIME_MODE is set, so the bridge is passive."""
+        return (self.timing.sim_time_mode != SimTimeMode.DISABLED
+                and self.additional.simulation == SimulationProfile.CARLA)
+
     def apply_defaults(self):
         self.additional.normalize()
+        self.timing.normalize()
         if self.additional.simulation == SimulationProfile.SUMO:
             self.vehicle.vehicle = Vehicle.KARL
             self.vehicle.global_sensors_enabled = False
@@ -818,12 +860,27 @@ class SimulationConfig(BaseModel):
             planning_profile=planning_profile,
         )
 
+        timing = TimingConfig(
+            sim_time_mode=cls._parse_enum(SimTimeMode, env_vars.get("SIM_TIME_MODE", ""), SimTimeMode.DISABLED),
+            sim_rt_factor=cls._parse_enum(RtFactor, env_vars.get("SIM_RT_FACTOR", "auto"), RtFactor.AUTO),
+            gate_participants=env_vars.get("GATE_PARTICIPANTS", ""),
+            gate_topics=env_vars.get("GATE_TOPICS", ""),
+        )
+
         return cls(
             vehicle=vehicle_config,
             map=map_config,
             scenario=scenario,
             additional=additional,
+            timing=timing,
         )
+
+    @staticmethod
+    def _parse_enum(enum_cls, value: str, default):
+        try:
+            return enum_cls((value or "").strip().lower())
+        except ValueError:
+            return default
 
     @classmethod
     def from_env_file(cls, filepath: Path | str) -> Optional["SimulationConfig"]:
@@ -1243,4 +1300,66 @@ class SimulationConfig(BaseModel):
             ),
         )
 
-        return [profiles_section, vehicle_section, map_section, scenario_section, additional_section]
+        return [profiles_section, vehicle_section, map_section, scenario_section, additional_section,
+                self._timing_ui_section()]
+
+    def _timing_ui_section(self) -> UiSection:
+        mode = self.timing.sim_time_mode
+        return UiSection(
+            title="Time Control",
+            description="Opt-in time control by sim-clock.",
+            fields=(
+                UiField(
+                    path="timing.sim_time_mode",
+                    env_name="SIM_TIME_MODE",
+                    label="Time Mode",
+                    description=(
+                        "Off: the simulators keep their own timing. realtime: fixed real-time factor, "
+                        "the system under test gets no extra time (deployment test). gated: every step "
+                        "waits for the gate participants (slow components get the time they need, lossless recording). "
+                        "fast: as fast as possible."
+                    ),
+                    control="select",
+                    options=tuple(m.value for m in SimTimeMode),
+                    empty_option_label="Off",
+                ),
+                UiField(
+                    path="timing.sim_rt_factor",
+                    env_name="SIM_RT_FACTOR",
+                    label="Real-Time Factor",
+                    description=(
+                        "Target factor of realtime mode. auto: the largest of 1.0, 0.75, 0.5, 0.25 that the "
+                        "simulation sustains, measured during the warm-up. Below 1.0 the system under test "
+                        "gets 1/X more time than in reality: failing is conclusive, passing needs hardware "
+                        "that is 1/X faster."
+                    ),
+                    control="select",
+                    options=tuple(f.value for f in RtFactor),
+                    disabled=mode != SimTimeMode.REALTIME,
+                ),
+                UiField(
+                    path="timing.gate_participants",
+                    env_name="GATE_PARTICIPANTS",
+                    label="Gate Participants",
+                    description=(
+                        "Comma-separated ids that acknowledge each step on /simulation/step_done "
+                        "(see utils/sim-clock/examples/ack_example.py). id@P: acknowledges at most "
+                        "every P sim seconds."
+                    ),
+                    control="text",
+                    disabled=mode != SimTimeMode.GATED,
+                ),
+                UiField(
+                    path="timing.gate_topics",
+                    env_name="GATE_TOPICS",
+                    label="Gate Topics",
+                    description=(
+                        "Comma-separated output topics with a header; a step is done when a message "
+                        "stamped at or after it arrives. For systems under test that cannot acknowledge. "
+                        "topic@P: publishes at most every P sim seconds (e.g. a LiDAR with sensor_tick 0.1)."
+                    ),
+                    control="text",
+                    disabled=mode != SimTimeMode.GATED,
+                ),
+            ),
+        )

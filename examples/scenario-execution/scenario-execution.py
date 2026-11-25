@@ -29,11 +29,13 @@ DELAY_PATTERN = re.compile(r"^[0-9]+(?:[.][0-9]+)?$")
 
 SCRIPT_MANAGED_ENV_NAMES = {
     "BAG_DIRECTORY",
+    "CARLA_BRIDGE_PASSIVE",
     "DATA_DIRECTORY",
     "LANELET_RELOAD",
     "OP_DIRECTORY",
     "SCENARIO_FILE",
     "SCENARIO_NAME",
+    "SIM_CLOCK_DIRECTORY",
 }
 DERIVED_ENV_NAMES = SCRIPT_MANAGED_ENV_NAMES | {
     "CUSTOM_LANELET",
@@ -554,6 +556,9 @@ class ScenarioExecutor:
         if self.record_bag:
             environment["BAG_DIRECTORY"] = (data_directory / "bags").as_posix()
             (ROOT_DIR / environment["BAG_DIRECTORY"]).mkdir()
+        # with SIM_TIME_MODE set, sim-clock ticks CARLA, so carla-ros-bridge has to be passive
+        environment["CARLA_BRIDGE_PASSIVE"] = "true" if environment.get("SIM_TIME_MODE", "").strip() else "false"
+        environment["SIM_CLOCK_DIRECTORY"] = data_directory.as_posix()
         if self.args.op_conversion:
             (ROOT_DIR / environment["OP_DIRECTORY"]).mkdir(parents=True, exist_ok=True)
 
@@ -898,7 +903,13 @@ Configuration:
   CARLA maps.
 
   SCENARIO_FILE, SCENARIO_NAME, LANELET_RELOAD, DATA_DIRECTORY,
-  BAG_DIRECTORY, and OP_DIRECTORY are script-managed and forbidden in JSON.
+  BAG_DIRECTORY, OP_DIRECTORY, CARLA_BRIDGE_PASSIVE, and SIM_CLOCK_DIRECTORY
+  are script-managed and forbidden in JSON.
+
+  Time control: set SIM_TIME_MODE (realtime, gated, fast) and optionally
+  SIM_RT_FACTOR, GATE_PARTICIPANTS, GATE_TOPICS in the JSON env;
+  CARLA_BRIDGE_PASSIVE follows from it, and sim-clock's clock_summary.json is
+  written to the run directory.
   SCENARIO_FILTER and the delay (-t) are runtime arguments, not environment
   variables.
 

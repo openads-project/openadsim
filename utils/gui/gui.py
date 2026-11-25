@@ -1043,6 +1043,15 @@ def _render_configuration_tab(config: SimulationConfig):
             changed = render_field(config, field) or changed
         config_changed = config_changed or changed
 
+        timing_section = sections.get("Time Control")
+        if timing_section is not None:
+            st.markdown("---")
+            _render_section_heading(timing_section.title, timing_section.description)
+            changed = False
+            for field in timing_section.fields:
+                changed = render_field(config, field) or changed
+            config_changed = config_changed or changed
+
     if active_preset_name:
         st.info(f"Preset '{active_preset_name}' is active. Edit any field to switch back to Current Configuration.")
 
