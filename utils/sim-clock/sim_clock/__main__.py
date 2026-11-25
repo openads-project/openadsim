@@ -227,9 +227,11 @@ def idle(stop, reason):
 def run_clock(cfg, stop) -> int:
     import rclpy  # pylint: disable=import-outside-toplevel
     from rclpy.executors import SingleThreadedExecutor  # pylint: disable=import-outside-toplevel
+    from rclpy.signals import SignalHandlerOptions  # pylint: disable=import-outside-toplevel
     from .ros_interface import SimClockNode  # pylint: disable=import-outside-toplevel
 
-    rclpy.init()
+    # main() handles SIGTERM/SIGINT: rclpy's own handlers would shut the context down before the summary
+    rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
     gated = cfg.mode == "gated"
     node = SimClockNode(cfg.gate_participants if gated else [], cfg.gate_topics if gated else [],
                         use_clock=cfg.backend == "traci", periods=cfg.gate_periods)

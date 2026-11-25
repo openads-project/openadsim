@@ -36,7 +36,8 @@ def main():
         time.sleep(args.compute_ms / 1000.0)        # the component's processing
         # ... publish the component's output (e.g. objects, a trajectory or control) here ...
         done = Header()
-        done.stamp = msg.header.stamp               # the stamp of the input this output is based on
+        # the stamp of the input this output is based on
+        done.stamp = getattr(msg, "header", msg).stamp
         done.frame_id = args.participant
         ack.publish(done)
 
