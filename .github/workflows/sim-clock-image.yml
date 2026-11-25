@@ -31,13 +31,6 @@ jobs:
         id: image
         run: echo "name=${REGISTRY}/${GITHUB_REPOSITORY,,}/gui" >> "$GITHUB_OUTPUT"
 
-      - name: Free disk space
-        # the build pulls the monitoring (~14.5 GB) and carla-ros-bridge (~6.8 GB) images
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-          docker system prune -af
-          df -h /
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
