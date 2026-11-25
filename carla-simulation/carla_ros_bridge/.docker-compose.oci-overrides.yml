@@ -16,6 +16,8 @@ services:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-x11-service
     environment:
+      # true when sim-clock ticks the world (SIM_TIME_MODE set)
+      PASSIVE: ${CARLA_BRIDGE_PASSIVE:-false}
       TOWN: ${MAP:-/opendrive.xodr}
       IGNORE_ALTITUDE: "True"
     volumes:
