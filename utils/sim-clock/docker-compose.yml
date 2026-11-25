@@ -8,7 +8,8 @@ services:
     extends:
       file: ../../openadstack/openadstack/utils/compose/docker-compose.template.yml
       service: ros2-service
-    image: openadsim/sim-clock:dev
+    # published by .github/workflows/sim-clock-image.yml; `docker compose build` builds it locally
+    image: ghcr.io/openads-project/openadsim/sim-clock:feature-sim-clock
     build:
       context: .
     environment:
@@ -34,6 +35,7 @@ services:
   sim-clock-carla:
     profiles:
       - carla
+      - sim-clock  # excluded from the Helm bundle
     extends:
       service: template.sim-clock
     depends_on:
@@ -49,6 +51,7 @@ services:
   sim-clock-sumo:
     profiles:
       - sumo
+      - sim-clock  # excluded from the Helm bundle
     extends:
       service: template.sim-clock
     depends_on:
